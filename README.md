@@ -1,6 +1,7 @@
-# seekil_back_office
+# Seekil Back Office
 
-A new Flutter project.
+Point of Sales Application for Seekil Shoes Clean & Care.
+Build with Flutter.
 
 ## Getting Started
 
