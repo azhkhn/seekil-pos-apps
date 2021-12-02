@@ -1,4 +1,4 @@
-package com.example.seekil_back_office
+package com.seekil.back_office
 
 import io.flutter.embedding.android.FlutterActivity
 
