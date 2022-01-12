@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:seekil_back_office/widgets/forms/dropdown.dart';
 import 'package:seekil_back_office/widgets/forms/multi_dropdown.dart';
 
@@ -32,6 +33,11 @@ class MyFormField extends StatelessWidget {
   final TextCapitalization textCapitalization;
   final bool isMandatory;
   final bool obscureText;
+  final TextInputAction textInputAction;
+  final List<TextInputFormatter>? inputFormatters;
+  final Widget? suffixIcon;
+  final FocusNode? focusNode;
+  final String? Function(String)? onFieldSubmitted;
 
   MyFormField(
       {Key? key,
@@ -40,8 +46,10 @@ class MyFormField extends StatelessWidget {
       this.readOnly = false,
       this.type = FormFieldType.TEXT,
       this.textInputType = TextInputType.text,
+      this.textInputAction = TextInputAction.next,
       this.textCapitalization = TextCapitalization.sentences,
       this.dropdownItems,
+      this.inputFormatters,
       required this.label,
       this.initialValue,
       this.onTap,
@@ -54,14 +62,11 @@ class MyFormField extends StatelessWidget {
       this.inputDecoration,
       this.textFieldValidator,
       this.dropdowndValidator,
-      this.multiDropdownValidator})
+      this.multiDropdownValidator,
+      this.suffixIcon,
+      this.focusNode,
+      this.onFieldSubmitted})
       : super(key: key);
-
-  final InputDecoration _inputDecoration = InputDecoration(
-    border: OutlineInputBorder(),
-    isDense: true,
-    contentPadding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -86,21 +91,31 @@ class MyFormField extends StatelessWidget {
           );
         default:
           return TextFormField(
+              focusNode: focusNode,
               readOnly: readOnly,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               initialValue: initialValue,
               validator: textFieldValidator,
+              inputFormatters: inputFormatters,
               keyboardType: textInputType,
               textCapitalization: textCapitalization,
               obscureText: obscureText,
+              textInputAction: textInputAction,
               onTap: () => onTap,
               controller: controller,
               onSaved: (dynamic newValue) => onSaved!(newValue!),
+              onFieldSubmitted: onFieldSubmitted,
               onChanged: onChanged != null
                   ? (dynamic value) => onChanged!(value)
                   : null,
-              decoration:
-                  inputDecoration != null ? inputDecoration : _inputDecoration);
+              decoration: inputDecoration != null
+                  ? inputDecoration
+                  : InputDecoration(
+                      border: OutlineInputBorder(),
+                      isDense: true,
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+                      suffixIcon: suffixIcon));
       }
     }
 

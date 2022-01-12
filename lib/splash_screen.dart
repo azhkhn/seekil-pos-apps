@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:seekil_back_office/constants/storage_key.constant.dart';
 import 'package:seekil_back_office/routes/routes.dart';
 
@@ -14,6 +16,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   final box = GetStorage();
+
   @override
   void initState() {
     super.initState();
@@ -31,6 +34,12 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          toolbarHeight: 0,
+          systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarColor: Colors.white,
+              statusBarIconBrightness: Brightness.dark,
+              statusBarBrightness: Brightness.light)),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -46,11 +55,19 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
           Padding(
               padding: const EdgeInsets.only(bottom: 24.0),
-              child: Text('Back Office',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16.0,
-                      color: Colors.grey)))
+              child: FutureBuilder<PackageInfo>(
+                future: PackageInfo.fromPlatform(),
+                builder: (context, snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.done:
+                      return Text('v${snapshot.data!.version}',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.grey));
+                    default:
+                      return const SizedBox();
+                  }
+                },
+              ))
         ],
       ),
     );

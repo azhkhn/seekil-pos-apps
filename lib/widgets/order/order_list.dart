@@ -13,6 +13,7 @@ class OrderList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: data.length,
+      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
       itemBuilder: (context, index) => OrderListCard(
         data: data[index],
         isRefreshed: (bool isRefreshed) {

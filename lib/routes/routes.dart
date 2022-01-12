@@ -1,6 +1,7 @@
 class AppRoutes {
   static final String login = '/login';
   static final String home = '/homepage';
+  // Order
   static final String orderList = '/order-list';
   static final String order = '/order';
   static final String orderDetail = '/order/:order_id';
@@ -9,6 +10,11 @@ class AppRoutes {
   static final String orderTracking = '/order/:order_id/tracking';
   static final String splashScreen = '/splash-screen';
   static final String mainWidget = '/main-widget';
+  // Expenditure
+  static final String expenditureCurrentMonth = '/expenditure/current-month';
+  static final String expenditureFixedMonthly = '/expenditure/fixed-monthly';
+  static final String expenditureIncomingAndExpenses =
+      '/expenditure/incoming-and-expenses';
   // Settings
   static final String settingsPage = '/settings-page';
   static final String bluetoothPage = '/bluetooth-page';

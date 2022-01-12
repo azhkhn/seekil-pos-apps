@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart' as D;
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:seekil_back_office/constants/general.constant.dart';
@@ -16,6 +15,7 @@ class LoginController extends GetxController with StateMixin {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   RxBool showLoading = false.obs;
+  RxBool isObscureText = true.obs;
 
   @override
   void onInit() {
@@ -31,6 +31,14 @@ class LoginController extends GetxController with StateMixin {
     passwordController.dispose();
   }
 
+  void onChangeObscureText() {
+    if (isObscureText.isTrue) {
+      isObscureText.value = false;
+    } else {
+      isObscureText.value = true;
+    }
+  }
+
   String? usernameValidator(String? value) {
     if (value == null || value == '') {
       return 'Username harus diisi';
@@ -44,11 +52,10 @@ class LoginController extends GetxController with StateMixin {
   }
 
   void onSubmitLogin() async {
-    SeekilApi seekilApi = SeekilApi();
-
     if (formKey.currentState!.validate()) {
       try {
         showLoading.value = true;
+        SeekilApi seekilApi = SeekilApi();
         D.Response response = await seekilApi.post('auth/login', {
           'username': usernameController.text.toLowerCase(),
           'password': passwordController.text.toLowerCase()

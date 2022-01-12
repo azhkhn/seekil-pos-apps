@@ -12,6 +12,7 @@ class ConnectivityRequestRetrier {
   });
 
   Future<Response> scheduleRequestRetry(RequestOptions requestOptions) async {
+    // ignore: cancel_subscriptions
     StreamSubscription? streamSubscription;
     final responseCompleter = Completer<Response>();
 

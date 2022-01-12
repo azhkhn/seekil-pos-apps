@@ -1,4 +1,5 @@
 import 'package:get_storage/get_storage.dart';
+import 'package:intl/intl.dart';
 import 'package:seekil_back_office/constants/general.constant.dart';
 import 'package:seekil_back_office/constants/storage_key.constant.dart';
 import 'package:seekil_back_office/models/order_detail.model.dart';
@@ -13,7 +14,7 @@ class OrderUtils {
   final WordTransformation wt = WordTransformation();
 
   int getItemSubtotal(dynamic items) {
-    if (items != null) {
+    if (items != null && items.length > 0) {
       int itemSubtotal;
 
       dynamic iterateItems = items.reduce((value, element) {
@@ -67,7 +68,10 @@ class OrderUtils {
         date: _orderDetail.orderDate, type: DateFormatType.dateTimeInfo);
     String? ongkosKirim = wt.currencyFormat(_orderDetail.ongkir);
     String? discount = wt.currencyFormat(_orderDetail.promo);
-    String? statusPembayaran = _orderDetail.paymentStatus;
+    String? statusPembayaran = _orderDetail.paymentStatus!.contains('_')
+        ? toBeginningOfSentenceCase(
+            _orderDetail.paymentStatus!.replaceAll('_', ' '))
+        : toBeginningOfSentenceCase(_orderDetail.paymentStatus);
     String subtotal = wt.currencyFormat(getItemSubtotal(_orderItems['list']));
     String total = wt.currencyFormat(getTotal(
         items: _orderItems['list'] ?? [],
@@ -78,20 +82,23 @@ class OrderUtils {
 
     String generateItem() {
       return _orderItems['list'].map((e) {
-        String itemName = '_${e['item_name']}_';
-        String services = e['services'].map((s) {
-          return '${s['name']}: ${wt.currencyFormat(s['price'])}\n';
-        }).toString();
-
+        String itemName = e['item_name'];
+        String services = e['services']
+            .map((s) {
+              return '_${s['name'].replaceAll('&', 'and')}: ${wt.currencyFormat(s['price'])}_\n';
+            })
+            .toString()
+            .trim();
         return '\n$itemName\n$services';
       }).toString();
     }
 
     // DATA
-    String dTitle = '*SEEKIL INVOICE:*\n';
-    String dInvoice = '*$invoice*\n\n';
+    String dTitle =
+        'Hi *$customerName*.\nTerima kasih sudah drop sepatu/apparel nya di Seekil, berikut invoice nya:\n\n';
+    String dInvoice = 'Invoice: $invoice\n\n';
     String dCustomer = 'Nama: $customerName\n';
-    String dWhatsapp = 'Whatsapp: : $customerWhatsapp\n';
+    String dWhatsapp = 'Whatsapp: $customerWhatsapp\n';
     String dWaktu = 'Waktu: $dateTime\n';
     String dItems =
         '${generateItem().replaceAll('(', '').replaceAll(')', '').replaceAll(',', '').trim()}\n';
@@ -100,8 +107,7 @@ class OrderUtils {
     String dDiskon = 'Diskon: -$discount\n\n';
     String dTotal = '*Total: $total*\n';
     String dStatus = '*_${statusPembayaran!.toUpperCase()}_*\n';
-    String dNote =
-        '\nTerima kasih sudah drop sepatu/apparel nya di Seekil, mohon ditunggu untuk cucian nya 😊';
+    String dNote = '\nMohon ditunggu untuk cucian nya 😊';
 
     return '$dTitle$dInvoice$dCustomer$dWhatsapp$dWaktu$separator$dItems$separator$dSubtotal$dOngkir$dDiskon$dTotal$separator$dStatus$separator$dNote';
   }

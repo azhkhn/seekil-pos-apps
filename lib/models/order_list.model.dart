@@ -78,6 +78,19 @@ class OrderListModel {
     return orderList.map((e) => new OrderListModel.fromJson(e)).toList();
   }
 
+  static Future<List<OrderListModel>> fetchOrderListByPeriod(
+      String startDate, String endDate,
+      {String? params}) async {
+    SeekilApi seekilApi = SeekilApi();
+    Response response = await seekilApi
+        .get('order/period?start_date=$startDate&end_date=$endDate&$params');
+    List<dynamic> orderList;
+
+    var jsonResponse = jsonDecode(response.toString());
+    orderList = (jsonResponse as Map<String, dynamic>)['list'];
+    return orderList.map((e) => new OrderListModel.fromJson(e)).toList();
+  }
+
   static _fetchServices(List<dynamic> items, seekilApi) async {
     return await Future.wait(items.map((item) async {
       Response response =

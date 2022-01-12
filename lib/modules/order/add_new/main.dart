@@ -38,9 +38,9 @@ class _OrderAddNewState extends State<OrderAddNew> {
                 content: Text(
                   '*) Wajib diisi',
                   style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.black),
+                      fontWeight: FontWeight.bold, color: Colors.white),
                 ),
-                backgroundColor: ColorConstant.INFO,
+                backgroundColor: ColorConstant.DEF,
                 actions: [
                   TextButton(
                       onPressed: () {
@@ -50,7 +50,7 @@ class _OrderAddNewState extends State<OrderAddNew> {
                       },
                       child: Text('Mengerti',
                           style: TextStyle(
-                              color: Colors.black,
+                              color: Colors.white,
                               fontWeight: FontWeight.bold)))
                 ]),
           Expanded(
@@ -90,6 +90,9 @@ class _OrderAddNewState extends State<OrderAddNew> {
                       onChangePromo: (dynamic item) {
                         List<dynamic>? items = _orderAddNewModel.items;
                         int discount = item['discount'];
+                        // int itemsTotal = items != null
+                        //     ? orderUtils.getItemSubtotal(items)
+                        //     : 0;
                         double totalDiscount =
                             (orderUtils.getItemSubtotal(items) * discount) /
                                 100;
@@ -128,7 +131,7 @@ class _OrderAddNewState extends State<OrderAddNew> {
     _orderAddNewModel.customerName = item.name;
     _orderAddNewModel.whatsapp = item.whatsapp.replaceRange(0, 2, '');
     _orderAddNewModel.points = item.points;
-    whatsappController.text = item.whatsapp;
+    whatsappController.text = item.whatsapp.replaceRange(0, 2, '');
     _orderAddNewModel.customerName = item.name;
     customerNameController.text = item.name;
     setState(() {});

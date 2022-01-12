@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:intl/intl.dart';
 import 'package:seekil_back_office/constants/storage_key.constant.dart';
 import 'package:seekil_back_office/utilities/services/seekil_api.dart';
 
@@ -59,10 +58,7 @@ class OrderDetailModel {
       whatsapp: json['customer'] != null ? json['customer']['whatsapp'] : null,
       paymentMethod: json['payment_method_id'],
       paymentMethodName: json['master_payment_method']['name'],
-      paymentStatus: json['payment_status'].contains('_')
-          ? toBeginningOfSentenceCase(
-              json['payment_status'].replaceAll('_', ' '))
-          : toBeginningOfSentenceCase(json['payment_status']),
+      paymentStatus: json['payment_status'],
       itemSubtotal: json['items'] != null ? json['items'] : 0,
       ongkir: json['pickup_delivery_price'] != null
           ? json['pickup_delivery_price']

@@ -54,14 +54,8 @@ class OrderListCard extends StatelessWidget {
                       style: _valueStyle(false)
                           .copyWith(color: Colors.grey, fontSize: 13.0),
                     ),
-                    // WidgetHelper.badgeText(data.orderStatus)
                   ],
                 ),
-                // Text(
-                //   WordTransformation().dateFormatter(date: data.orderDate),
-                //   style: _valueStyle(false)
-                //       .copyWith(color: Colors.grey, fontSize: 13.0),
-                // ),
                 SizedBox(height: 4.0),
                 Row(
                   children: [
@@ -84,14 +78,22 @@ class OrderListCard extends StatelessWidget {
                         style: _valueStyle(true),
                       ),
                     ),
-                    WidgetHelper.badgeText(
-                      data.paymentStatus as String,
-                      badgeColor: data.paymentStatus as String == 'Lunas'
-                          ? ColorConstant.SUCCESS
-                          : ColorConstant.ERROR,
-                      textColor: data.paymentStatus as String == 'Lunas'
-                          ? Colors.green
-                          : Colors.red,
+                    Row(
+                      children: [
+                        WidgetHelper.badgeText(
+                          data.orderStatus,
+                          badgeColor: ColorConstant.DEF,
+                          textColor: Colors.white,
+                        ),
+                        SizedBox(
+                          width: 8.0,
+                        ),
+                        WidgetHelper.badgeText(data.paymentStatus as String,
+                            badgeColor: data.paymentStatus as String == 'Lunas'
+                                ? Colors.green
+                                : Colors.red,
+                            textColor: Colors.white)
+                      ],
                     ),
                   ],
                 )

@@ -91,18 +91,14 @@ class _AllOrderState extends State<AllOrder> {
                     spacing: 4.0,
                     children: [
                       GestureDetector(
-                        onTap: () {
-                          _onShowModalStatus();
-                        },
+                        onTap: _onShowModalStatus,
                         child: Chip(
                             deleteIcon: Icon(Icons.keyboard_arrow_down_rounded),
                             onDeleted: () {},
                             label: Text(_selectedStatus)),
                       ),
                       GestureDetector(
-                        onTap: () {
-                          _onShowModalTanggal();
-                        },
+                        onTap: _onShowModalTanggal,
                         child: Chip(
                             deleteIcon: Icon(Icons.keyboard_arrow_down_rounded),
                             onDeleted: () {},

@@ -6,6 +6,7 @@ import 'package:seekil_back_office/utilities/helper/order_helper.dart';
 import 'package:seekil_back_office/utilities/helper/snackbar_helper.dart';
 import 'package:seekil_back_office/utilities/helper/word_transformation.dart';
 import 'package:seekil_back_office/widgets/loading_indicator.dart';
+import 'package:seekil_back_office/constants/color.constant.dart';
 
 class OrderAddNewFooterSection extends StatelessWidget {
   OrderAddNewFooterSection(this.orderAddNewModel, this.formKey, {Key? key})
@@ -46,19 +47,20 @@ class OrderAddNewFooterSection extends StatelessWidget {
                       color: Colors.red)),
             ],
           )),
-          GestureDetector(
-              onTap: _onSaveForm,
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 32.0),
-                decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                child: Text('Buat Pesanan',
-                    style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white)),
-              )),
+          ElevatedButton(
+              onPressed: _onSaveForm,
+              style: ElevatedButton.styleFrom(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 32.0),
+                  primary: ColorConstant.DEF,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8.0)))),
+              child: Text('Buat Pesanan',
+                  style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white))),
+          //     )),
         ],
       ),
     );

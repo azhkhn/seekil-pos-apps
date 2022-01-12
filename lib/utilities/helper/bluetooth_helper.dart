@@ -20,8 +20,8 @@ class BluetoothHelper {
     Map<String, dynamic> _orderItems = box.read(StorageKeyConstant.ORDER_ITEMS);
 
     String currentDate = wt.dateFormatter(
-        date: DateTime.now().toString(), type: DateFormatType.dateTimeInfo);
-    int? ongkosKirim = _orderDetail!.ongkir ?? 0;
+        date: _orderDetail!.orderDate, type: DateFormatType.dateTimeInfo);
+    int? ongkosKirim = _orderDetail.ongkir ?? 0;
     int? discount = _orderDetail.promo ?? 0;
     int itemSubtotal = orderUtils.getItemSubtotal(_orderItems['list']);
     int total = orderUtils.getTotal(
@@ -60,6 +60,8 @@ class BluetoothHelper {
         '### ${_orderDetail.paymentStatus!.toUpperCase()} ###', 1, 1);
     bluetooth.printCustom('--------------------------------', 1, 2);
     bluetooth.printCustom("Terima kasih banyak :)", 1, 1);
+    bluetooth.printNewLine();
+    bluetooth.printNewLine();
     bluetooth.printNewLine();
     bluetooth.printNewLine();
     bluetooth.paperCut();

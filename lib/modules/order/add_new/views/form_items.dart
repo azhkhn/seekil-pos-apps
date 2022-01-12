@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
+import 'package:seekil_back_office/constants/color.constant.dart';
 import 'package:seekil_back_office/models/master_data.model.dart';
 import 'package:seekil_back_office/models/order_add_new.model.dart';
 import 'package:seekil_back_office/models/order_item.model.dart';
@@ -55,7 +56,7 @@ class _OrderAddNewItemsSectionState extends State<OrderAddNewItemsSection> {
                 ],
               ),
               Divider(height: 8.0, color: Colors.grey),
-              if (itemsList!.isNotEmpty)
+              if (itemsList != null && itemsList!.isNotEmpty)
                 ListView.builder(
                   shrinkWrap: true,
                   physics: ScrollPhysics(),
@@ -123,103 +124,129 @@ class _OrderAddNewItemsSectionState extends State<OrderAddNewItemsSection> {
 
   _showFormNewItem() {
     OrderItemModel orderItemModel = new OrderItemModel();
+    final formItemsKey = GlobalKey<FormState>();
 
-    void _onSaved() {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Tambah item baru'),
+            scrollable: true,
+            content: Form(
+              key: formItemsKey,
+              child: Column(
+                children: [
+                  MyFormField(
+                    label: 'Nama Item',
+                    isMandatory: true,
+                    textFieldValidator: (value) {
+                      if (value == null || value == '') {
+                        return 'Nama Item harus diisi';
+                      }
+                    },
+                    onChanged: (dynamic value) {
+                      orderItemModel.itemName = value;
+                    },
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 24.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Layanan',
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold)),
+                        SizedBox(height: 8),
+                        FutureBuilder(
+                            future: servicesList,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                List<dynamic> data =
+                                    snapshot.data as List<dynamic>;
+                                return MultiSelectDialogField(
+                                  items: data
+                                      .map((e) => MultiSelectItem(e, e['name']))
+                                      .toList(),
+                                  onConfirm: (List<dynamic> values) {
+                                    orderItemModel.servicesId = values;
+                                  },
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Layanan harus dipilih';
+                                    }
+                                  },
+                                  searchable: true,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border.all(
+                                        color: Colors.grey,
+                                        width: 1.0,
+                                      ),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(4.0))),
+                                  title: Text('Cari Layanan'),
+                                  buttonText: Text(
+                                    'Pilih Layanan',
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                  buttonIcon:
+                                      Icon(Icons.keyboard_arrow_down_rounded),
+                                );
+                              }
+                              return MultiSelectDialogField(
+                                items: [],
+                                onConfirm: (List<dynamic> values) {
+                                  orderItemModel.servicesId = values;
+                                },
+                                searchable: true,
+                                decoration:
+                                    BoxDecoration(color: Colors.black12),
+                                title: Text('Pilih Layanan'),
+                                buttonText: Text('Pilih Layanan'),
+                                buttonIcon:
+                                    Icon(Icons.keyboard_arrow_down_rounded),
+                              );
+                            })
+                      ],
+                    ),
+                  ),
+                  MyFormField(
+                    label: 'Catatan',
+                    onChanged: (dynamic value) {
+                      orderItemModel.note = value;
+                    },
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              ElevatedButton(
+                onPressed: () => Get.back(),
+                child: Text('Batal', style: TextStyle(color: Colors.white)),
+                style: ElevatedButton.styleFrom(primary: ColorConstant.DEF),
+              ),
+              TextButton(
+                child: Text('Tambah',
+                    style: TextStyle(
+                        color: ColorConstant.DEF, fontWeight: FontWeight.bold)),
+                onPressed: () => _onSaved(orderItemModel, formItemsKey),
+              ),
+            ],
+          );
+        });
+  }
+
+  void _onSaved(
+      OrderItemModel orderItemModel, GlobalKey<FormState> formItemsKey) {
+    if (formItemsKey.currentState!.validate()) {
       itemsList?.add(orderItemModel.toJson());
       widget.orderAddNewModel.items = itemsList;
       Get.back();
       widget.onSavedFormItems();
     }
-
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Tambah item baru'),
-            scrollable: true,
-            content: Column(
-              children: [
-                MyFormField(
-                  label: 'Nama Item',
-                  onChanged: (dynamic value) {
-                    orderItemModel.itemName = value;
-                  },
-                ),
-                Container(
-                  margin: const EdgeInsets.only(bottom: 24.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Layanan',
-                          style: TextStyle(
-                              color: Colors.grey, fontWeight: FontWeight.bold)),
-                      SizedBox(height: 8),
-                      FutureBuilder(
-                          future: servicesList,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              List<dynamic> data =
-                                  snapshot.data as List<dynamic>;
-                              return MultiSelectDialogField(
-                                items: data
-                                    .map((e) => MultiSelectItem(e, e['name']))
-                                    .toList(),
-                                onConfirm: (List<dynamic> values) {
-                                  orderItemModel.servicesId = values;
-                                },
-                                searchable: true,
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    border: Border.all(
-                                      color: Colors.grey,
-                                      width: 1.0,
-                                    ),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(4.0))),
-                                title: Text('Cari Layanan'),
-                                buttonText: Text(
-                                  'Pilih Layanan',
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                                buttonIcon:
-                                    Icon(Icons.keyboard_arrow_down_rounded),
-                              );
-                            }
-                            return MultiSelectDialogField(
-                              items: [],
-                              onConfirm: (List<dynamic> values) {
-                                orderItemModel.servicesId = values;
-                              },
-                              searchable: true,
-                              decoration: BoxDecoration(color: Colors.black12),
-                              title: Text('Pilih Layanan'),
-                              buttonText: Text('Pilih Layanan'),
-                              buttonIcon:
-                                  Icon(Icons.keyboard_arrow_down_rounded),
-                            );
-                          })
-                    ],
-                  ),
-                ),
-                MyFormField(
-                  label: 'Catatan',
-                  onChanged: (dynamic value) {
-                    orderItemModel.note = value;
-                  },
-                ),
-              ],
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Get.back(),
-                child: Text('Batal'),
-              ),
-              TextButton(
-                onPressed: _onSaved,
-                child: Text('Tambah'),
-              ),
-            ],
-          );
-        });
   }
 }

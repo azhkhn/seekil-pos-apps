@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:seekil_back_office/main.widget.dart';
 import 'package:seekil_back_office/routes/pages.dart';
 import 'package:seekil_back_office/routes/routes.dart';
@@ -8,7 +11,10 @@ import 'package:seekil_back_office/utilities/helper/bluetooth_helper.dart';
 
 void main() async {
   await GetStorage.init();
+  initializeDateFormatting();
+  Intl.defaultLocale = 'id_ID';
   BluetoothHelper().initSavetoPath();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   runApp(GetMaterialApp(
     title: 'Seekil Back Office',
@@ -17,7 +23,6 @@ void main() async {
     debugShowCheckedModeBanner: false,
     home: MainWidget(),
     theme: ThemeData(
-        primarySwatch: Colors.blue,
         fontFamily: 'Nunito',
         appBarTheme: AppBarTheme(
           elevation: 0,

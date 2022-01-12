@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:seekil_back_office/models/customer_list.model.dart';
 import 'package:seekil_back_office/models/master_data.model.dart';
@@ -81,9 +82,9 @@ class _OrderAddNewCustomerSectionState
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      MyShimmer(height: 10.0),
+                                      MyShimmer.rectangular(height: 10.0),
                                       SizedBox(height: 4.0),
-                                      MyShimmer(
+                                      MyShimmer.rectangular(
                                         height: 10.0,
                                         width: 180,
                                       )
@@ -92,10 +93,11 @@ class _OrderAddNewCustomerSectionState
                                 )),
                       ),
                     ),
-                    debounceDuration: Duration(milliseconds: 500),
+                    debounceDuration: Duration(microseconds: 100),
                     textFieldConfiguration: TextFieldConfiguration(
                         controller: widget.customerNameController,
                         onChanged: widget.onChangeCustomerName,
+                        textCapitalization: TextCapitalization.sentences,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           isDense: true,
@@ -128,6 +130,18 @@ class _OrderAddNewCustomerSectionState
             isMandatory: true,
             controller: widget.whatsappController,
             textInputType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(RegExp(r'^0+(?=.)'),
+                  replacementString: ''),
+              FilteringTextInputFormatter.deny(RegExp(r'^62(?=.)'),
+                  replacementString: ''),
+              FilteringTextInputFormatter.digitsOnly
+            ],
+            textFieldValidator: (value) {
+              if (value == null || value == '') {
+                return 'Whatsapp harus diisi';
+              }
+            },
             inputDecoration: InputDecoration(
                 border: OutlineInputBorder(),
                 contentPadding:
@@ -136,9 +150,8 @@ class _OrderAddNewCustomerSectionState
                 prefixText: '62',
                 prefixStyle: TextStyle(color: Colors.black, fontSize: 16.0)),
             onChanged: (newValue) {
-              setState(() {
-                widget.orderAddNewModel.whatsapp = newValue;
-              });
+              widget.orderAddNewModel.whatsapp = newValue;
+              setState(() {});
             },
           ),
           FutureBuilder(
@@ -150,6 +163,11 @@ class _OrderAddNewCustomerSectionState
                   label: 'Jenis Order',
                   isMandatory: true,
                   type: FormFieldType.DROPDOWN,
+                  dropdowndValidator: (value) {
+                    if (value == null || value == '') {
+                      return 'Jenis Order harus dipilih';
+                    }
+                  },
                   dropdownItems: data,
                   onChanged: (dynamic value) {
                     setState(() {

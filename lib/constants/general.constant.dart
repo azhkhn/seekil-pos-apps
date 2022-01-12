@@ -1,3 +1,5 @@
+import 'package:seekil_back_office/utilities/helper/word_transformation.dart';
+
 class GeneralConstant {
   static const String BASE_URL = 'https://glacial-journey-79187.herokuapp.com/';
 
@@ -11,4 +13,24 @@ class GeneralConstant {
 
   static const ORDER_CREATED = 'Pesanan baru berhasil dibuat';
   static const ORDER_UPDATED = 'Pesanan berhasil diperbarui';
+
+  static List<Map<String, String>> filterPaymentStatus = [
+    {'id': 'lunas', 'name': 'Lunas'},
+    {'id': 'belum_lunas', 'name': 'Belum Lunas'},
+  ];
+
+  static List<dynamic> filterDateMenu = [
+    {'name': 'Semua Tanggal', 'value': ''},
+    {'name': 'Hari ini', 'value': WordTransformation().dateSubstract(0)},
+    {'name': '7 Hari Terakhir', 'value': WordTransformation().dateSubstract(7)},
+    {
+      'name': '30 Hari Terakhir',
+      'value': WordTransformation().dateSubstract(30)
+    },
+    {
+      'name': '90 Hari Terakhir',
+      'value': WordTransformation().dateSubstract(90)
+    },
+    {'name': 'Pilih Tanggal Sendiri', 'value': 'custom'},
+  ];
 }

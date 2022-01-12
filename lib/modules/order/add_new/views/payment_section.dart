@@ -147,8 +147,14 @@ class _OrderAddNewPaymentSectionState extends State<OrderAddNewPaymentSection> {
                     List<dynamic> data = snapshot.data as List<dynamic>;
                     return MyFormField(
                       label: 'Metode Pembayaran',
+                      isMandatory: true,
                       type: FormFieldType.DROPDOWN,
                       dropdownItems: data,
+                      dropdowndValidator: (value) {
+                        if (value == null || value == '') {
+                          return 'Metode Pembayaran harus dipilih';
+                        }
+                      },
                       onChanged: (dynamic value) {
                         setState(() {
                           widget.orderAddNewModel.paymentMethodId =
@@ -159,6 +165,7 @@ class _OrderAddNewPaymentSectionState extends State<OrderAddNewPaymentSection> {
                   }
                   return MyFormField(
                     label: 'Metode Pembayaran',
+                    isMandatory: true,
                     onChanged: (dynamic value) {
                       setState(() {
                         widget.orderAddNewModel.paymentMethodId = value as int;
@@ -171,7 +178,13 @@ class _OrderAddNewPaymentSectionState extends State<OrderAddNewPaymentSection> {
               Expanded(
                   child: MyFormField(
                       label: 'Status Pembayaran',
+                      isMandatory: true,
                       type: FormFieldType.DROPDOWN,
+                      dropdowndValidator: (value) {
+                        if (value == null || value == '') {
+                          return 'Status Pembayaran harus dipilih';
+                        }
+                      },
                       dropdownItems: [
                         {'id': 'lunas', 'name': 'Lunas'},
                         {'id': 'belum_lunas', 'name': 'Belum Lunas'},
@@ -197,7 +210,7 @@ class _OrderAddNewPaymentSectionState extends State<OrderAddNewPaymentSection> {
           //         Switch(
           //           value: widget.isUsePoint,
           //           onChanged: widget.onChangeUsePoint,
-          //           activeColor: Colors.blue,
+          //           activeColor: ColorConstant.DEF,
           //         )
           //       ],
           //     ),

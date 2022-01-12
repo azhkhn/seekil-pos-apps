@@ -1,8 +1,14 @@
 import 'package:intl/intl.dart';
+import 'package:jiffy/jiffy.dart';
 
 enum DateFormatType { dateOnly, dateTime, timeOnly, dateData, dateTimeInfo }
 
 class WordTransformation {
+  String currentMonth =
+      DateFormat('MMMM').format(DateTime.parse(DateTime.now().toString()));
+  String firstDateOfMonth = Jiffy().startOf(Units.MONTH).format('yyyy-MM-DD');
+  String endDateOfMonth = Jiffy().endOf(Units.MONTH).format('yyyy-MM-DD');
+
   /// Function to formatting date from timestamp, or anything
   String dateFormatter({required String date, DateFormatType? type}) {
     String dateFormat = 'dd MMM y';
@@ -51,5 +57,16 @@ class WordTransformation {
     }
 
     return greeting;
+  }
+
+  // Function to get date by days as parameter
+  String dateSubstract(int days) {
+    String startDate = dateFormatter(
+        date: DateTime.now().toString(), type: DateFormatType.dateData);
+    String endDate = dateFormatter(
+        date: DateTime.now().subtract(Duration(days: days)).toString(),
+        type: DateFormatType.dateData);
+
+    return 'start_date=$startDate&end_date=$endDate';
   }
 }

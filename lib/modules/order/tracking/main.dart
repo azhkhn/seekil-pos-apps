@@ -176,12 +176,11 @@ class _OrderTrackingState extends State<OrderTracking> {
                         return TimelineTile(
                           isFirst: isFirstIndex,
                           isLast: index == data.length - 1,
-                          alignment: TimelineAlign.start,
                           beforeLineStyle: LineStyle(color: Colors.green),
                           indicatorStyle: IndicatorStyle(
-                              color: Colors.green,
-                              width: 20.0,
-                              padding: EdgeInsets.only(bottom: 2.0, top: 4.0)),
+                            color: Colors.green,
+                            width: 20.0,
+                          ),
                           endChild: Padding(
                             padding:
                                 const EdgeInsets.only(left: 16.0, bottom: 16.0),

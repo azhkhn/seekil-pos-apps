@@ -4,9 +4,12 @@ import 'package:seekil_back_office/constants/color.constant.dart';
 
 class WidgetHelper {
   static PreferredSizeWidget appBar(String title,
-      {PreferredSizeWidget? bottom, List<Widget>? actions}) {
+      {PreferredSizeWidget? bottom,
+      double titleSize = 18.0,
+      List<Widget>? actions,
+      Color backgroundColor = Colors.white}) {
     return AppBar(
-      backgroundColor: Colors.white,
+      backgroundColor: backgroundColor,
       iconTheme: IconThemeData(color: Colors.black),
       bottom: bottom,
       actions: actions,
@@ -14,10 +17,11 @@ class WidgetHelper {
           statusBarColor: Colors.white,
           statusBarBrightness: Brightness.light,
           statusBarIconBrightness: Brightness.dark),
-      title: Text(
-        title,
-        style: TextStyle(color: Colors.black),
-      ),
+      title: Text(title),
+      titleTextStyle: TextStyle(
+          color: Colors.black,
+          fontSize: titleSize,
+          fontWeight: FontWeight.w500),
     );
   }
 

@@ -2,12 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:seekil_back_office/models/order_list.model.dart';
-import 'package:seekil_back_office/models/services_list.model.dart';
-import 'package:seekil_back_office/models/order_list_items.model.dart';
-import 'package:seekil_back_office/modules/home/views/order_section.dart';
+import 'package:seekil_back_office/constants/storage_key.constant.dart';
+import 'package:seekil_back_office/models/expenditure.model.dart';
+import 'package:seekil_back_office/modules/home/views/card_current_month.dart';
+import 'package:seekil_back_office/modules/home/views/card_staff.dart';
+import 'package:seekil_back_office/modules/home/views/content_staff.dart';
+import 'package:seekil_back_office/modules/home/views/others.dart';
+import 'package:seekil_back_office/modules/home/views/store_feature.dart';
+import 'package:seekil_back_office/modules/home/views/user_header.dart';
+import 'package:seekil_back_office/routes/routes.dart';
 import 'package:seekil_back_office/utilities/helper/auth_helper.dart';
 import 'package:seekil_back_office/utilities/helper/word_transformation.dart';
+import 'package:seekil_back_office/constants/color.constant.dart';
+import 'package:seekil_back_office/widgets/loading_indicator.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -18,10 +25,9 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   WordTransformation wt = WordTransformation();
-  late Future<Map<String, dynamic>> _orderList;
-  late Future<Map<String, dynamic>> _orderListItems, _orderCurrentMonth;
-  late Future<List<dynamic>> _topServices;
+  late Future<Map<String, dynamic>> data;
   final box = GetStorage();
+  bool _showLoading = false;
 
   @override
   void initState() {
@@ -31,12 +37,7 @@ class _HomeState extends State<Home> {
 
   Future<void> initialFetchMasterData() async {
     setState(() {
-      _orderList = OrderListModel.fetchAllOrders();
-      _orderListItems = OrderItemListItemsModel.fetchOrderItems('all');
-      _orderCurrentMonth =
-          OrderItemListItemsModel.fetchOrderItems('current-month');
-      // _topCustomer = OrderListModel.fetchTopCustomer();
-      _topServices = ServicesListModel.fetchTopServices();
+      data = ExpenditureModel.fetchCashFlowCurrentMonth();
     });
   }
 
@@ -44,46 +45,59 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.blue,
-          iconTheme: IconThemeData(color: Colors.black),
-          toolbarHeight: Get.height * .16,
+          toolbarHeight: 0,
           systemOverlayStyle: SystemUiOverlayStyle(
-              statusBarColor: Colors.blue,
+              statusBarColor: ColorConstant.DEF,
               statusBarBrightness: Brightness.light,
               statusBarIconBrightness: Brightness.light),
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                  AuthHelper.isLoggedIn()
-                      ? '${wt.greeting()}${AuthHelper.user().username}'
-                      : wt.greeting(),
-                  style: TextStyle(
-                      fontSize: 32.0,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold)),
-              Text('Bagaimana harimu?',
-                  style: TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white))
-            ],
-          ),
         ),
         body: RefreshIndicator(
             onRefresh: initialFetchMasterData,
-            child: ListView(
-              children: [
-                HomeOrderSection(
-                    orderList: _orderList,
-                    orderListItems: _orderListItems,
-                    orderCurrentMonth: _orderCurrentMonth,
-                    topServices: _topServices),
-                // HomeInsightSection(),
-                // TopCustomerSection(
-                //   topCustomerList: _topCustomer,
-                // ),
-              ],
+            child: SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
+              child: Stack(
+                children: [
+                  Container(
+                    height: kToolbarHeight * 3,
+                    color: ColorConstant.DEF,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      HomeGreetings(_onLogout),
+                      if (AuthHelper.isStaff()) HomeCardStaff(data),
+                      if (AuthHelper.isSuperAdmin()) HomeCardCurrentMonth(data),
+                      if (AuthHelper.isSuperAdmin()) HomeStoreFeature(),
+                      if (AuthHelper.isSuperAdmin()) HomeOthers(),
+                      if (AuthHelper.isStaff()) HomeContentStaff()
+                    ],
+                  ),
+                  if (_showLoading)
+                    Container(
+                      height: Get.height,
+                      width: Get.width,
+                      alignment: Alignment.center,
+                      child: LoadingIndicator(),
+                    )
+                ],
+              ),
             )));
+  }
+
+  void _onLogout() async {
+    try {
+      Get.back();
+      setState(() {
+        _showLoading = !_showLoading;
+      });
+      await Future.delayed(Duration(milliseconds: 500));
+      GetStorage().remove(StorageKeyConstant.USER_LOGGED_IN);
+      Get.offAllNamed(AppRoutes.login);
+    } catch (e) {
+    } finally {
+      setState(() {
+        _showLoading = !_showLoading;
+      });
+    }
   }
 }

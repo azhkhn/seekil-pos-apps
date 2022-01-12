@@ -4,7 +4,7 @@ import 'package:seekil_back_office/utilities/helper/word_transformation.dart';
 class PaymentSection extends StatelessWidget {
   final data;
   final TextStyle titleStyle, valueStyle;
-  final Future<Map<String, dynamic>> itemsList;
+  final Map<String, dynamic> itemsList;
 
   const PaymentSection(
       {Key? key,
@@ -73,21 +73,8 @@ class PaymentSection extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('Item Subtotal', style: titleStyle),
-                FutureBuilder(
-                  future: itemsList,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      Map<String, dynamic> data =
-                          snapshot.data as Map<String, dynamic>;
-                      return Text(wt.currencyFormat(data['total_order']),
-                          style: valueStyle.copyWith(
-                              fontWeight: FontWeight.normal));
-                    }
-                    return Text(wt.currencyFormat(0),
-                        style:
-                            valueStyle.copyWith(fontWeight: FontWeight.normal));
-                  },
-                ),
+                Text(wt.currencyFormat(itemsList['total_order']),
+                    style: valueStyle.copyWith(fontWeight: FontWeight.normal))
               ],
             ),
           ),

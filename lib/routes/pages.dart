@@ -1,21 +1,23 @@
 import 'package:get/get.dart';
 import 'package:seekil_back_office/main.widget.dart';
 import 'package:seekil_back_office/modules/auth/login.dart';
+import 'package:seekil_back_office/modules/expenditure/current_month/main.dart';
+import 'package:seekil_back_office/modules/expenditure/fixed_monthly/main.dart';
+import 'package:seekil_back_office/modules/home/bluetooth_page/main.dart';
+import 'package:seekil_back_office/modules/home/layanan/main.dart';
+import 'package:seekil_back_office/modules/home/pelanggan/main.dart';
+import 'package:seekil_back_office/modules/home/pembayaran/main.dart';
+import 'package:seekil_back_office/modules/home/promosi/main.dart';
+import 'package:seekil_back_office/modules/expenditure/income_and_expenses/main.dart';
 import 'package:seekil_back_office/modules/order/detail/main.dart';
 import 'package:seekil_back_office/modules/order/invoice/main.dart';
 import 'package:seekil_back_office/modules/order/tracking/main.dart';
-import 'package:seekil_back_office/modules/settings/layanan/main.dart';
-import 'package:seekil_back_office/modules/settings/pelanggan/main.dart';
-import 'package:seekil_back_office/modules/settings/pembayaran/main.dart';
-import 'package:seekil_back_office/modules/settings/promosi/main.dart';
 import 'package:seekil_back_office/routes/routes.dart';
 import 'package:seekil_back_office/splash_screen.dart';
 import 'package:seekil_back_office/modules/home/main.dart';
 import 'package:seekil_back_office/modules/order/add_new/main.dart';
 import 'package:seekil_back_office/modules/order/all_order/main.dart';
 import 'package:seekil_back_office/modules/order/list/main.dart';
-import 'package:seekil_back_office/modules/settings/bluetooth_page/main.dart';
-import 'package:seekil_back_office/modules/settings/main.dart';
 
 class AppPages {
   static final Transition _defaultTransition = Transition.cupertino;
@@ -31,6 +33,18 @@ class AppPages {
     GetPage(
         name: AppRoutes.order,
         page: () => AllOrder(),
+        transition: _defaultTransition),
+    GetPage(
+        name: AppRoutes.expenditureIncomingAndExpenses,
+        page: () => ExpenditureIncomingAndExpenses(),
+        transition: _defaultTransition),
+    GetPage(
+        name: AppRoutes.expenditureCurrentMonth,
+        page: () => ExpenditureCurrentMonth(),
+        transition: _defaultTransition),
+    GetPage(
+        name: AppRoutes.expenditureFixedMonthly,
+        page: () => ExpenditureFixedMonthly(),
         transition: _defaultTransition),
     GetPage(
         name: AppRoutes.orderDetail,
@@ -59,10 +73,6 @@ class AppPages {
     GetPage(
         name: AppRoutes.mainWidget,
         page: () => MainWidget(),
-        transition: _defaultTransition),
-    GetPage(
-        name: AppRoutes.settingsPage,
-        page: () => SettingsPage(),
         transition: _defaultTransition),
     GetPage(
         name: AppRoutes.bluetoothPage,
