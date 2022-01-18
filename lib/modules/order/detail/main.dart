@@ -64,7 +64,7 @@ class _OrderDetailState extends State<OrderDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: WidgetHelper.appBar('Detail Pesanan'),
+        appBar: WidgetHelper.appBar('Detail Transaksi'),
         body: Stack(
           children: [
             FutureBuilder(
@@ -128,17 +128,8 @@ class _OrderDetailState extends State<OrderDetail> {
                                 children: [
                                   Expanded(
                                     child: GestureDetector(
-                                      onTap: () {
-                                        if (AuthHelper.isSuperAdmin()) {
-                                          _showModalEditOrder(orderDataItem);
-                                        } else {
-                                          Get.back();
-                                          orderUtils.launchWhatsapp(
-                                              number: '6282127051607',
-                                              message:
-                                                  orderUtils.sendInvoice());
-                                        }
-                                      },
+                                      onTap: () =>
+                                          _showModalEditOrder(orderDataItem),
                                       child: Container(
                                         width: Get.width,
                                         padding: EdgeInsets.all(10.0),
@@ -148,9 +139,7 @@ class _OrderDetailState extends State<OrderDetail> {
                                                 Radius.circular(8.0))),
                                         child: Center(
                                             child: Text(
-                                          AuthHelper.isSuperAdmin()
-                                              ? 'Edit Pesanan'
-                                              : 'Kirim invoice ke admin',
+                                          'Edit Transaksi',
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold,
@@ -159,47 +148,26 @@ class _OrderDetailState extends State<OrderDetail> {
                                       ),
                                     ),
                                   ),
-                                  if (AuthHelper.isSuperAdmin())
-                                    GestureDetector(
-                                      onTap: () =>
-                                          _showModalSendMessage(orderDataItem),
-                                      child: Container(
-                                        padding: EdgeInsets.all(7.0),
-                                        margin: EdgeInsets.only(left: 8.0),
-                                        decoration: BoxDecoration(
-                                            color: Colors.white54,
-                                            border:
-                                                Border.all(color: Colors.grey),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(8.0))),
-                                        child: Center(
-                                          child: Icon(
-                                            Icons.menu_outlined,
-                                            color: Colors.grey,
-                                          ),
+                                  GestureDetector(
+                                    onTap: () =>
+                                        _showModalSendMessage(orderDataItem),
+                                    child: Container(
+                                      padding: EdgeInsets.all(7.0),
+                                      margin: EdgeInsets.only(left: 8.0),
+                                      decoration: BoxDecoration(
+                                          color: Colors.white54,
+                                          border:
+                                              Border.all(color: Colors.grey),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(8.0))),
+                                      child: Center(
+                                        child: Icon(
+                                          Icons.menu_outlined,
+                                          color: Colors.grey,
                                         ),
                                       ),
                                     ),
-                                  if (AuthHelper.isStaff())
-                                    GestureDetector(
-                                      onTap: onPrintInvoice,
-                                      child: Container(
-                                        padding: EdgeInsets.all(7.0),
-                                        margin: EdgeInsets.only(left: 8.0),
-                                        decoration: BoxDecoration(
-                                            color: Colors.white54,
-                                            border:
-                                                Border.all(color: Colors.black),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(8.0))),
-                                        child: Center(
-                                          child: Icon(
-                                            Icons.print_outlined,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ),
-                                    )
+                                  ),
                                 ],
                               ),
                             )
@@ -260,7 +228,7 @@ class _OrderDetailState extends State<OrderDetail> {
                             onTap: () => Get.back(),
                           ),
                           SizedBox(width: 8.0),
-                          Text('Edit Pesanan',
+                          Text('Edit Transaksi',
                               style: TextStyle(
                                   fontSize: 20.0, fontWeight: FontWeight.bold)),
                         ],
@@ -272,7 +240,7 @@ class _OrderDetailState extends State<OrderDetail> {
                         if (snapshot.hasData) {
                           var orderStatusList = snapshot.data as List<dynamic>;
                           return MyFormField(
-                              label: 'Status Pesanan',
+                              label: 'Status Transaksi',
                               type: FormFieldType.DROPDOWN,
                               onChanged: (dynamic value) {
                                 formDataJson['order_status_id'] = value as int;
@@ -281,7 +249,7 @@ class _OrderDetailState extends State<OrderDetail> {
                               dropdownItems: orderStatusList);
                         }
                         return MyFormField(
-                          label: 'Status Pesanan',
+                          label: 'Status Transaksi',
                         );
                       },
                     ),
@@ -336,8 +304,13 @@ class _OrderDetailState extends State<OrderDetail> {
 
   void Function()? onSendInvoice(dynamic data) {
     Get.back();
-    orderUtils.launchWhatsapp(
-        number: data?.whatsapp, message: orderUtils.sendInvoice());
+    if (AuthHelper.isSuperAdmin()) {
+      orderUtils.launchWhatsapp(
+          number: data?.whatsapp, message: orderUtils.sendInvoice());
+    } else {
+      orderUtils.launchWhatsapp(
+          number: '6282127051607', message: orderUtils.sendInvoice());
+    }
   }
 
   void Function()? onPrintInvoice() {
@@ -372,7 +345,7 @@ class _OrderDetailState extends State<OrderDetail> {
           builder: (context) => Wrap(
                 children: [
                   Container(
-                    margin: EdgeInsets.fromLTRB(16.0, 16.0, 0.0, 16.0),
+                    margin: EdgeInsets.fromLTRB(16.0, 16.0, 0.0, 24.0),
                     child: Row(
                       children: [
                         GestureDetector(
@@ -399,8 +372,57 @@ class _OrderDetailState extends State<OrderDetail> {
                         style: TextStyle(fontWeight: FontWeight.bold)),
                     onTap: () => onSendInvoice(data),
                   ),
+                  ListTile(
+                    title: Text('Hapus Transaksi',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.red)),
+                    onTap: _showDeleteTransactionConfirmation,
+                  ),
                 ],
               )),
     );
+  }
+
+  void _showDeleteTransactionConfirmation() {
+    Get.back();
+    Get.dialog(
+        AlertDialog(
+          title: Text('Konfirmasi'),
+          content: Text('Anda yakin ingin menghapus transaksi ini?'),
+          actions: [
+            TextButton(
+              onPressed: () => Get.back(),
+              child: Text('Batal', style: TextStyle(color: ColorConstant.DEF)),
+            ),
+            ElevatedButton(
+              child: Text('Ya, hapus',
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold)),
+              onPressed: _onDeleteTransaction,
+              style: ElevatedButton.styleFrom(primary: ColorConstant.DEF),
+            ),
+          ],
+        ),
+        barrierDismissible: false);
+  }
+
+  void _onDeleteTransaction() async {
+    try {
+      Get.back();
+      setState(() {
+        showLoading = true;
+      });
+      await OrderListModel.deleteOrderByOrderId(orderId);
+      setState(() {
+        showLoading = false;
+      });
+      Get.back(result: true);
+    } catch (error) {
+      setState(() {
+        showLoading = false;
+      });
+      SnackbarHelper.show(
+          title: GeneralConstant.ERROR_TITLE, message: error.toString());
+    }
   }
 }

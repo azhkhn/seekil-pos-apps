@@ -59,7 +59,7 @@ class _AllOrderState extends State<AllOrder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: WidgetHelper.appBar('Semua Pesanan'),
+        appBar: WidgetHelper.appBar('Semua Transaksi'),
         body: Container(
           padding: EdgeInsets.all(16.0),
           child: Column(

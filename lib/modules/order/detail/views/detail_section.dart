@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:seekil_back_office/routes/routes.dart';
 import 'package:seekil_back_office/utilities/helper/word_transformation.dart';
@@ -63,51 +64,51 @@ class DetailSection extends StatelessWidget {
             ),
           ),
           Divider(height: 24.0, color: Colors.grey),
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(vertical: 4.0),
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //     crossAxisAlignment: CrossAxisAlignment.end,
-          //     children: [
-          //       GestureDetector(
-          //         onTap: () async {
-          //           await Clipboard.setData(ClipboardData(text: data.orderId));
-          //           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          //               content: Row(
-          //             children: [
-          //               Icon(Icons.check_circle, color: Colors.green),
-          //               SizedBox(width: 8.0),
-          //               Text('Nomor invoice disalin ke clipboard'),
-          //             ],
-          //           )));
-          //         },
-          //         child: Row(
-          //           children: [
-          //             Text(
-          //               data.orderId,
-          //               style:
-          //                   titleStyle.copyWith(fontWeight: FontWeight.normal),
-          //             ),
-          //             Padding(
-          //               padding: const EdgeInsets.only(left: 4.0),
-          //               child: Icon(Icons.copy_rounded,
-          //                   size: 16.0, color: Colors.black54),
-          //             )
-          //           ],
-          //         ),
-          //       ),
-          //       GestureDetector(
-          //         onTap: () => Get.toNamed('/order/${data.orderId}/invoice'),
-          //         child: Text(
-          //           'Lihat Invoice',
-          //           style: TextStyle(
-          //               fontWeight: FontWeight.bold, color: Colors.green),
-          //         ),
-          //       )
-          //     ],
-          //   ),
-          // ),
-          // Divider(height: 24.0, color: Colors.grey),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                GestureDetector(
+                  onTap: () async {
+                    await Clipboard.setData(ClipboardData(text: data.orderId));
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Row(
+                      children: [
+                        Icon(Icons.check_circle, color: Colors.green),
+                        SizedBox(width: 8.0),
+                        Text('Nomor invoice disalin ke clipboard'),
+                      ],
+                    )));
+                  },
+                  child: Row(
+                    children: [
+                      Text(
+                        data.orderId,
+                        style:
+                            titleStyle.copyWith(fontWeight: FontWeight.normal),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 4.0),
+                        child: Icon(Icons.copy_rounded,
+                            size: 16.0, color: Colors.black54),
+                      )
+                    ],
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => Get.toNamed('/order/${data.orderId}/invoice'),
+                  child: Text(
+                    'Lihat Invoice',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.green),
+                  ),
+                )
+              ],
+            ),
+          ),
+          Divider(height: 24.0, color: Colors.grey),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: Row(

@@ -139,4 +139,15 @@ class OrderListModel {
     List<dynamic> data = jsonDecode(response.toString())['list'];
     return data;
   }
+
+  static Future<bool> deleteOrderByOrderId(String orderId) async {
+    SeekilApi seekilApi = SeekilApi();
+    Response response = await seekilApi.delete('order/$orderId');
+    var responseCode = jsonDecode(response.toString())['meta']['code'];
+
+    if (responseCode == 200) {
+      return true;
+    }
+    return false;
+  }
 }

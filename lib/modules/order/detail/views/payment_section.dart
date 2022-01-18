@@ -102,18 +102,18 @@ class PaymentSection extends StatelessWidget {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Points', style: titleStyle),
-                Text('-${wt.currencyFormat(data.points)}',
-                    style: valueStyle.copyWith(fontWeight: FontWeight.normal)),
-              ],
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(vertical: 4.0),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     crossAxisAlignment: CrossAxisAlignment.start,
+          //     children: [
+          //       Text('Points', style: titleStyle),
+          //       Text('-${wt.currencyFormat(data.points)}',
+          //           style: valueStyle.copyWith(fontWeight: FontWeight.normal)),
+          //     ],
+          //   ),
+          // ),
           Divider(height: 16.0, color: Colors.grey),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 4.0),

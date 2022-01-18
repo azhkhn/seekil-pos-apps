@@ -28,7 +28,7 @@ class CardIncoming extends StatelessWidget {
                     children: [
                       CardContainerRowChild(
                         children: [
-                          Text('Total Pesanan'),
+                          Text('Total Transaksi'),
                           Text('${data['incoming']['items'].toString()} items')
                         ],
                       ),

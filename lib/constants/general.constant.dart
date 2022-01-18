@@ -11,8 +11,8 @@ class GeneralConstant {
       'Tidak terhubung ke internet, periksa jaringan Anda';
   static const FAILED_LOGIN = 'Periksa kembali username dan password Anda';
 
-  static const ORDER_CREATED = 'Pesanan baru berhasil dibuat';
-  static const ORDER_UPDATED = 'Pesanan berhasil diperbarui';
+  static const ORDER_CREATED = 'Transaksi baru berhasil dibuat';
+  static const ORDER_UPDATED = 'Transaksi berhasil diperbarui';
 
   static List<Map<String, String>> filterPaymentStatus = [
     {'id': 'lunas', 'name': 'Lunas'},

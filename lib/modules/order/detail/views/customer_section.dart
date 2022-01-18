@@ -34,7 +34,7 @@ class CustomerSection extends StatelessWidget {
         children: [
           Container(
               margin: const EdgeInsets.only(bottom: 8.0),
-              child: Text('Detail Transaksi',
+              child: Text('Info Pelanggan',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16.0,
@@ -66,7 +66,7 @@ class CustomerSection extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    'Jenis Pesanan',
+                    'Jenis Transaksi',
                     style: titleStyle,
                   ),
                 ),

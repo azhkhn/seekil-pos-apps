@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:seekil_back_office/constants/color.constant.dart';
 import 'package:seekil_back_office/constants/general.constant.dart';
 import 'package:seekil_back_office/models/order_list.model.dart';
-import 'package:seekil_back_office/modules/order/list/views/cancel_order_list.dart';
 import 'package:seekil_back_office/modules/order/list/views/done_order_list.dart';
 import 'package:seekil_back_office/modules/order/list/views/inprogress_order_list.dart';
 import 'package:seekil_back_office/routes/routes.dart';
@@ -37,25 +36,32 @@ class _OrderState extends State<Order> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 4,
+      length: 3,
       child: Scaffold(
         appBar: WidgetHelper.appBar(
           'Transaksi ${wt.currentMonth}',
-          bottom: TabBar(
-              labelStyle: TextStyle(fontWeight: FontWeight.bold),
-              labelColor: Colors.white,
-              unselectedLabelColor: Colors.grey,
-              isScrollable: true,
-              indicatorSize: TabBarIndicatorSize.tab,
-              indicator: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                  color: ColorConstant.DEF),
-              tabs: [
-                Tab(text: 'Baru'),
-                Tab(text: 'Diproses'),
-                Tab(text: 'Selesai'),
-                Tab(text: 'Dibatalkan'),
-              ]),
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(48.0),
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              color: Colors.white,
+              alignment: Alignment.centerLeft,
+              child: TabBar(
+                  labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                  labelColor: Colors.white,
+                  unselectedLabelColor: Colors.grey,
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  isScrollable: true,
+                  indicator: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      color: ColorConstant.DEF),
+                  tabs: [
+                    Tab(text: 'Baru'),
+                    Tab(text: 'Diproses'),
+                    Tab(text: 'Selesai'),
+                  ]),
+            ),
+          ),
           actions: [
             IconButton(
               icon: Icon(
@@ -81,7 +87,6 @@ class _OrderState extends State<Order> {
           ),
           OrderInprogressList(),
           OrderDoneList(),
-          OrderCancelList()
         ]),
       ),
     );
