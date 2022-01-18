@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/route_manager.dart';
@@ -8,9 +9,12 @@ import 'package:seekil_back_office/main.widget.dart';
 import 'package:seekil_back_office/routes/pages.dart';
 import 'package:seekil_back_office/routes/routes.dart';
 import 'package:seekil_back_office/utilities/helper/bluetooth_helper.dart';
+import 'package:seekil_back_office/utilities/services/notification_service.dart';
 
 void main() async {
   await GetStorage.init();
+  await Firebase.initializeApp();
+  await NotificationService().init();
   initializeDateFormatting();
   Intl.defaultLocale = 'id_ID';
   BluetoothHelper().initSavetoPath();

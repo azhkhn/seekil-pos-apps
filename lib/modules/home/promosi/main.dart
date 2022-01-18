@@ -69,9 +69,7 @@ class _PromotionPageState extends State<PromotionPage> {
                               WidgetHelper.badgeText(item['code']),
                               Switch(
                                 value: status,
-                                onChanged: (value) {
-                                  print(value);
-                                },
+                                onChanged: (value) {},
                               ),
                             ],
                           ),

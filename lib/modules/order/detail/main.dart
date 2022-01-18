@@ -407,8 +407,8 @@ class _OrderDetailState extends State<OrderDetail> {
   }
 
   void _onDeleteTransaction() async {
+    Get.back();
     try {
-      Get.back();
       setState(() {
         showLoading = true;
       });

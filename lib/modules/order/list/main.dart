@@ -71,6 +71,7 @@ class _OrderState extends State<Order> {
               padding: EdgeInsets.all(2.0),
               onPressed: () => Get.toNamed(AppRoutes.orderAdd)!.then((value) {
                 if (value != null && value == true) {
+                  fetchNewOrderList();
                   SnackbarHelper.show(
                       title: 'Info',
                       message: GeneralConstant.ORDER_CREATED,

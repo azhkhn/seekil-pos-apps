@@ -1,7 +1,11 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:seekil_back_office/modules/home/main.dart';
 import 'package:seekil_back_office/modules/order/list/main.dart';
 import 'package:seekil_back_office/constants/color.constant.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 
 class MainWidget extends StatefulWidget {
   const MainWidget({Key? key}) : super(key: key);
@@ -12,11 +16,14 @@ class MainWidget extends StatefulWidget {
 
 class _MainWidgetState extends State<MainWidget> {
   int _selectedNavbarIndex = 0;
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
-  void _onNavbarTapped(int index) {
-    setState(() {
-      _selectedNavbarIndex = index;
-    });
+  @override
+  void initState() {
+    super.initState();
+    _firebaseMessagingServices();
   }
 
   @override
@@ -35,21 +42,62 @@ class _MainWidgetState extends State<MainWidget> {
     ];
 
     return Scaffold(
-      body: IndexedStack(
-        children: _pages,
-        index: _selectedNavbarIndex,
-      ),
-      // body: _pages[_selectedNavbarIndex],
-      bottomNavigationBar: BottomNavigationBar(
+        body: IndexedStack(
+          children: _pages,
+          index: _selectedNavbarIndex,
+        ),
+        // body: _pages[_selectedNavbarIndex],
+        bottomNavigationBar: BottomNavigationBar(
           items: _bottomNavbarItems,
           backgroundColor: Colors.white,
           iconSize: 24.0,
-          onTap: _onNavbarTapped,
           currentIndex: _selectedNavbarIndex,
           selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
           selectedItemColor: ColorConstant.DEF,
           unselectedItemColor: Colors.grey,
-          type: BottomNavigationBarType.fixed),
+          type: BottomNavigationBarType.fixed,
+          onTap: (index) {
+            setState(() {
+              _selectedNavbarIndex = index;
+            });
+          },
+        ));
+  }
+
+  void _firebaseMessagingServices() {
+    _firebaseMessaging.getToken().then((value) => {});
+    _firebaseMessaging.subscribeToTopic('SeekilNotification');
+
+    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+
+    // When app is running on foreground
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      _handleNotification(message);
+    });
+
+    // When app is running on background
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      _handleNotification(message);
+    });
+  }
+
+  void _handleNotification(RemoteMessage message) async {
+    RemoteNotification? notification = message.notification;
+
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails('seekil_channel_1', 'Seekil Channel',
+            channelDescription: 'Seekil Notification',
+            importance: Importance.max,
+            priority: Priority.high,
+            ticker: 'ticker');
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.show(
+      1,
+      notification?.title,
+      notification?.body,
+      platformChannelSpecifics,
     );
   }
 }
