@@ -25,10 +25,16 @@ class _OrderInprogressListState extends State<OrderInprogressList>
   }
 
   Future<void> fetchInProgressList() async {
-    inProgressOrderList = OrderListModel.fetchOrderListByPeriod(
-        wt.firstDateOfMonth, wt.endDateOfMonth,
-        params: 'order_status_id=3');
-    setState(() {});
+    Map<String, String> objectParams = {
+      'order_status_id': '3',
+      'start_date': wt.firstDateOfMonth,
+      'end_date': wt.endDateOfMonth
+    };
+    String queryParams = Uri(queryParameters: objectParams).query;
+
+    setState(() {
+      inProgressOrderList = OrderListModel.fetchOrderList(queryParams);
+    });
   }
 
   @override

@@ -27,10 +27,16 @@ class _OrderState extends State<Order> {
   }
 
   Future<void> fetchNewOrderList() async {
-    newOrderList = OrderListModel.fetchOrderListByPeriod(
-        wt.firstDateOfMonth, wt.endDateOfMonth,
-        params: 'order_status_id=1');
-    setState(() {});
+    Map<String, String> objectParams = {
+      'order_status_id': '1',
+      'start_date': wt.firstDateOfMonth,
+      'end_date': wt.endDateOfMonth
+    };
+    String queryParams = Uri(queryParameters: objectParams).query;
+
+    setState(() {
+      newOrderList = OrderListModel.fetchOrderList(queryParams);
+    });
   }
 
   @override
@@ -38,6 +44,7 @@ class _OrderState extends State<Order> {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: WidgetHelper.appBar(
           'Transaksi ${wt.currentMonth}',
           bottom: PreferredSize(

@@ -34,6 +34,7 @@ class ExpenditureIncomingAndExpensesState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: WidgetHelper.appBar(
         'Arus kas ${wt.currentMonth}',
       ),

@@ -281,7 +281,7 @@ class _OrderDetailState extends State<OrderDetail> {
                         formDataJson['payment_status'] = value;
                       },
                       dropdownCurrentValue: data.paymentStatus,
-                      dropdownItems: GeneralConstant.filterPaymentStatus,
+                      dropdownItems: GeneralConstant.orderPaymentStatus,
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width,

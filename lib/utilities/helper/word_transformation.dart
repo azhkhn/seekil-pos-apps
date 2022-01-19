@@ -14,7 +14,7 @@ class WordTransformation {
     String dateFormat = 'dd MMM y';
     String dateTimeFormat = 'dd MMM y, HH:mm WIB';
     String timeOnlyFormat = 'HH:mm WIB';
-    String dateData = 'yyyy-MM-dd HH:mm:ss';
+    String dateData = 'yyyy-MM-dd';
     String dateTimeInfo = 'dd/MM/yy, HH:mm';
 
     final DateTime docDateTime = DateTime.parse(date);
@@ -60,13 +60,16 @@ class WordTransformation {
   }
 
   // Function to get date by days as parameter
-  String dateSubstract(int days) {
+  Map<String, String> dateSubstract(int days) {
     String startDate = dateFormatter(
-        date: DateTime.now().toString(), type: DateFormatType.dateData);
-    String endDate = dateFormatter(
         date: DateTime.now().subtract(Duration(days: days)).toString(),
         type: DateFormatType.dateData);
+    String endDate = dateFormatter(
+        date: DateTime.now().toString(), type: DateFormatType.dateData);
 
-    return 'start_date=$startDate&end_date=$endDate';
+    return {
+      'start_date': startDate,
+      'end_date': endDate,
+    };
   }
 }

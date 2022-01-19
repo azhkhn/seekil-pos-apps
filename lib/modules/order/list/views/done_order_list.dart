@@ -25,10 +25,16 @@ class _OrderDoneListState extends State<OrderDoneList>
   }
 
   Future<void> fetchDoneOrderList() async {
-    doneOrderList = OrderListModel.fetchOrderListByPeriod(
-        wt.firstDateOfMonth, wt.endDateOfMonth,
-        params: 'order_status_id=7');
-    setState(() {});
+    Map<String, String> objectParams = {
+      'order_status_id': '7',
+      'start_date': wt.firstDateOfMonth,
+      'end_date': wt.endDateOfMonth
+    };
+    String queryParams = Uri(queryParameters: objectParams).query;
+
+    setState(() {
+      doneOrderList = OrderListModel.fetchOrderList(queryParams);
+    });
   }
 
   @override
