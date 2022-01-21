@@ -15,7 +15,7 @@ class AllOrderList extends StatelessWidget {
         (state) => RefreshIndicator(
               onRefresh: controller.fetchOrderList,
               child: ListView.builder(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 itemCount: state.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) => OrderListCard(
