@@ -181,13 +181,9 @@ class _OrderAddNewItemsSectionState extends State<OrderAddNewItemsSection> {
                                   },
                                   searchable: true,
                                   decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      border: Border.all(
-                                        color: Colors.grey,
-                                        width: 1.0,
-                                      ),
+                                      color: Colors.grey[200],
                                       borderRadius: BorderRadius.all(
-                                          Radius.circular(4.0))),
+                                          Radius.circular(8.0))),
                                   title: Text('Cari Layanan'),
                                   buttonText: Text(
                                     'Pilih Layanan',

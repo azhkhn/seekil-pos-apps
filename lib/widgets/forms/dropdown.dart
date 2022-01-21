@@ -28,7 +28,12 @@ class Dropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonFormField(
       decoration: InputDecoration(
-        border: OutlineInputBorder(),
+        filled: true,
+        fillColor: Colors.grey[200],
+        border: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+        ),
         isDense: true,
         contentPadding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
       ),

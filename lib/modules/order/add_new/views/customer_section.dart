@@ -99,8 +99,14 @@ class _OrderAddNewCustomerSectionState
                         onChanged: widget.onChangeCustomerName,
                         textCapitalization: TextCapitalization.sentences,
                         decoration: InputDecoration(
-                          border: OutlineInputBorder(),
+                          filled: true,
+                          fillColor: Colors.grey[200],
                           isDense: true,
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8.0)),
+                          ),
                           contentPadding: EdgeInsets.symmetric(
                               horizontal: 8.0, vertical: 10.0),
                         )),
@@ -143,7 +149,12 @@ class _OrderAddNewCustomerSectionState
               }
             },
             inputDecoration: InputDecoration(
-                border: OutlineInputBorder(),
+                filled: true,
+                fillColor: Colors.grey[200],
+                border: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                ),
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
                 isDense: true,

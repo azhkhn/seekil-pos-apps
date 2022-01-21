@@ -129,6 +129,7 @@ class ExpenditureFixedMonthly extends StatelessWidget {
     Get.bottomSheet(
       BottomSheet(
           onClosing: () => Get.back(),
+          enableDrag: false,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
             topLeft: Radius.circular(16.0),

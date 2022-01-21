@@ -70,7 +70,13 @@ class _OrderAddNewPaymentSectionState extends State<OrderAddNewPaymentSection> {
                       List<dynamic> data = snapshot.data as List<dynamic>;
                       return DropdownButtonFormField(
                         decoration: InputDecoration(
-                          border: OutlineInputBorder(),
+                          filled: true,
+                          fillColor: Colors.grey[200],
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8.0)),
+                          ),
                           isDense: true,
                           contentPadding: EdgeInsets.symmetric(
                               horizontal: 8.0, vertical: 10.0),

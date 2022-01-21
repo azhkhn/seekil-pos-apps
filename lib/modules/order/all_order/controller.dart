@@ -5,34 +5,29 @@ import 'package:seekil_back_office/constants/general.constant.dart';
 import 'package:seekil_back_office/models/master_data.model.dart';
 import 'package:seekil_back_office/models/order_list.model.dart';
 
+var defaultObjectFilter = {
+  'order_type_id': '',
+  'order_status_id': '',
+  'payment_method_id': '',
+  'payment_status': '',
+  'customer_name': '',
+  'start_date': '',
+  'end_date': '',
+};
+
 class AllOrderController extends GetxController with StateMixin {
   TextEditingController searchController = TextEditingController();
-
-  RxString filterPaymentStatusTitle =
-      GeneralConstant.FILTER_PAYMENT_STATUS_DEFAULT.obs;
-  RxString filterPaymentMethodTitle =
-      GeneralConstant.FILTER_PAYMENT_METHOD_DEFAULT.obs;
-  RxString filterDateTitle = GeneralConstant.FILTER_ORDER_DATE_DEFAULT.obs;
-  RxString filterOrderStatusTitle =
-      GeneralConstant.FILTER_ONGOING_TRANSACTION_DEFAULT.obs;
 
   RxList filterPaymentStatusList = GeneralConstant.filterPaymentStatus.obs;
   RxList filterDateList = GeneralConstant.filterDateMenu.obs;
   RxList filterOrderStatusList = [].obs;
   RxList filterPaymentMethodList = [].obs;
 
-  RxBool isCustomDate = false.obs;
   RxMap gvFilterDate = {}.obs;
   RxString queryParameters = ''.obs;
-  final objectFilter = RxMap({
-    'order_type_id': '',
-    'order_status_id': '',
-    'payment_method_id': '',
-    'payment_status': '',
-    'customer_name': '',
-    'start_date': '',
-    'end_date': '',
-  }).obs;
+  RxString filterCount = ''.obs;
+
+  final objectFilter = RxMap(defaultObjectFilter).obs;
 
   @override
   void onInit() {
@@ -55,6 +50,7 @@ class AllOrderController extends GetxController with StateMixin {
 
   Future<void> fetchOrderList() async {
     String queryParams = checkQueryParams();
+    filterCount.value = objectFilter.value.length.toString();
     try {
       change(null, status: RxStatus.loading());
       List<OrderListModel> data =
@@ -88,56 +84,28 @@ class AllOrderController extends GetxController with StateMixin {
   }
 
   void resetQueryParam() {
-    objectFilter.value = RxMap({
-      'order_type_id': '',
-      'order_status_id': '',
-      'payment_method_id': '',
-      'payment_status': '',
-      'customer_name': '',
-      'start_date': '',
-      'end_date': ''
-    });
-    filterPaymentStatusTitle.value =
-        GeneralConstant.FILTER_PAYMENT_STATUS_DEFAULT;
-    filterPaymentMethodTitle.value =
-        GeneralConstant.FILTER_PAYMENT_METHOD_DEFAULT;
-    filterOrderStatusTitle.value =
-        GeneralConstant.FILTER_ONGOING_TRANSACTION_DEFAULT;
-    filterDateTitle.value = GeneralConstant.FILTER_ORDER_DATE_DEFAULT;
-    resetSearchBar();
+    gvFilterDate.value = {};
+    objectFilter.value = RxMap(defaultObjectFilter);
   }
 
-  void onChangedPaymentStatus(dynamic value) {
+  void onChangeFilterPaymentStatus(dynamic value) {
     objectFilter.value['payment_status'] = value['value'];
-    filterPaymentStatusTitle.value = value['name'];
-    Get.back();
-    fetchOrderList();
   }
 
-  void onChangedPaymentMethod(dynamic value) {
-    objectFilter.value['payment_method_id'] = value['id'].toString();
-    filterPaymentMethodTitle.value = value['name'];
-    Get.back();
-    fetchOrderList();
-  }
-
-  void onChangedOrderStatus(dynamic value) {
+  void onChangeFilterOrderStatus(dynamic value) {
     objectFilter.value['order_status_id'] = value['id'].toString();
-    filterOrderStatusTitle.value = value['name'];
+  }
+
+  void onApplyFilter() {
     Get.back();
     fetchOrderList();
   }
 
   void onChangedDate(dynamic value) {
     if (value['value'] != 'custom') {
-      isCustomDate.value = false;
+      gvFilterDate.value = value;
       objectFilter.value['start_date'] = value['value']['start_date'];
       objectFilter.value['end_date'] = value['value']['end_date'];
-      filterDateTitle.value = value['name'];
-      Get.back();
-      fetchOrderList();
-    } else {
-      isCustomDate.value = true;
     }
   }
 }

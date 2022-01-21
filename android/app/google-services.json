@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "779323555255",
+    "firebase_url": "https://seekil-back-office-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "seekil-back-office",
+    "storage_bucket": "seekil-back-office.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:779323555255:android:166d47cafeaae2835cbc32",
+        "android_client_info": {
+          "package_name": "com.seekil.back_office"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "779323555255-e0bcihtnhqet8k5g21p377beks8p4254.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.seekil.back_office",
+            "certificate_hash": "f4f375be6459dbea91ece40039daf3802b7314e8"
+          }
+        },
+        {
+          "client_id": "779323555255-163fqf5lrlo70k08rrr489id4r2j81eg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2JFXqwuFjt1rY-LvRd5wuC8BdGnOmEs0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "779323555255-163fqf5lrlo70k08rrr489id4r2j81eg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

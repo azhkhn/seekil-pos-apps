@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:seekil_back_office/constants/color.constant.dart';
 import 'package:seekil_back_office/modules/auth/controller.dart';
@@ -11,7 +12,12 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: Colors.white,
+        statusBarBrightness: Brightness.dark,
+        statusBarIconBrightness: Brightness.light));
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           Padding(
@@ -36,8 +42,9 @@ class LoginPage extends StatelessWidget {
                                 child: Text(
                                   'Masuk untuk melanjutkan',
                                   style: TextStyle(
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.w500),
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                               MyFormField(
@@ -50,32 +57,42 @@ class LoginPage extends StatelessWidget {
                               ),
                               Obx(
                                 () => MyFormField(
-                                    label: 'Password',
-                                    isMandatory: true,
-                                    controller: controller.passwordController,
-                                    textFieldValidator:
-                                        controller.passwordValidator,
-                                    obscureText: controller.isObscureText.value,
-                                    textCapitalization: TextCapitalization.none,
-                                    suffixIcon: IconButton(
-                                        onPressed:
-                                            controller.onChangeObscureText,
-                                        icon: controller.isObscureText.isTrue
-                                            ? Icon(Icons.visibility_off)
-                                            : Icon(Icons.visibility))),
+                                  label: 'Password',
+                                  isMandatory: true,
+                                  controller: controller.passwordController,
+                                  textFieldValidator:
+                                      controller.passwordValidator,
+                                  obscureText: controller.isObscureText.value,
+                                  textCapitalization: TextCapitalization.none,
+                                  suffixIcon: IconButton(
+                                    onPressed: controller.onChangeObscureText,
+                                    icon: controller.isObscureText.isTrue
+                                        ? Icon(Icons.visibility)
+                                        : Icon(Icons.visibility_off),
+                                  ),
+                                ),
                               ),
                             ],
                           )),
                       Container(
                         width: Get.width,
+                        margin: EdgeInsets.only(top: 16.0),
                         child: ElevatedButton(
                           onPressed: controller.onSubmitLogin,
                           child: Text('Masuk'),
                           style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.symmetric(vertical: 12.0),
-                              primary: ColorConstant.DEF,
-                              textStyle: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16.0)),
+                            padding: EdgeInsets.symmetric(vertical: 16.0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(8.0),
+                              ),
+                            ),
+                            primary: ColorConstant.DEF,
+                            textStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16.0,
+                            ),
+                          ),
                         ),
                       ),
                     ],

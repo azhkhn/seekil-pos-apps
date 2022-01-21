@@ -210,6 +210,7 @@ class _OrderDetailState extends State<OrderDetail> {
     Get.bottomSheet(
       BottomSheet(
           onClosing: () => Get.back(),
+          enableDrag: false,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
             topLeft: Radius.circular(16.0),
@@ -337,6 +338,7 @@ class _OrderDetailState extends State<OrderDetail> {
     Get.bottomSheet(
       BottomSheet(
           onClosing: () => Get.back(),
+          enableDrag: false,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
             topRight: Radius.circular(16.0),

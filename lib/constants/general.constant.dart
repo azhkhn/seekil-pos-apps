@@ -41,6 +41,6 @@ class GeneralConstant {
       'name': '90 Hari Terakhir',
       'value': WordTransformation().dateSubstract(90)
     },
-    {'name': 'Pilih Tanggal Sendiri', 'value': 'custom'},
+    {'name': 'Pilih Tanggal', 'value': 'custom'},
   ];
 }
