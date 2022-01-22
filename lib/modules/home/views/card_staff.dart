@@ -105,8 +105,16 @@ class HomeCardStaff extends StatelessWidget {
                               style: TextStyle(fontWeight: FontWeight.bold)),
                         ],
                       ),
-                      if (AuthHelper.isSuperAdmin())
-                        Icon(Icons.chevron_right_rounded)
+                      Tooltip(
+                        child: Icon(Icons.info_outline_rounded),
+                        showDuration: Duration(seconds: 2),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16.0,
+                          vertical: 8.0,
+                        ),
+                        message:
+                            'Pastiin nominal transaksi yang\nudah lunas sama dengan uang laci, ya!',
+                      ),
                     ],
                   ),
                 ),
@@ -193,7 +201,16 @@ class HomeCardStaff extends StatelessWidget {
                               style: TextStyle(fontWeight: FontWeight.bold)),
                         ],
                       ),
-                      Icon(Icons.chevron_right_rounded)
+                      Tooltip(
+                        child: Icon(Icons.info_outline_rounded),
+                        showDuration: Duration(seconds: 2),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16.0,
+                          vertical: 8.0,
+                        ),
+                        message:
+                            'Pastiin nominal transaksi yang\nudah lunas sama dengan uang laci, ya!',
+                      ),
                     ],
                   ),
                 ),
@@ -265,7 +282,16 @@ class HomeCardStaff extends StatelessWidget {
                           )
                         ],
                       ),
-                      Icon(Icons.chevron_right_rounded)
+                      Tooltip(
+                        child: Icon(Icons.info_outline_rounded),
+                        showDuration: Duration(seconds: 2),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16.0,
+                          vertical: 8.0,
+                        ),
+                        message:
+                            'Pastiin nominal transaksi yang\nudah lunas sama dengan uang laci, ya!',
+                      ),
                     ],
                   ),
                 ),

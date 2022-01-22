@@ -31,15 +31,10 @@ class GeneralConstant {
 
   static List<dynamic> filterDateMenu = [
     {'name': 'Hari ini', 'value': WordTransformation().dateSubstract(0)},
-    {'name': '3 Hari Terakhir', 'value': WordTransformation().dateSubstract(3)},
     {'name': '7 Hari Terakhir', 'value': WordTransformation().dateSubstract(7)},
     {
       'name': '30 Hari Terakhir',
       'value': WordTransformation().dateSubstract(30)
-    },
-    {
-      'name': '90 Hari Terakhir',
-      'value': WordTransformation().dateSubstract(90)
     },
     {'name': 'Pilih Tanggal', 'value': 'custom'},
   ];

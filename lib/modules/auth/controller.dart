@@ -65,6 +65,7 @@ class LoginController extends GetxController with StateMixin {
         if (responseJson['data'] != null) {
           box.write(StorageKeyConstant.USER_LOGGED_IN, responseJson['data']);
           Get.offAllNamed(AppRoutes.mainWidget);
+          showLoading.value = false;
         } else {
           showLoading.value = false;
           SnackbarHelper.show(

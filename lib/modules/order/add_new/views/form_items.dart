@@ -38,6 +38,9 @@ class _OrderAddNewItemsSectionState extends State<OrderAddNewItemsSection> {
         padding: const EdgeInsets.all(16.0),
         child: Card(
           elevation: 4.0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -133,6 +136,7 @@ class _OrderAddNewItemsSectionState extends State<OrderAddNewItemsSection> {
           return AlertDialog(
             title: Text('Tambah item baru'),
             scrollable: true,
+            actionsPadding: EdgeInsets.only(bottom: 16.0),
             content: Form(
               key: formItemsKey,
               child: Column(
@@ -166,12 +170,33 @@ class _OrderAddNewItemsSectionState extends State<OrderAddNewItemsSection> {
                                 List<dynamic> data =
                                     snapshot.data as List<dynamic>;
                                 return MultiSelectDialogField(
+                                  selectedColor: ColorConstant.DEF,
+                                  searchable: true,
+                                  title: Text('Cari Layanan'),
+                                  height: Get.height / 3,
+                                  cancelText: Text(
+                                    'Batal',
+                                    style: TextStyle(
+                                      color: ColorConstant.DEF,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16.0,
+                                    ),
+                                  ),
+                                  confirmText: Text(
+                                    'Simpan',
+                                    style: TextStyle(
+                                      color: ColorConstant.DEF,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16.0,
+                                    ),
+                                  ),
                                   items: data
                                       .map((e) => MultiSelectItem(e, e['name']))
                                       .toList(),
                                   onConfirm: (List<dynamic> values) {
                                     orderItemModel.servicesId = values;
                                   },
+                                  searchHint: 'Cari',
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
                                   validator: (value) {
@@ -179,12 +204,10 @@ class _OrderAddNewItemsSectionState extends State<OrderAddNewItemsSection> {
                                       return 'Layanan harus dipilih';
                                     }
                                   },
-                                  searchable: true,
                                   decoration: BoxDecoration(
                                       color: Colors.grey[200],
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(8.0))),
-                                  title: Text('Cari Layanan'),
                                   buttonText: Text(
                                     'Pilih Layanan',
                                     style: TextStyle(color: Colors.grey),
@@ -210,12 +233,12 @@ class _OrderAddNewItemsSectionState extends State<OrderAddNewItemsSection> {
                       ],
                     ),
                   ),
-                  MyFormField(
-                    label: 'Catatan',
-                    onChanged: (dynamic value) {
-                      orderItemModel.note = value;
-                    },
-                  ),
+                  // MyFormField(
+                  //   label: 'Catatan',
+                  //   onChanged: (dynamic value) {
+                  //     orderItemModel.note = value;
+                  //   },
+                  // ),
                 ],
               ),
             ),

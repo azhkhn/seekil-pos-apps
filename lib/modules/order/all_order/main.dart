@@ -5,6 +5,7 @@ import 'package:seekil_back_office/modules/order/all_order/controller.dart';
 import 'package:seekil_back_office/modules/order/all_order/views/filter.dart';
 import 'package:seekil_back_office/modules/order/all_order/views/lists.dart';
 import 'package:seekil_back_office/modules/order/all_order/views/search_bar.dart';
+import 'package:seekil_back_office/utilities/helper/auth_helper.dart';
 
 class AllOrder extends StatelessWidget {
   AllOrder({Key? key}) : super(key: key);
@@ -28,14 +29,15 @@ class AllOrder extends StatelessWidget {
           fontWeight: FontWeight.w500,
         ),
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.insert_chart_outlined_rounded),
-              color: Colors.black,
-            ),
-          )
+          if (AuthHelper.isSuperAdmin())
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.insert_chart_outlined_rounded),
+                color: Colors.black,
+              ),
+            )
         ],
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(kToolbarHeight),

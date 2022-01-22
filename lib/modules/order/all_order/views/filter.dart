@@ -46,18 +46,17 @@ class AllOrderFilter extends StatelessWidget {
             ),
           ),
           TextButton(
-            onPressed: controller.resetQueryParam,
+            onPressed: controller.resetFilter,
             child: Text(
               'Reset',
               style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18.0,
-                color: Colors.grey,
-                decoration: TextDecoration.underline,
-                decorationStyle: TextDecorationStyle.solid,
-                decorationColor: ColorConstant.DEF,
-                decorationThickness: 2.5
-              ),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18.0,
+                  color: Colors.grey,
+                  decoration: TextDecoration.underline,
+                  decorationStyle: TextDecorationStyle.solid,
+                  decorationColor: ColorConstant.DEF,
+                  decorationThickness: 2.5),
             ),
           )
         ],
@@ -85,11 +84,11 @@ class AllOrderFilter extends StatelessWidget {
         ),
       );
 
-  void _modalFilter() {
-    Get.bottomSheet(
+  void _modalFilter() async {
+    await Get.bottomSheet(
       BottomSheet(
         onClosing: () {
-          controller.resetQueryParam();
+          controller.resetFilter();
           Get.back();
         },
         backgroundColor: Colors.white,
@@ -134,5 +133,8 @@ class AllOrderFilter extends StatelessWidget {
       isScrollControlled: true,
       isDismissible: true,
     );
+    if (controller.isFiltered.isFalse) {
+      controller.resetFilter();
+    }
   }
 }

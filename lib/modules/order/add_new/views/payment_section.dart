@@ -122,8 +122,13 @@ class _OrderAddNewPaymentSectionState extends State<OrderAddNewPaymentSection> {
                     }
                     return DropdownButtonFormField(
                         decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          isDense: true,
+                          filled: true,
+                          fillColor: Colors.grey[200],
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8.0)),
+                          ),
                           contentPadding: EdgeInsets.symmetric(
                               horizontal: 8.0, vertical: 10.0),
                         ),

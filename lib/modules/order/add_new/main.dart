@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:seekil_back_office/constants/color.constant.dart';
 import 'package:seekil_back_office/models/order_add_new.model.dart';
 import 'package:seekil_back_office/modules/order/add_new/views/customer_section.dart';
 import 'package:seekil_back_office/modules/order/add_new/views/footer_section.dart';
@@ -24,7 +23,6 @@ class _OrderAddNewState extends State<OrderAddNew> {
   WordTransformation wt = WordTransformation();
   OrderUtils orderUtils = OrderUtils();
   bool isUsePoint = false;
-  bool _showBannerRequiredField = true;
   bool _showLoading = false;
 
   TextEditingController whatsappController = TextEditingController();
@@ -33,30 +31,11 @@ class _OrderAddNewState extends State<OrderAddNew> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: WidgetHelper.appBar('Transaksi Baru'),
         body: Stack(
           children: [
             Column(children: [
-              if (_showBannerRequiredField)
-                MaterialBanner(
-                    content: Text(
-                      '*) Wajib diisi',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.white),
-                    ),
-                    backgroundColor: ColorConstant.DEF,
-                    actions: [
-                      TextButton(
-                          onPressed: () {
-                            setState(() {
-                              _showBannerRequiredField = false;
-                            });
-                          },
-                          child: Text('Mengerti',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold)))
-                    ]),
               Expanded(
                 child: Form(
                     key: _formKey,

@@ -114,63 +114,64 @@ class _OrderDetailState extends State<OrderDetail> {
                                 ],
                               ),
                             ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                        blurRadius: 20.0,
-                                        offset: Offset(0, 15.0))
-                                  ]),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16.0, vertical: 8.0),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: GestureDetector(
-                                      onTap: () =>
-                                          _showModalEditOrder(orderDataItem),
-                                      child: Container(
-                                        width: Get.width,
-                                        padding: EdgeInsets.all(10.0),
-                                        decoration: BoxDecoration(
-                                            color: ColorConstant.DEF,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(8.0))),
-                                        child: Center(
-                                            child: Text(
-                                          'Edit Transaksi',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 16.0),
-                                        )),
-                                      ),
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () =>
-                                        _showModalSendMessage(orderDataItem),
-                                    child: Container(
-                                      padding: EdgeInsets.all(7.0),
-                                      margin: EdgeInsets.only(left: 8.0),
-                                      decoration: BoxDecoration(
-                                          color: Colors.white54,
-                                          border:
-                                              Border.all(color: Colors.grey),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(8.0))),
-                                      child: Center(
-                                        child: Icon(
-                                          Icons.menu_outlined,
-                                          color: Colors.grey,
+                            if (orderDataItem.orderStatus != 7)
+                              Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          blurRadius: 20.0,
+                                          offset: Offset(0, 15.0))
+                                    ]),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0, vertical: 8.0),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onTap: () =>
+                                            _showModalEditOrder(orderDataItem),
+                                        child: Container(
+                                          width: Get.width,
+                                          padding: EdgeInsets.all(10.0),
+                                          decoration: BoxDecoration(
+                                              color: ColorConstant.DEF,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(8.0))),
+                                          child: Center(
+                                              child: Text(
+                                            'Edit Transaksi',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16.0),
+                                          )),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            )
+                                    GestureDetector(
+                                      onTap: () =>
+                                          _showModalSendMessage(orderDataItem),
+                                      child: Container(
+                                        padding: EdgeInsets.all(7.0),
+                                        margin: EdgeInsets.only(left: 8.0),
+                                        decoration: BoxDecoration(
+                                            color: Colors.white54,
+                                            border:
+                                                Border.all(color: Colors.grey),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(8.0))),
+                                        child: Center(
+                                          child: Icon(
+                                            Icons.menu_outlined,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
                             // FooterSection(
                             //     titleStyle: _titleStyle, valueStyle: _valueStyle)
                           ],

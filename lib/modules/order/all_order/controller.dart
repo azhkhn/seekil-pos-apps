@@ -1,10 +1,11 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:seekil_back_office/constants/general.constant.dart';
 import 'package:seekil_back_office/models/master_data.model.dart';
 import 'package:seekil_back_office/models/order_list.model.dart';
+import 'package:seekil_back_office/utilities/helper/word_transformation.dart';
 
+var objectSelectedDate = {'start_date': '', 'end_date': ''};
 var defaultObjectFilter = {
   'order_type_id': '',
   'order_status_id': '',
@@ -16,7 +17,7 @@ var defaultObjectFilter = {
 };
 
 class AllOrderController extends GetxController with StateMixin {
-  TextEditingController searchController = TextEditingController();
+  WordTransformation wt = WordTransformation();
 
   RxList filterPaymentStatusList = GeneralConstant.filterPaymentStatus.obs;
   RxList filterDateList = GeneralConstant.filterDateMenu.obs;
@@ -24,9 +25,14 @@ class AllOrderController extends GetxController with StateMixin {
   RxList filterPaymentMethodList = [].obs;
 
   RxMap gvFilterDate = {}.obs;
+  RxBool showBorderStartDate = false.obs;
+  RxBool showBorderEndDate = false.obs;
   RxString queryParameters = ''.obs;
   RxString filterCount = ''.obs;
+  RxString searchInput = ''.obs;
+  RxBool isFiltered = false.obs;
 
+  final selectedDateTitle = RxMap(objectSelectedDate).obs;
   final objectFilter = RxMap(defaultObjectFilter).obs;
 
   @override
@@ -72,20 +78,30 @@ class AllOrderController extends GetxController with StateMixin {
         await MasterDataModel.fetchMasterPaymentMethod();
   }
 
+  void onChangeSearchInput(String value) => searchInput.value = value;
+
   void handleSearchBar(String value) {
     objectFilter.value['customer_name'] = value;
     fetchOrderList();
   }
 
   void resetSearchBar() {
-    searchController.text = '';
+    searchInput.value = '';
     objectFilter.value['customer_name'] = '';
     fetchOrderList();
   }
 
-  void resetQueryParam() {
+  void resetFilter() {
+    isFiltered.value = false;
     gvFilterDate.value = {};
     objectFilter.value = RxMap(defaultObjectFilter);
+    selectedDateTitle.value = RxMap(objectSelectedDate);
+  }
+
+  void onApplyFilter() {
+    isFiltered.value = true;
+    Get.back();
+    fetchOrderList();
   }
 
   void onChangeFilterPaymentStatus(dynamic value) {
@@ -96,16 +112,51 @@ class AllOrderController extends GetxController with StateMixin {
     objectFilter.value['order_status_id'] = value['id'].toString();
   }
 
-  void onApplyFilter() {
-    Get.back();
-    fetchOrderList();
+  void onChangedDate(dynamic value) {
+    gvFilterDate.value = value;
+    objectFilter.value['start_date'] = value['value']['start_date'];
+    objectFilter.value['end_date'] = value['value']['end_date'];
   }
 
-  void onChangedDate(dynamic value) {
-    if (value['value'] != 'custom') {
-      gvFilterDate.value = value;
-      objectFilter.value['start_date'] = value['value']['start_date'];
-      objectFilter.value['end_date'] = value['value']['end_date'];
+  void onSelectedDate(DateTime? pickedDateTime, String dateType) {
+    String selectedDate = wt.dateFormatter(
+      date: pickedDateTime.toString(),
+    );
+    String formattedSelectedDate = wt.dateFormatter(
+      date: pickedDateTime.toString(),
+      type: DateFormatType.dateData,
+    );
+    objectFilter.value[dateType] = formattedSelectedDate;
+    selectedDateTitle.value[dateType] = selectedDate;
+  }
+
+  void resetSelectedDate() {
+    selectedDateTitle.value = RxMap(objectSelectedDate);
+    objectFilter.value['start_date'] = '';
+    objectFilter.value['end_date'] = '';
+  }
+
+  bool hasDateValue() {
+    var startDate = objectFilter.value['start_date'];
+    var endDate = objectFilter.value['end_date'];
+    if (startDate != '' && endDate != '') {
+      if (startDate != null && endDate != null) {
+        return true;
+      }
+      return false;
     }
+    return false;
+  }
+
+  bool isStartDateBeforeEndDate() {
+    if (hasDateValue()) {
+      var startDate = objectFilter.value['start_date'];
+      var endDate = objectFilter.value['end_date'];
+      if (DateTime.parse(endDate!).isBefore(DateTime.parse(startDate!))) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }

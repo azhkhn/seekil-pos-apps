@@ -22,13 +22,26 @@ class HomeContentStaff extends StatelessWidget {
         SizedBox(
           height: 32.0,
         ),
-        ElevatedButton(
-          onPressed: () => Get.toNamed(AppRoutes.orderAdd),
-          child: Text(
-            'Buat Transaksi Baru',
-            style: TextStyle(color: Colors.white),
+        Container(
+          width: Get.width / 2,
+          child: ElevatedButton(
+            onPressed: () => Get.toNamed(AppRoutes.orderAdd),
+            child: Text(
+              'Buat Transaksi Baru',
+              style: TextStyle(color: Colors.white),
+            ),
+            style: ElevatedButton.styleFrom(
+              primary: ColorConstant.DEF,
+              padding: EdgeInsets.symmetric(vertical: 16.0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(8.0)),
+              ),
+              textStyle: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16.0,
+              ),
+            ),
           ),
-          style: ElevatedButton.styleFrom(primary: ColorConstant.DEF),
         )
       ]),
     );
