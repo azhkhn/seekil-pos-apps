@@ -1,5 +1,5 @@
-import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:seekil_back_office/constants/general.constant.dart';
 import 'package:seekil_back_office/models/master_data.model.dart';
 import 'package:seekil_back_office/models/order_list.model.dart';
@@ -16,8 +16,10 @@ var defaultObjectFilter = {
   'end_date': '',
 };
 
-class AllOrderController extends GetxController with StateMixin {
+class AllOrderController extends GetxController {
   WordTransformation wt = WordTransformation();
+  PagingController<int, OrderListModel> pagingController =
+      PagingController<int, OrderListModel>(firstPageKey: 0);
 
   RxList filterPaymentStatusList = GeneralConstant.filterPaymentStatus.obs;
   RxList filterDateList = GeneralConstant.filterDateMenu.obs;
@@ -38,8 +40,16 @@ class AllOrderController extends GetxController with StateMixin {
   @override
   void onInit() {
     super.onInit();
-    fetchOrderList();
     fetchMasterData();
+    pagingController.addPageRequestListener((pageKey) {
+      fetchOrderList(pageKey);
+    });
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+    pagingController.dispose();
   }
 
   String checkQueryParams() {
@@ -54,21 +64,23 @@ class AllOrderController extends GetxController with StateMixin {
         : Uri(queryParameters: objectFilter.value).query;
   }
 
-  Future<void> fetchOrderList() async {
+  Future<void> fetchOrderList(dynamic pageKey) async {
     String queryParams = checkQueryParams();
     filterCount.value = objectFilter.value.length.toString();
-    try {
-      change(null, status: RxStatus.loading());
-      List<OrderListModel> data =
-          await OrderListModel.fetchOrderList(queryParams);
 
-      if (data.isNotEmpty) {
-        change(data, status: RxStatus.success());
+    try {
+      final newItems =
+          await OrderListModel.fetchOrderList(queryParams, pageKey.toString());
+      final isLastPage = newItems.length < 10;
+
+      if (isLastPage) {
+        pagingController.appendLastPage(newItems);
       } else {
-        change(null, status: RxStatus.empty());
+        final nextPageKey = pageKey + 1;
+        pagingController.appendPage(newItems, nextPageKey);
       }
-    } on DioError catch (e) {
-      change(null, status: RxStatus.error(e.message));
+    } catch (error) {
+      pagingController.error = error;
     }
   }
 
@@ -82,13 +94,13 @@ class AllOrderController extends GetxController with StateMixin {
 
   void handleSearchBar(String value) {
     objectFilter.value['customer_name'] = value;
-    fetchOrderList();
+    pagingController.refresh();
   }
 
   void resetSearchBar() {
     searchInput.value = '';
     objectFilter.value['customer_name'] = '';
-    fetchOrderList();
+    pagingController.refresh();
   }
 
   void resetFilter() {
@@ -101,7 +113,7 @@ class AllOrderController extends GetxController with StateMixin {
   void onApplyFilter() {
     isFiltered.value = true;
     Get.back();
-    fetchOrderList();
+    pagingController.refresh();
   }
 
   void onChangeFilterPaymentStatus(dynamic value) {

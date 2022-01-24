@@ -81,23 +81,25 @@ class OrderUtils {
     String separator = '-----------------------------------------\n';
 
     String generateItem() {
-      return _orderItems['list'].map((e) {
-        String itemName = e['item_name'];
-        String services = e['services']
-            .map((s) {
-              return '_${s['name'].replaceAll('&', 'and')}: ${wt.currencyFormat(s['price'])}_\n';
-            })
-            .toString()
-            .trim();
-        return '\n$itemName\n$services';
-      }).toString();
+      return _orderItems['list']
+          .map((e) {
+            String itemName = e['item_name'];
+            String services = e['services']
+                .map((s) {
+                  return '_${s['name'].replaceAll('&', 'and').trim()}: ${wt.currencyFormat(s['price'])}_\n';
+                })
+                .toString()
+                .trim();
+            return '\n*$itemName*\n$services';
+          })
+          .toString()
+          .trimLeft();
     }
 
     // DATA
     String dTitle =
         'Hi *$customerName*.\nTerima kasih sudah drop sepatu/apparel nya di Seekil, berikut invoice nya:\n\n';
-    String dInvoice = 'Invoice: $invoice\n\n';
-    String dCustomer = 'Nama: $customerName\n';
+    String dInvoice = 'Invoice: $invoice\n';
     String dWhatsapp = 'Whatsapp: $customerWhatsapp\n';
     String dWaktu = 'Waktu: $dateTime\n';
     String dItems =
@@ -109,6 +111,6 @@ class OrderUtils {
     String dStatus = '*_${statusPembayaran!.toUpperCase()}_*\n';
     String dNote = '\nMohon ditunggu untuk cucian nya 😊';
 
-    return '$dTitle$dInvoice$dCustomer$dWhatsapp$dWaktu$separator$dItems$separator$dSubtotal$dOngkir$dDiskon$dTotal$separator$dStatus$separator$dNote';
+    return '$dTitle$dInvoice$dWhatsapp$dWaktu$separator$dItems$separator$dSubtotal$dOngkir$dDiskon$dTotal$separator$dStatus$separator$dNote';
   }
 }

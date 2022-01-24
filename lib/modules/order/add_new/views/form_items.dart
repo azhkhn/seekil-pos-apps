@@ -173,7 +173,7 @@ class _OrderAddNewItemsSectionState extends State<OrderAddNewItemsSection> {
                                   selectedColor: ColorConstant.DEF,
                                   searchable: true,
                                   title: Text('Cari Layanan'),
-                                  height: Get.height / 3,
+                                  height: Get.height / 2,
                                   cancelText: Text(
                                     'Batal',
                                     style: TextStyle(

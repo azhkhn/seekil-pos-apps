@@ -25,15 +25,17 @@ class OrderListCard extends StatelessWidget {
     }
 
     return GestureDetector(
-        onTap: () => Get.toNamed('/order/${data.orderId}')!.then((value) {
-              if (value != null && value == true) {
-                SnackbarHelper.show(
-                    title: 'Info',
-                    message: GeneralConstant.ORDER_UPDATED,
-                    withBottomNavigation: true);
-                isRefreshed!(value);
-              }
-            }),
+        onTap: () => Get.toNamed('/order/${data.orderId}')!.then(
+              (value) {
+                if (value != null && value == true) {
+                  SnackbarHelper.show(
+                      title: 'Info',
+                      message: GeneralConstant.ORDER_UPDATED,
+                      withBottomNavigation: true);
+                  isRefreshed!(value);
+                }
+              },
+            ),
         child: Card(
           elevation: 2.0,
           child: Container(

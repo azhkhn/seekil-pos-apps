@@ -7,10 +7,12 @@ class WidgetHelper {
       {PreferredSizeWidget? bottom,
       double titleSize = 18.0,
       List<Widget>? actions,
+      double? toolbarHeight,
       Color backgroundColor = Colors.white}) {
     return AppBar(
       backgroundColor: backgroundColor,
       iconTheme: IconThemeData(color: Colors.black),
+      toolbarHeight: toolbarHeight,
       bottom: bottom,
       actions: actions,
       systemOverlayStyle: SystemUiOverlayStyle(

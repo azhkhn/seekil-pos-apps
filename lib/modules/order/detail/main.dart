@@ -8,6 +8,7 @@ import 'package:seekil_back_office/models/master_data.model.dart';
 import 'package:seekil_back_office/constants/color.constant.dart';
 import 'package:seekil_back_office/models/order_detail.model.dart';
 import 'package:seekil_back_office/models/order_list.model.dart';
+import 'package:seekil_back_office/models/order_list_items.model.dart';
 import 'package:seekil_back_office/routes/routes.dart';
 import 'package:seekil_back_office/modules/order/detail/views/customer_section.dart';
 import 'package:seekil_back_office/modules/order/detail/views/detail_section.dart';
@@ -53,7 +54,7 @@ class _OrderDetailState extends State<OrderDetail> {
     _orderData = OrderDetailModel.fetchOrderDetail(orderId);
     _paymentMethod = MasterDataModel.fetchMasterPaymentMethod();
     _orderStatus = MasterDataModel.fetchMasterStatus();
-    _itemsList = OrderListModel.fetchOrderItems(orderId);
+    _itemsList = OrderItemListItemsModel.fetchOrderItems(orderId);
   }
 
   TextStyle _titleStyle = TextStyle(

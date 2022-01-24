@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:seekil_back_office/constants/color.constant.dart';
 import 'package:seekil_back_office/constants/general.constant.dart';
 import 'package:seekil_back_office/models/order_list.model.dart';
@@ -17,16 +18,21 @@ class Order extends StatefulWidget {
 }
 
 class _OrderState extends State<Order> {
-  late Future<List<OrderListModel>> newOrderList;
+  final PagingController<int, OrderListModel> pagingController =
+      PagingController<int, OrderListModel>(firstPageKey: 0);
+
   WordTransformation wt = WordTransformation();
+  int pageSize = 10;
 
   @override
   void initState() {
     super.initState();
-    fetchNewOrderList();
+    pagingController.addPageRequestListener((pageKey) {
+      fetchNewOrderList(pageKey);
+    });
   }
 
-  Future<void> fetchNewOrderList() async {
+  Future<void> fetchNewOrderList(dynamic pageKey) async {
     Map<String, String> objectParams = {
       'order_status_id': '1',
       'start_date': wt.firstDateOfMonth,
@@ -34,9 +40,20 @@ class _OrderState extends State<Order> {
     };
     String queryParams = Uri(queryParameters: objectParams).query;
 
-    setState(() {
-      newOrderList = OrderListModel.fetchOrderList(queryParams);
-    });
+    try {
+      final newItems =
+          await OrderListModel.fetchOrderList(queryParams, pageKey.toString());
+      final isLastPage = newItems.length < pageSize;
+
+      if (isLastPage) {
+        pagingController.appendLastPage(newItems);
+      } else {
+        final nextPageKey = pageKey + 1;
+        pagingController.appendPage(newItems, nextPageKey);
+      }
+    } catch (error) {
+      pagingController.error = error;
+    }
   }
 
   @override
@@ -78,7 +95,7 @@ class _OrderState extends State<Order> {
               padding: EdgeInsets.all(2.0),
               onPressed: () => Get.toNamed(AppRoutes.orderAdd)!.then((value) {
                 if (value != null && value == true) {
-                  fetchNewOrderList();
+                  pagingController.refresh();
                   SnackbarHelper.show(
                       title: 'Info',
                       message: GeneralConstant.ORDER_CREATED,
@@ -89,10 +106,7 @@ class _OrderState extends State<Order> {
           ],
         ),
         body: TabBarView(children: [
-          OrderNewList(
-            fetchNewOrderList: fetchNewOrderList,
-            newOrderList: newOrderList,
-          ),
+          OrderNewList(pagingController: pagingController),
           OrderInprogressList(),
           OrderDoneList(),
         ]),
