@@ -36,7 +36,7 @@ class _BluetoothPageState extends State<BluetoothPage> {
       // Show snackbar notification
       if (!value!) {
         bool? isSnackbarOpen = Get.isSnackbarOpen;
-        if (!isSnackbarOpen!) {
+        if (!isSnackbarOpen) {
           SnackbarHelper.show(
               title: GeneralConstant.ERROR_TITLE,
               message: GeneralConstant.BLUETOOTH_OFF,

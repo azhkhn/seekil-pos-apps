@@ -3,9 +3,14 @@ import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:seekil_back_office/constants/color.constant.dart';
 import 'package:seekil_back_office/constants/general.constant.dart';
+import 'package:seekil_back_office/constants/order_status.constant.dart';
 import 'package:seekil_back_office/models/order_list.model.dart';
 import 'package:seekil_back_office/modules/order/list/views/done_order_list.dart';
 import 'package:seekil_back_office/modules/order/list/views/inprogress_order_list.dart';
+import 'package:seekil_back_office/modules/order/list/views/onprogress_shipment_order_list.dart';
+import 'package:seekil_back_office/modules/order/list/views/ready_to_pickup_order_list.dart';
+import 'package:seekil_back_office/modules/order/list/views/ready_to_shipment_order_list.dart';
+import 'package:seekil_back_office/modules/order/list/views/waiting_order_list.dart';
 import 'package:seekil_back_office/routes/routes.dart';
 import 'package:seekil_back_office/modules/order/list/views/new_order_list.dart';
 import 'package:seekil_back_office/utilities/helper/snackbar_helper.dart';
@@ -34,7 +39,7 @@ class _OrderState extends State<Order> {
 
   Future<void> fetchNewOrderList(dynamic pageKey) async {
     Map<String, String> objectParams = {
-      'order_status_id': '1',
+      'order_status_id': OrderStatusConstant.newest.toString(),
       'start_date': wt.firstDateOfMonth,
       'end_date': wt.endDateOfMonth
     };
@@ -59,7 +64,7 @@ class _OrderState extends State<Order> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 7,
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: WidgetHelper.appBar(
@@ -81,7 +86,11 @@ class _OrderState extends State<Order> {
                       color: ColorConstant.DEF),
                   tabs: [
                     Tab(text: 'Baru'),
+                    Tab(text: 'Dalam Antrian'),
                     Tab(text: 'Diproses'),
+                    Tab(text: 'Siap Diambil'),
+                    Tab(text: 'Siap Dikirim'),
+                    Tab(text: 'Sedang Dikirim'),
                     Tab(text: 'Selesai'),
                   ]),
             ),
@@ -107,7 +116,11 @@ class _OrderState extends State<Order> {
         ),
         body: TabBarView(children: [
           OrderNewList(pagingController: pagingController),
+          OrderWaitingList(),
           OrderInprogressList(),
+          OrderListReadyToPickup(),
+          OrderListReadyToShipment(),
+          OrderListOnprogressShipment(),
           OrderDoneList(),
         ]),
       ),

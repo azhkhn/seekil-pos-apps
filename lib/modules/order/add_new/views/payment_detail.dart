@@ -33,15 +33,15 @@ class OrderAddNewPaymentDetal extends StatelessWidget {
             orderAddNewModel.potongan != null ? orderAddNewModel.potongan : 0,
         'isDecrement': true
       },
-      {
-        'text': 'Points',
-        'value': orderAddNewModel.points != null
-            ? isUsePoint
-                ? orderAddNewModel.points
-                : 0
-            : 0,
-        'isDecrement': true
-      },
+      // {
+      //   'text': 'Points',
+      //   'value': orderAddNewModel.points != null
+      //       ? isUsePoint
+      //           ? orderAddNewModel.points
+      //           : 0
+      //       : 0,
+      //   'isDecrement': true
+      // },
       {
         'text': 'Total Bayar',
         'value': orderUtils.getTotal(
@@ -80,24 +80,28 @@ class OrderAddNewPaymentDetal extends StatelessWidget {
                   Text(
                     content[index]['text'],
                     style: TextStyle(
-                        fontWeight: index == content.length - 1
-                            ? FontWeight.bold
-                            : FontWeight.normal,
-                        color: index == content.length - 1
-                            ? Colors.red
-                            : Colors.black),
+                      fontWeight: index == content.length - 1
+                          ? FontWeight.bold
+                          : FontWeight.normal,
+                      color: index == content.length - 1
+                          ? Colors.red
+                          : Colors.black,
+                      fontSize: index == content.length - 1 ? 18.0 : 14.0,
+                    ),
                   ),
                   Text(
                     content[index]['isDecrement'] == true
                         ? '-${wt.currencyFormat(content[index]['value'])}'
                         : wt.currencyFormat(content[index]['value']),
                     style: TextStyle(
-                        fontWeight: index == content.length - 1
-                            ? FontWeight.bold
-                            : FontWeight.normal,
-                        color: index == content.length - 1
-                            ? Colors.red
-                            : Colors.black),
+                      fontWeight: index == content.length - 1
+                          ? FontWeight.bold
+                          : FontWeight.normal,
+                      color: index == content.length - 1
+                          ? Colors.red
+                          : Colors.black,
+                      fontSize: index == content.length - 1 ? 18.0 : 14.0,
+                    ),
                   ),
                 ],
               );

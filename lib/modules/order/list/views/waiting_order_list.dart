@@ -7,14 +7,14 @@ import 'package:seekil_back_office/widgets/order/order_card_shimmer.dart';
 import 'package:seekil_back_office/widgets/order/order_empty.dart';
 import 'package:seekil_back_office/widgets/order/order_list_card.dart';
 
-class OrderInprogressList extends StatefulWidget {
-  OrderInprogressList({Key? key}) : super(key: key);
+class OrderWaitingList extends StatefulWidget {
+  OrderWaitingList({Key? key}) : super(key: key);
 
   @override
-  State<OrderInprogressList> createState() => _OrderInprogressListState();
+  State<OrderWaitingList> createState() => _OrderWaitingListState();
 }
 
-class _OrderInprogressListState extends State<OrderInprogressList>
+class _OrderWaitingListState extends State<OrderWaitingList>
     with AutomaticKeepAliveClientMixin {
   final PagingController<int, OrderListModel> pagingController =
       PagingController<int, OrderListModel>(firstPageKey: 0);
@@ -28,7 +28,7 @@ class _OrderInprogressListState extends State<OrderInprogressList>
   void initState() {
     super.initState();
     pagingController.addPageRequestListener((pageKey) {
-      fetchInProgressOrderList(pageKey);
+      fetchDoneOrderList(pageKey);
     });
   }
 
@@ -38,9 +38,9 @@ class _OrderInprogressListState extends State<OrderInprogressList>
     pagingController.dispose();
   }
 
-  Future<void> fetchInProgressOrderList(dynamic pageKey) async {
+  Future<void> fetchDoneOrderList(dynamic pageKey) async {
     Map<String, String> objectParams = {
-      'order_status_id': OrderStatusConstant.inProgress.toString(),
+      'order_status_id': OrderStatusConstant.waitingList.toString(),
       'start_date': wt.firstDateOfMonth,
       'end_date': wt.endDateOfMonth
     };
@@ -81,8 +81,8 @@ class _OrderInprogressListState extends State<OrderInprogressList>
             );
           },
           noItemsFoundIndicatorBuilder: (context) => OrderEmpty(
-            svgAsset: 'assets/svg/order_progress.svg',
-            text: 'Transaksi yang lagi dikerjain\ntampil di sini, ya!',
+            svgAsset: 'assets/svg/order_done.svg',
+            text: 'Transaksi yang mau dicuci\ntampil di sini, ya!',
           ),
           firstPageProgressIndicatorBuilder: (context) {
             return OrderCardShimmer(

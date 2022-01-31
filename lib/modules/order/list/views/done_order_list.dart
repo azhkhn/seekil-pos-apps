@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:seekil_back_office/constants/order_status.constant.dart';
 import 'package:seekil_back_office/models/order_list.model.dart';
 import 'package:seekil_back_office/utilities/helper/word_transformation.dart';
 import 'package:seekil_back_office/widgets/order/order_card_shimmer.dart';
@@ -39,7 +40,7 @@ class _OrderDoneListState extends State<OrderDoneList>
 
   Future<void> fetchDoneOrderList(dynamic pageKey) async {
     Map<String, String> objectParams = {
-      'order_status_id': '7',
+      'order_status_id': OrderStatusConstant.done.toString(),
       'start_date': wt.firstDateOfMonth,
       'end_date': wt.endDateOfMonth
     };

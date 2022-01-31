@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:seekil_back_office/constants/general.constant.dart';
+import 'package:seekil_back_office/constants/order_status.constant.dart';
 import 'package:seekil_back_office/constants/storage_key.constant.dart';
 import 'package:seekil_back_office/models/master_data.model.dart';
 import 'package:seekil_back_office/constants/color.constant.dart';
@@ -115,7 +116,9 @@ class _OrderDetailState extends State<OrderDetail> {
                                 ],
                               ),
                             ),
-                            if (orderDataItem.orderStatus != 7)
+                            if (orderDataItem.orderStatus !=
+                                    OrderStatusConstant.done ||
+                                AuthHelper.isSuperAdmin())
                               Container(
                                 decoration: BoxDecoration(
                                     color: Colors.white,

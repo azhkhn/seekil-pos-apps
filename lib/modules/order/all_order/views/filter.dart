@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:seekil_back_office/constants/color.constant.dart';
 import 'package:seekil_back_office/modules/order/all_order/controller.dart';
 import 'package:seekil_back_office/modules/order/all_order/views/filter_date_range.dart';
-import 'package:seekil_back_office/modules/order/all_order/views/filter_payment_method.dart';
+import 'package:seekil_back_office/modules/order/all_order/views/filter_order_status.dart';
 import 'package:seekil_back_office/modules/order/all_order/views/filter_payment_status.dart';
 
 class AllOrderFilter extends StatelessWidget {
@@ -121,7 +121,7 @@ class AllOrderFilter extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   AllOrderFilterPaymentStatus(),
-                  AllOrderFilterPaymentMethod(),
+                  AllOrderFilterOrderStatus(),
                   AllOrderFilterDateRange(this._modalFilter),
                 ],
               ),

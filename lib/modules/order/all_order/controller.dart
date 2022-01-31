@@ -26,7 +26,6 @@ class AllOrderController extends GetxController {
   RxList filterOrderStatusList = [].obs;
   RxList filterPaymentMethodList = [].obs;
 
-  RxMap gvFilterDate = {}.obs;
   RxBool showBorderStartDate = false.obs;
   RxBool showBorderEndDate = false.obs;
   RxString queryParameters = ''.obs;
@@ -34,6 +33,7 @@ class AllOrderController extends GetxController {
   RxString searchInput = ''.obs;
   RxBool isFiltered = false.obs;
 
+  final gvFilterDate = RxMap().obs;
   final selectedDateTitle = RxMap(objectSelectedDate).obs;
   final objectFilter = RxMap(defaultObjectFilter).obs;
 
@@ -105,7 +105,7 @@ class AllOrderController extends GetxController {
 
   void resetFilter() {
     isFiltered.value = false;
-    gvFilterDate.value = {};
+    gvFilterDate.value = RxMap();
     objectFilter.value = RxMap(defaultObjectFilter);
     selectedDateTitle.value = RxMap(objectSelectedDate);
   }

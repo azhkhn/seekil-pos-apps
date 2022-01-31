@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:seekil_back_office/constants/color.constant.dart';
 import 'package:seekil_back_office/modules/order/all_order/controller.dart';
 
-class AllOrderFilterPaymentMethod extends StatelessWidget {
-  AllOrderFilterPaymentMethod({Key? key}) : super(key: key);
+class AllOrderFilterOrderStatus extends StatelessWidget {
+  AllOrderFilterOrderStatus({Key? key}) : super(key: key);
   final controller = Get.put(AllOrderController());
 
   @override
@@ -22,7 +22,6 @@ class AllOrderFilterPaymentMethod extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 8.0),
           Wrap(
             spacing: 8.0,
             children: [
@@ -32,26 +31,29 @@ class AllOrderFilterPaymentMethod extends StatelessWidget {
                       controller.objectFilter.value['order_status_id'] ==
                           item['id'].toString();
 
-                  return GestureDetector(
-                    onTap: () {
-                      controller.onChangeFilterOrderStatus(item);
-                    },
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 6.0,
-                        horizontal: 16.0,
-                      ),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(16.0),
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        controller.onChangeFilterOrderStatus(item);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 6.0,
+                          horizontal: 16.0,
+                        ),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(16.0),
+                            ),
+                            border: Border.all(color: Colors.black54),
+                            color: isSelected ? ColorConstant.DEF : null),
+                        child: Text(
+                          item['name'],
+                          style: TextStyle(
+                            fontSize: 15.0,
+                            color: isSelected ? Colors.white : Colors.black54,
                           ),
-                          border: Border.all(color: Colors.black54),
-                          color: isSelected ? ColorConstant.DEF : null),
-                      child: Text(
-                        item['name'],
-                        style: TextStyle(
-                          fontSize: 15.0,
-                          color: isSelected ? Colors.white : Colors.black54,
                         ),
                       ),
                     ),

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:seekil_back_office/constants/order_status.constant.dart';
 import 'package:seekil_back_office/utilities/services/seekil_api.dart';
 
 class MasterDataModel {
@@ -49,16 +50,8 @@ class MasterDataModel {
     SeekilApi seekilApi = SeekilApi();
     Response response = await seekilApi.get('master/status');
     List<dynamic> data = jsonDecode(response.toString())['list'];
-    // 1 = New
-    // 3 = In Progress
-    // 6 = Cancel
-    // 7 = Done
     List<dynamic> filteredData = data
-        .where((element) =>
-            element['id'] == 1 ||
-            element['id'] == 3 ||
-            element['id'] == 6 ||
-            element['id'] == 7)
+        .where((element) => element['id'] != OrderStatusConstant.cancel)
         .toList();
 
     return filteredData;
