@@ -39,7 +39,9 @@ class AllOrderFilterDateRange extends StatelessWidget {
                   dense: true,
                   activeColor: ColorConstant.DEF,
                   controlAffinity: ListTileControlAffinity.trailing,
+                  // ignore: invalid_use_of_protected_member
                   groupValue: controller.gvFilterDate.value,
+                  // ignore: invalid_use_of_protected_member
                   selected: controller.gvFilterDate.value == lists,
                   title: _hasSelectedDate(lists),
                   onChanged: (dynamic value) {

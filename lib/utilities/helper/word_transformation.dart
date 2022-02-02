@@ -6,8 +6,8 @@ enum DateFormatType { dateOnly, dateTime, timeOnly, dateData, dateTimeInfo }
 class WordTransformation {
   String currentMonth =
       DateFormat('MMMM').format(DateTime.parse(DateTime.now().toString()));
-  String firstDateOfMonth = Jiffy().startOf(Units.MONTH).format('yyyy-MM-DD');
-  String endDateOfMonth = Jiffy().endOf(Units.MONTH).format('yyyy-MM-DD');
+  String firstDateOfMonth = Jiffy().startOf(Units.MONTH).format('yyyy-MM-dd');
+  String endDateOfMonth = Jiffy().endOf(Units.MONTH).format('yyyy-MM-dd');
 
   /// Function to formatting date from timestamp, or anything
   String dateFormatter({required String date, DateFormatType? type}) {

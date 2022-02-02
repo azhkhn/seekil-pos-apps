@@ -87,9 +87,7 @@ class OrderListCard extends StatelessWidget {
                           badgeColor: ColorConstant.DEF,
                           textColor: Colors.white,
                         ),
-                        SizedBox(
-                          width: 8.0,
-                        ),
+                        SizedBox(width: 4.0),
                         WidgetHelper.badgeText(data.paymentStatus as String,
                             badgeColor: data.paymentStatus as String == 'Lunas'
                                 ? Colors.green

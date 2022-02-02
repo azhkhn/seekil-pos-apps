@@ -33,7 +33,7 @@ class AllOrderController extends GetxController {
   RxString searchInput = ''.obs;
   RxBool isFiltered = false.obs;
 
-  final gvFilterDate = RxMap().obs;
+  final gvFilterDate = {}.obs;
   final selectedDateTitle = RxMap(objectSelectedDate).obs;
   final objectFilter = RxMap(defaultObjectFilter).obs;
 
@@ -105,7 +105,7 @@ class AllOrderController extends GetxController {
 
   void resetFilter() {
     isFiltered.value = false;
-    gvFilterDate.value = RxMap();
+    gvFilterDate.value = {};
     objectFilter.value = RxMap(defaultObjectFilter);
     selectedDateTitle.value = RxMap(objectSelectedDate);
   }

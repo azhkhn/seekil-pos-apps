@@ -78,8 +78,6 @@ class OrderUtils {
         pickupDeliveryPrice: _orderDetail.ongkir ?? 0,
         potongan: _orderDetail.promo ?? 0));
 
-    String separator = '-----------------------------------------\n';
-
     String generateItem() {
       return _orderItems['list']
           .map((e) {
@@ -110,7 +108,28 @@ class OrderUtils {
     String dTotal = '*Total: $total*\n';
     String dStatus = '*_${statusPembayaran!.toUpperCase()}_*\n';
     String dNote = '\nMohon ditunggu untuk cucian nya 😊';
+    String separator = '-----------------------------------------\n';
+    String downloadCekCucianApps =
+        '\n\nDownload aplikasi *Cek Cucian* untuk pantau status cucianmu di Seekil\n\n';
+    String playStoreUrl =
+        'https://play.google.com/store/apps/details?id=com.seekil.cek_cucian';
 
-    return '$dTitle$dInvoice$dWhatsapp$dWaktu$separator$dItems$separator$dSubtotal$dOngkir$dDiskon$dTotal$separator$dStatus$separator$dNote';
+    return '$dTitle'
+        '$dInvoice'
+        '$dWhatsapp'
+        '$dWaktu'
+        '$separator'
+        '$dItems'
+        '$separator'
+        '$dSubtotal'
+        '$dOngkir'
+        '$dDiskon'
+        '$dTotal'
+        '$separator'
+        '$dStatus'
+        '$separator'
+        '$dNote'
+        '$downloadCekCucianApps'
+        '$playStoreUrl';
   }
 }
