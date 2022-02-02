@@ -8,7 +8,9 @@ import 'package:seekil_back_office/widgets/order/order_empty.dart';
 import 'package:seekil_back_office/widgets/order/order_list_card.dart';
 
 class OrderListReadyToPickup extends StatefulWidget {
-  OrderListReadyToPickup({Key? key}) : super(key: key);
+  OrderListReadyToPickup({Key? key, required this.readyToPickupListCount})
+      : super(key: key);
+  final ValueChanged<int> readyToPickupListCount;
 
   @override
   State<OrderListReadyToPickup> createState() => _OrderListReadyToPickupState();
@@ -53,6 +55,7 @@ class _OrderListReadyToPickupState extends State<OrderListReadyToPickup>
 
       if (isLastPage) {
         pagingController.appendLastPage(newItems);
+        widget.readyToPickupListCount(newItems.length);
       } else {
         final nextPageKey = pageKey + 1;
         pagingController.appendPage(newItems, nextPageKey);

@@ -60,9 +60,11 @@ class _SplashScreenState extends State<SplashScreen> {
                 builder: (context, snapshot) {
                   switch (snapshot.connectionState) {
                     case ConnectionState.done:
-                      return Text('v${snapshot.data!.version}',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.grey));
+                      return Text(
+                        'v${snapshot.data!.version}+${snapshot.data!.buildNumber}',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.grey),
+                      );
                     default:
                       return const SizedBox();
                   }

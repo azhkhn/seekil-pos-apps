@@ -8,7 +8,8 @@ import 'package:seekil_back_office/widgets/order/order_empty.dart';
 import 'package:seekil_back_office/widgets/order/order_list_card.dart';
 
 class OrderDoneList extends StatefulWidget {
-  OrderDoneList({Key? key}) : super(key: key);
+  OrderDoneList({Key? key, required this.doneListCount}) : super(key: key);
+  final ValueChanged<int> doneListCount;
 
   @override
   State<OrderDoneList> createState() => _OrderDoneListState();
@@ -53,6 +54,7 @@ class _OrderDoneListState extends State<OrderDoneList>
 
       if (isLastPage) {
         pagingController.appendLastPage(newItems);
+        widget.doneListCount(newItems.length);
       } else {
         final nextPageKey = pageKey + 1;
         pagingController.appendPage(newItems, nextPageKey);

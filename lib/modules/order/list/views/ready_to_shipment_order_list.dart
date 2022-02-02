@@ -8,7 +8,9 @@ import 'package:seekil_back_office/widgets/order/order_empty.dart';
 import 'package:seekil_back_office/widgets/order/order_list_card.dart';
 
 class OrderListReadyToShipment extends StatefulWidget {
-  OrderListReadyToShipment({Key? key}) : super(key: key);
+  OrderListReadyToShipment({Key? key, required this.readyToShipmentListCount})
+      : super(key: key);
+  final ValueChanged<int> readyToShipmentListCount;
 
   @override
   State<OrderListReadyToShipment> createState() =>
@@ -54,6 +56,7 @@ class _OrderListReadyToShipmentState extends State<OrderListReadyToShipment>
 
       if (isLastPage) {
         pagingController.appendLastPage(newItems);
+        widget.readyToShipmentListCount(newItems.length);
       } else {
         final nextPageKey = pageKey + 1;
         pagingController.appendPage(newItems, nextPageKey);

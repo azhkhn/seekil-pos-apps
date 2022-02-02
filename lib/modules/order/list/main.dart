@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -27,7 +28,15 @@ class _OrderState extends State<Order> {
       PagingController<int, OrderListModel>(firstPageKey: 0);
 
   WordTransformation wt = WordTransformation();
+  //
   int pageSize = 10;
+  int totalOrder = 0;
+  int inprogressListCount = 0;
+  int waitingOrderListCount = 0;
+  int readyToPickupListCount = 0;
+  int readyToShipmentListCount = 0;
+  int onprogressShipmentListCount = 0;
+  int doneOrderListCount = 0;
 
   @override
   void initState() {
@@ -52,6 +61,8 @@ class _OrderState extends State<Order> {
 
       if (isLastPage) {
         pagingController.appendLastPage(newItems);
+
+        setState(() => totalOrder = newItems.length);
       } else {
         final nextPageKey = pageKey + 1;
         pagingController.appendPage(newItems, nextPageKey);
@@ -77,21 +88,37 @@ class _OrderState extends State<Order> {
               alignment: Alignment.centerLeft,
               child: TabBar(
                   labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                  labelColor: Colors.white,
+                  labelColor: ColorConstant.DEF,
                   unselectedLabelColor: Colors.grey,
                   indicatorSize: TabBarIndicatorSize.tab,
                   isScrollable: true,
-                  indicator: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: ColorConstant.DEF),
+                  indicatorColor: ColorConstant.DEF,
                   tabs: [
-                    Tab(text: 'Baru'),
-                    Tab(text: 'Dalam Antrian'),
-                    Tab(text: 'Diproses'),
-                    Tab(text: 'Siap Diambil'),
-                    Tab(text: 'Siap Dikirim'),
-                    Tab(text: 'Sedang Dikirim'),
-                    Tab(text: 'Selesai'),
+                    _tabBarBadge(text: 'Baru', totalOrder: totalOrder),
+                    _tabBarBadge(
+                      text: 'Dalam Antrian',
+                      totalOrder: waitingOrderListCount,
+                    ),
+                    _tabBarBadge(
+                      text: 'Diproses',
+                      totalOrder: inprogressListCount,
+                    ),
+                    _tabBarBadge(
+                      text: 'Sedang Dikirim',
+                      totalOrder: readyToPickupListCount,
+                    ),
+                    _tabBarBadge(
+                      text: 'Siap Dikirim',
+                      totalOrder: readyToShipmentListCount,
+                    ),
+                    _tabBarBadge(
+                      text: 'Sedang Dikirim',
+                      totalOrder: onprogressShipmentListCount,
+                    ),
+                    _tabBarBadge(
+                      text: 'Selesai',
+                      totalOrder: doneOrderListCount,
+                    ),
                   ]),
             ),
           ),
@@ -116,13 +143,50 @@ class _OrderState extends State<Order> {
         ),
         body: TabBarView(children: [
           OrderNewList(pagingController: pagingController),
-          OrderWaitingList(),
-          OrderInprogressList(),
-          OrderListReadyToPickup(),
-          OrderListReadyToShipment(),
-          OrderListOnprogressShipment(),
-          OrderDoneList(),
+          OrderWaitingList(
+            waitingOrderListCount: (value) =>
+                setState(() => waitingOrderListCount = value),
+          ),
+          OrderInprogressList(
+            inprogressListCount: (value) =>
+                setState(() => inprogressListCount = value),
+          ),
+          OrderListReadyToPickup(
+            readyToPickupListCount: (value) =>
+                setState(() => readyToPickupListCount = value),
+          ),
+          OrderListReadyToShipment(
+            readyToShipmentListCount: (value) =>
+                setState(() => readyToShipmentListCount = value),
+          ),
+          OrderListOnprogressShipment(
+            onprogressShipmentListCount: (value) =>
+                setState(() => onprogressShipmentListCount = value),
+          ),
+          OrderDoneList(
+            doneListCount: (value) =>
+                setState(() => doneOrderListCount = value),
+          ),
         ]),
+      ),
+    );
+  }
+
+  Widget _tabBarBadge({required int totalOrder, required String text}) {
+    return Badge(
+      child: Tab(text: text),
+      padding: EdgeInsets.all(6.0),
+      badgeColor: ColorConstant.DEF,
+      animationType: BadgeAnimationType.fade,
+      position: BadgePosition.topEnd(top: -4.0, end: -16.0),
+      showBadge: totalOrder != 0,
+      ignorePointer: true,
+      badgeContent: Text(
+        totalOrder.toString(),
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }

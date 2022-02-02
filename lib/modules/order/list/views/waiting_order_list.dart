@@ -8,7 +8,9 @@ import 'package:seekil_back_office/widgets/order/order_empty.dart';
 import 'package:seekil_back_office/widgets/order/order_list_card.dart';
 
 class OrderWaitingList extends StatefulWidget {
-  OrderWaitingList({Key? key}) : super(key: key);
+  OrderWaitingList({Key? key, required this.waitingOrderListCount})
+      : super(key: key);
+  final ValueChanged<int> waitingOrderListCount;
 
   @override
   State<OrderWaitingList> createState() => _OrderWaitingListState();
@@ -53,6 +55,7 @@ class _OrderWaitingListState extends State<OrderWaitingList>
 
       if (isLastPage) {
         pagingController.appendLastPage(newItems);
+        widget.waitingOrderListCount(newItems.length);
       } else {
         final nextPageKey = pageKey + 1;
         pagingController.appendPage(newItems, nextPageKey);
