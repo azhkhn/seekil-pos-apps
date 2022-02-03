@@ -39,6 +39,7 @@ class _OrderTrackingState extends State<OrderTracking> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: WidgetHelper.appBar('Lacak'),
       body: ListView(
         physics: BouncingScrollPhysics(),

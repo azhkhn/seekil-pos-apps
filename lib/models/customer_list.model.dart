@@ -23,20 +23,19 @@ class CustomerListModel {
         points: json['points'] != null ? json['points'] : 0);
   }
 
-  static Future<List<dynamic>> fetchCustomerList(String url,
-      [String userName = '']) async {
+  static Future<List<CustomerListModel>> fetchCustomerList({
+    String? customerName,
+    String page = '0',
+  }) async {
     SeekilApi seekilApi = SeekilApi();
-    Response response = await seekilApi.get(url);
+
+    String params = customerName != '' && customerName != null
+        ? 'customer?page=$page&name=$customerName'
+        : 'customer?page=$page';
+
+    Response response = await seekilApi.get(params);
 
     List<dynamic> responseJson = jsonDecode(response.toString())['list'];
-    var customerList =
-        responseJson.map((e) => CustomerListModel.fromJson(e)).where((element) {
-      final name = element.name.toLowerCase();
-      final inputtedUserName = userName.toLowerCase();
-
-      return name.contains(inputtedUserName);
-    }).toList();
-
-    return customerList;
+    return responseJson.map((e) => CustomerListModel.fromJson(e)).toList();
   }
 }

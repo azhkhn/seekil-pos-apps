@@ -28,15 +28,11 @@ class OrderAddNewCustomerSection extends StatefulWidget {
 
 class _OrderAddNewCustomerSectionState
     extends State<OrderAddNewCustomerSection> {
-  late Future<List<dynamic>> customerList,
-      orderType,
-      storeLocation,
-      dropPointLocation;
+  late Future<List<dynamic>> orderType, storeLocation, dropPointLocation;
 
   @override
   void initState() {
     super.initState();
-    customerList = CustomerListModel.fetchCustomerList('customer');
     orderType = MasterDataModel.fetchMasterType();
     storeLocation = MasterDataModel.fetchMasterStore();
     dropPointLocation = MasterDataModel.fetchMasterPartnership();
@@ -71,6 +67,7 @@ class _OrderAddNewCustomerSectionState
                   TypeAheadFormField(
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     onSuggestionSelected: widget.onSuggestionSelected,
+                    debounceDuration: Duration(microseconds: 100),
                     loadingBuilder: (context) => Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: Wrap(
@@ -93,23 +90,26 @@ class _OrderAddNewCustomerSectionState
                                 )),
                       ),
                     ),
-                    debounceDuration: Duration(microseconds: 100),
                     textFieldConfiguration: TextFieldConfiguration(
-                        controller: widget.customerNameController,
-                        onChanged: widget.onChangeCustomerName,
-                        textCapitalization: TextCapitalization.sentences,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.grey[200],
-                          isDense: true,
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(8.0)),
+                      controller: widget.customerNameController,
+                      onChanged: widget.onChangeCustomerName,
+                      textCapitalization: TextCapitalization.sentences,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.grey[200],
+                        isDense: true,
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(8.0),
                           ),
-                          contentPadding: EdgeInsets.symmetric(
-                              horizontal: 8.0, vertical: 10.0),
-                        )),
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 8.0,
+                          vertical: 10.0,
+                        ),
+                      ),
+                    ),
                     validator: (value) {
                       if (value == null || value == '') {
                         return 'Nama Pelanggan harus diisi';
@@ -119,14 +119,17 @@ class _OrderAddNewCustomerSectionState
                       final CustomerListModel user =
                           itemData as CustomerListModel;
                       return ListTile(
-                        title: Text(user.name,
-                            style: TextStyle(fontWeight: FontWeight.w500)),
                         subtitle: Text(user.whatsapp),
+                        title: Text(
+                          user.name,
+                          style: TextStyle(fontWeight: FontWeight.w500),
+                        ),
                       );
                     },
                     suggestionsCallback: (pattern) {
                       return CustomerListModel.fetchCustomerList(
-                          'customer', pattern);
+                        customerName: pattern,
+                      );
                     },
                   ),
                 ],

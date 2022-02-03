@@ -82,45 +82,40 @@ class _OrderState extends State<Order> {
           'Transaksi ${wt.currentMonth}',
           bottom: PreferredSize(
             preferredSize: Size.fromHeight(48.0),
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              color: Colors.white,
-              alignment: Alignment.centerLeft,
-              child: TabBar(
-                  labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                  labelColor: ColorConstant.DEF,
-                  unselectedLabelColor: Colors.grey,
-                  indicatorSize: TabBarIndicatorSize.tab,
-                  isScrollable: true,
-                  indicatorColor: ColorConstant.DEF,
-                  tabs: [
-                    _tabBarBadge(text: 'Baru', totalOrder: totalOrder),
-                    _tabBarBadge(
-                      text: 'Dalam Antrian',
-                      totalOrder: waitingOrderListCount,
-                    ),
-                    _tabBarBadge(
-                      text: 'Diproses',
-                      totalOrder: inprogressListCount,
-                    ),
-                    _tabBarBadge(
-                      text: 'Sedang Dikirim',
-                      totalOrder: readyToPickupListCount,
-                    ),
-                    _tabBarBadge(
-                      text: 'Siap Dikirim',
-                      totalOrder: readyToShipmentListCount,
-                    ),
-                    _tabBarBadge(
-                      text: 'Sedang Dikirim',
-                      totalOrder: onprogressShipmentListCount,
-                    ),
-                    _tabBarBadge(
-                      text: 'Selesai',
-                      totalOrder: doneOrderListCount,
-                    ),
-                  ]),
-            ),
+            child: TabBar(
+                labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                labelColor: ColorConstant.DEF,
+                unselectedLabelColor: Colors.grey,
+                indicatorSize: TabBarIndicatorSize.tab,
+                isScrollable: true,
+                indicatorColor: ColorConstant.DEF,
+                tabs: [
+                  _tabBarBadge(text: 'Baru', totalOrder: totalOrder),
+                  _tabBarBadge(
+                    text: 'Dalam Antrian',
+                    totalOrder: waitingOrderListCount,
+                  ),
+                  _tabBarBadge(
+                    text: 'Diproses',
+                    totalOrder: inprogressListCount,
+                  ),
+                  _tabBarBadge(
+                    text: 'Siap Dikirim',
+                    totalOrder: readyToPickupListCount,
+                  ),
+                  _tabBarBadge(
+                    text: 'Siap Dikirim',
+                    totalOrder: readyToShipmentListCount,
+                  ),
+                  _tabBarBadge(
+                    text: 'Sedang Dikirim',
+                    totalOrder: onprogressShipmentListCount,
+                  ),
+                  _tabBarBadge(
+                    text: 'Selesai',
+                    totalOrder: doneOrderListCount,
+                  ),
+                ]),
           ),
           actions: [
             IconButton(

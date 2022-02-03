@@ -81,7 +81,7 @@ class OrderUtils {
     String generateItem() {
       return _orderItems['list']
           .map((e) {
-            String itemName = e['item_name'];
+            String itemName = e['item_name'].replaceAll('&', 'and');
             String services = e['services']
                 .map((s) {
                   return '_${s['name'].replaceAll('&', 'and').trim()}: ${wt.currencyFormat(s['price'])}_\n';
@@ -110,7 +110,7 @@ class OrderUtils {
     String dNote = '\nMohon ditunggu untuk cucian nya 😊';
     String separator = '-----------------------------------------\n';
     String downloadCekCucianApps =
-        '\n\nDownload aplikasi *Cek Cucian* untuk pantau status cucianmu di Seekil\n\n';
+        '\n\nDownload aplikasi *Cek Cucian by Seekil* untuk pantau status cucianmu di Seekil\n\n';
     String playStoreUrl =
         'https://play.google.com/store/apps/details?id=com.seekil.cek_cucian';
 
