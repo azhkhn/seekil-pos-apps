@@ -13,14 +13,35 @@ class HomeContentStaff extends StatelessWidget {
       width: Get.width,
       height: Get.height / 2,
       padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 16.0),
-      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        SvgPicture.asset(
-          'assets/svg/order_add_new.svg',
-          fit: BoxFit.cover,
-          height: 170.0,
+      child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+        Container(
+          padding: const EdgeInsets.all(8.0),
+          decoration: BoxDecoration(
+            color: ColorConstant.INFO,
+            border: Border.all(color: ColorConstant.INFO_BORDER),
+            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(Icons.info_outline_rounded),
+              SizedBox(width: 8.0),
+              Expanded(
+                child: Text(
+                  'Transaksi di atas tanggal 20, pembayaran harus di awal '
+                  'karena untuk closing akhir bulan',
+                ),
+              )
+            ],
+          ),
         ),
-        SizedBox(
-          height: 32.0,
+        Container(
+          margin: const EdgeInsets.symmetric(vertical: 32.0),
+          child: SvgPicture.asset(
+            'assets/svg/order_add_new.svg',
+            fit: BoxFit.cover,
+            height: 170.0,
+          ),
         ),
         Container(
           width: Get.width / 2,

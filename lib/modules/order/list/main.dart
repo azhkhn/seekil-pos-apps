@@ -46,6 +46,12 @@ class _OrderState extends State<Order> {
     });
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    pagingController.dispose();
+  }
+
   Future<void> fetchNewOrderList(dynamic pageKey) async {
     Map<String, String> objectParams = {
       'order_status_id': OrderStatusConstant.newest.toString(),
@@ -100,7 +106,7 @@ class _OrderState extends State<Order> {
                     totalOrder: inprogressListCount,
                   ),
                   _tabBarBadge(
-                    text: 'Siap Dikirim',
+                    text: 'Siap Diambil',
                     totalOrder: readyToPickupListCount,
                   ),
                   _tabBarBadge(

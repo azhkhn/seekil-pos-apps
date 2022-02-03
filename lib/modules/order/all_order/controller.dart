@@ -49,7 +49,7 @@ class AllOrderController extends GetxController {
   @override
   void onClose() {
     super.onClose();
-    pagingController.dispose();
+    // pagingController.dispose();
   }
 
   String checkQueryParams() {

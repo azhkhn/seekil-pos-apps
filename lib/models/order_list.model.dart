@@ -25,25 +25,38 @@ class OrderListModel {
   String orderId;
   String orderDate;
   String orderStatus;
+  int orderStatusId;
+  int paymentMethodId;
+  String orderType;
+  String paymentStatusName;
   String? paymentStatus;
   String customerName;
   int qty;
   int total;
 
-  OrderListModel(
-      {required this.orderId,
-      required this.orderDate,
-      required this.orderStatus,
-      this.paymentStatus,
-      required this.customerName,
-      required this.qty,
-      required this.total});
+  OrderListModel({
+    required this.orderId,
+    required this.orderDate,
+    required this.orderStatus,
+    required this.orderType,
+    required this.orderStatusId,
+    required this.paymentMethodId,
+    required this.paymentStatusName,
+    this.paymentStatus,
+    required this.customerName,
+    required this.qty,
+    required this.total,
+  });
 
   factory OrderListModel.fromJson(Map<String, dynamic> object) {
     return OrderListModel(
         orderId: object['order_id'],
         orderDate: object['order_date'],
         orderStatus: object['master_status']['name'],
+        orderType: object['master_type']['name'],
+        orderStatusId: object['order_status_id'],
+        paymentMethodId: object['payment_method_id'],
+        paymentStatusName: object['payment_status'],
         paymentStatus: object['payment_status'].contains('_')
             ? toBeginningOfSentenceCase(
                 object['payment_status'].replaceAll('_', ' '))

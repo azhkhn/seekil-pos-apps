@@ -4,6 +4,26 @@ import 'package:get_storage/get_storage.dart';
 import 'package:seekil_back_office/constants/storage_key.constant.dart';
 import 'package:seekil_back_office/utilities/services/seekil_api.dart';
 
+class OrderDetailForEditModel {
+  int? orderStatusId;
+  int? paymentMethodId;
+  String? paymentStatus;
+
+  OrderDetailForEditModel({
+    this.orderStatusId,
+    this.paymentMethodId,
+    this.paymentStatus,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'order_status_id': orderStatusId,
+      'payment_method_id': paymentMethodId,
+      'payment_status': paymentStatus
+    };
+  }
+}
+
 class OrderDetailModel {
   String orderStatusName, orderId, orderType, orderDate, customerName;
   String? storeName, pickupAddress, dropZone;
@@ -17,26 +37,27 @@ class OrderDetailModel {
       qty,
       points;
 
-  OrderDetailModel(
-      {required this.orderStatus,
-      required this.orderStatusName,
-      required this.orderId,
-      required this.orderType,
-      required this.storeName,
-      required this.pickupAddress,
-      required this.dropZone,
-      required this.customerName,
-      required this.paymentMethodName,
-      required this.whatsapp,
-      required this.paymentMethod,
-      required this.paymentStatus,
-      required this.itemSubtotal,
-      required this.ongkir,
-      required this.promo,
-      required this.total,
-      required this.qty,
-      required this.orderDate,
-      required this.points});
+  OrderDetailModel({
+    required this.orderStatus,
+    required this.orderStatusName,
+    required this.orderId,
+    required this.orderType,
+    required this.storeName,
+    required this.pickupAddress,
+    required this.dropZone,
+    required this.customerName,
+    required this.paymentMethodName,
+    required this.whatsapp,
+    required this.paymentMethod,
+    required this.paymentStatus,
+    required this.itemSubtotal,
+    required this.ongkir,
+    required this.promo,
+    required this.total,
+    required this.qty,
+    required this.orderDate,
+    required this.points,
+  });
 
   factory OrderDetailModel.fromJson(Map<String, dynamic> json) {
     return OrderDetailModel(
@@ -68,16 +89,6 @@ class OrderDetailModel {
       qty: json['qty'] != null ? json['qty'] : 0,
       total: json['total'] != null ? json['total'] : 0,
     );
-  }
-
-  get pickupDeliveryPrice => null;
-
-  Map<String, dynamic> toJson() {
-    return {
-      'order_status_id': orderStatus,
-      'payment_method_id': paymentMethod,
-      'payment_status': paymentStatus,
-    };
   }
 
   static Future<OrderDetailModel> fetchOrderDetail(String orderId) async {
