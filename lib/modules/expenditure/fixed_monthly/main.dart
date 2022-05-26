@@ -67,6 +67,7 @@ class ExpenditureFixedMonthly extends StatelessWidget {
                     if (value == null || value == '') {
                       return 'Nama harus diisi';
                     }
+                    return null;
                   },
                   onChanged: (value) {
                     model.name = value;
@@ -79,6 +80,7 @@ class ExpenditureFixedMonthly extends StatelessWidget {
                     if (value == null || value == '') {
                       return 'Deskripsi harus diisi';
                     }
+                    return null;
                   },
                   onChanged: (value) {
                     model.description = value;
@@ -93,6 +95,7 @@ class ExpenditureFixedMonthly extends StatelessWidget {
                     if (value == null || value == '') {
                       return 'Harga harus diisi';
                     }
+                    return null;
                   },
                   onChanged: (value) {
                     model.priceTemp = value;

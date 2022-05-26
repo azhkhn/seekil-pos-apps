@@ -4,8 +4,8 @@ import 'package:seekil_back_office/utilities/helper/order_helper.dart';
 
 class OrderAddNewModel {
   List<dynamic>? items;
-  String? customerName, whatsapp, pickupAddress, paymentStatus;
-  int? customerId,
+  String? customerName, whatsapp, pickupAddress, paymentStatus, customerId;
+  int? id,
       points,
       orderTypeId,
       storeId,
@@ -15,24 +15,27 @@ class OrderAddNewModel {
       pickupDeliveryPrice,
       potongan;
 
-  OrderAddNewModel(
-      {this.items,
-      this.customerName,
-      this.whatsapp,
-      this.pickupAddress,
-      this.paymentStatus,
-      this.pickupDeliveryPrice,
-      this.customerId,
-      this.points,
-      this.orderTypeId,
-      this.storeId,
-      this.partnershipId,
-      this.paymentMethodId,
-      this.promoId,
-      this.potongan});
+  OrderAddNewModel({
+    this.items,
+    this.customerName,
+    this.whatsapp,
+    this.pickupAddress,
+    this.paymentStatus,
+    this.pickupDeliveryPrice,
+    this.customerId,
+    this.id,
+    this.points,
+    this.orderTypeId,
+    this.storeId,
+    this.partnershipId,
+    this.paymentMethodId,
+    this.promoId,
+    this.potongan,
+  });
 
   Map<String, dynamic> toJson() {
     return {
+      "id": id,
       "customer_id": customerId,
       "customer_name": customerName,
       "whatsapp": whatsapp != null ? '62$whatsapp' : null,

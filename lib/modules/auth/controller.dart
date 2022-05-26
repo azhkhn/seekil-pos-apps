@@ -43,12 +43,14 @@ class LoginController extends GetxController with StateMixin {
     if (value == null || value == '') {
       return 'Username harus diisi';
     }
+    return null;
   }
 
   String? passwordValidator(String? value) {
     if (value == null || value == '') {
       return 'Password harus diisi';
     }
+    return null;
   }
 
   void onSubmitLogin() async {

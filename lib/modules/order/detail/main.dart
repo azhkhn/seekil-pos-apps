@@ -317,6 +317,7 @@ class _OrderDetailState extends State<OrderDetail> {
       orderUtils.launchWhatsapp(
           number: '6282127051607', message: orderUtils.sendInvoice());
     }
+    return null;
   }
 
   void Function()? onPrintInvoice() {
@@ -337,6 +338,7 @@ class _OrderDetailState extends State<OrderDetail> {
           mainButtonAction: () => Get.toNamed(AppRoutes.bluetoothPage),
           withBottomNavigation: true);
     }
+    return null;
   }
 
   void _showModalSendMessage(dynamic data) {

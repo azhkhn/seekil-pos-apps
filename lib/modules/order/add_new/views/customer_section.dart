@@ -114,6 +114,7 @@ class _OrderAddNewCustomerSectionState
                       if (value == null || value == '') {
                         return 'Nama Pelanggan harus diisi';
                       }
+                      return null;
                     },
                     itemBuilder: (context, itemData) {
                       final CustomerListModel user =
@@ -150,6 +151,7 @@ class _OrderAddNewCustomerSectionState
               if (value == null || value == '') {
                 return 'Whatsapp harus diisi';
               }
+              return null;
             },
             inputDecoration: InputDecoration(
                 filled: true,
@@ -181,6 +183,7 @@ class _OrderAddNewCustomerSectionState
                     if (value == null || value == '') {
                       return 'Jenis Order harus dipilih';
                     }
+                    return null;
                   },
                   dropdownItems: data,
                   onChanged: (dynamic value) {
@@ -219,7 +222,9 @@ class _OrderAddNewCustomerSectionState
                         if (value == null || value == '') {
                           return 'Lokasi Toko harus diisi';
                         }
+                        return null;
                       }
+                      return null;
                     },
                     onChanged: (dynamic value) {
                       setState(() {
@@ -255,7 +260,9 @@ class _OrderAddNewCustomerSectionState
                         if (value == null || value == '') {
                           return 'Alamat Pengambilan harus diisi';
                         }
+                        return null;
                       }
+                      return null;
                     },
                     onChanged: (dynamic value) {
                       setState(() {
@@ -284,7 +291,9 @@ class _OrderAddNewCustomerSectionState
                   if (value == null || value == '') {
                     return 'Alamat Pengambilan harus diisi';
                   }
+                  return null;
                 }
+                return null;
               },
               onChanged: (dynamic newValue) {
                 setState(() {

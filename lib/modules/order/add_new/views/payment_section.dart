@@ -165,6 +165,7 @@ class _OrderAddNewPaymentSectionState extends State<OrderAddNewPaymentSection> {
                         if (value == null || value == '') {
                           return 'Metode Pembayaran harus dipilih';
                         }
+                        return null;
                       },
                       onChanged: (dynamic value) {
                         setState(() {
@@ -195,6 +196,7 @@ class _OrderAddNewPaymentSectionState extends State<OrderAddNewPaymentSection> {
                         if (value == null || value == '') {
                           return 'Status Pembayaran harus dipilih';
                         }
+                        return null;
                       },
                       dropdownItems: [
                         {'id': 'lunas', 'name': 'Lunas'},

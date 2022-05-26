@@ -148,6 +148,7 @@ class _OrderAddNewItemsSectionState extends State<OrderAddNewItemsSection> {
                       if (value == null || value == '') {
                         return 'Nama Item harus diisi';
                       }
+                      return null;
                     },
                     onChanged: (dynamic value) {
                       orderItemModel.itemName = value;
@@ -203,6 +204,7 @@ class _OrderAddNewItemsSectionState extends State<OrderAddNewItemsSection> {
                                     if (value == null || value.isEmpty) {
                                       return 'Layanan harus dipilih';
                                     }
+                                    return null;
                                   },
                                   decoration: BoxDecoration(
                                       color: Colors.grey[200],

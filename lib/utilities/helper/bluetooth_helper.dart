@@ -46,6 +46,7 @@ class BluetoothHelper {
         for (var service in item['services']) {
           bluetooth.printLeftRight(service['name'] as String,
               wt.currencyFormat(service['price']), 1);
+          bluetooth.printNewLine();
         }
       }
     }

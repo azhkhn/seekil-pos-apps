@@ -120,7 +120,8 @@ class _OrderAddNewState extends State<OrderAddNew> {
   }
 
   void _onSuggestionSelected(dynamic item) {
-    _orderAddNewModel.customerId = item.id;
+    // _orderAddNewModel.customerId = item.id;
+    _orderAddNewModel.customerId = item.customerId;
     _orderAddNewModel.customerName = item.name;
     _orderAddNewModel.whatsapp = item.whatsapp.replaceRange(0, 2, '');
     _orderAddNewModel.points = item.points;
