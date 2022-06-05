@@ -28,7 +28,7 @@ class HomeContentStaff extends StatelessWidget {
               SizedBox(width: 8.0),
               Expanded(
                 child: Text(
-                  'Transaksi di atas tanggal 20, pembayaran harus di awal '
+                  'Transaksi di atas tanggal 25, pembayaran harus di awal '
                   'karena untuk closing akhir bulan',
                 ),
               )

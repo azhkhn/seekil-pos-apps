@@ -84,9 +84,8 @@ class HomeCardStaff extends StatelessWidget {
             ),
             Material(
               child: InkWell(
-                onTap: () => AuthHelper.isSuperAdmin()
-                    ? Get.toNamed(AppRoutes.expenditureIncomingAndExpenses)
-                    : null,
+                onTap: () =>
+                    Get.toNamed(AppRoutes.expenditureIncomingAndExpenses),
                 borderRadius: BorderRadius.circular(4.0),
                 child: Container(
                   padding: EdgeInsets.all(8.0),
@@ -101,20 +100,13 @@ class HomeCardStaff extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('Laci'),
-                          Text(wt.currencyFormat(data['incoming']['paid']),
+                          Text(
+                              wt.currencyFormat(
+                                  data['incoming']['paid']['total_paid']),
                               style: TextStyle(fontWeight: FontWeight.bold)),
                         ],
                       ),
-                      Tooltip(
-                        child: Icon(Icons.info_outline_rounded),
-                        showDuration: Duration(seconds: 2),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 16.0,
-                          vertical: 8.0,
-                        ),
-                        message:
-                            'Pastiin nominal transaksi yang\nudah lunas sama dengan uang laci, ya!',
-                      ),
+                      Icon(Icons.chevron_right_outlined),
                     ],
                   ),
                 ),

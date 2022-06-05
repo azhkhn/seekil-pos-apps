@@ -36,14 +36,57 @@ class CardIncoming extends StatelessWidget {
                       CardContainerRowChild(
                         children: [
                           Text('Lunas'),
-                          Text(wt.currencyFormat(data['incoming']['paid']))
+                          Text(wt.currencyFormat(
+                              data['incoming']['paid']['total_paid']))
                         ],
                       ),
-                      CardContainerRowChild(
-                        children: [
-                          Text('Belum lunas'),
-                          Text(wt.currencyFormat(data['incoming']['unpaid']))
-                        ],
+                      if (data['incoming']['paid']['cash'] != 0)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: CardContainerRowChild(
+                            children: [
+                              Text('Tunai'),
+                              Text(
+                                wt.currencyFormat(
+                                    data['incoming']['paid']['cash']),
+                              ),
+                            ],
+                          ),
+                        ),
+                      if (data['incoming']['paid']['dana'] != 0)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: CardContainerRowChild(
+                            children: [
+                              Text('Dana'),
+                              Text(
+                                wt.currencyFormat(
+                                    data['incoming']['paid']['dana']),
+                              ),
+                            ],
+                          ),
+                        ),
+                      if (data['incoming']['paid']['shopeepay'] != 0)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: CardContainerRowChild(
+                            children: [
+                              Text('ShopeePay'),
+                              Text(
+                                wt.currencyFormat(
+                                    data['incoming']['paid']['shopeepay']),
+                              ),
+                            ],
+                          ),
+                        ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: CardContainerRowChild(
+                          children: [
+                            Text('Belum lunas'),
+                            Text(wt.currencyFormat(data['incoming']['unpaid']))
+                          ],
+                        ),
                       ),
                       Divider(),
                       CardContainerRowChild(
