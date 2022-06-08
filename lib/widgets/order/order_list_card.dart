@@ -5,6 +5,9 @@ import 'package:seekil_back_office/constants/general.constant.dart';
 import 'package:seekil_back_office/models/master_data.model.dart';
 import 'package:seekil_back_office/models/order_detail.model.dart';
 import 'package:seekil_back_office/models/order_list.model.dart';
+import 'package:seekil_back_office/models/order_list_items.model.dart';
+import 'package:seekil_back_office/utilities/helper/auth_helper.dart';
+import 'package:seekil_back_office/utilities/helper/order_helper.dart';
 import 'package:seekil_back_office/utilities/helper/snackbar_helper.dart';
 import 'package:seekil_back_office/utilities/helper/word_transformation.dart';
 import 'package:seekil_back_office/widgets/forms/form_field.dart';
@@ -23,6 +26,7 @@ class OrderListCard extends StatefulWidget {
 
 class _OrderListCardState extends State<OrderListCard> {
   final WordTransformation wt = WordTransformation();
+  final OrderUtils orderUtils = OrderUtils();
   late Future<List<dynamic>> _paymentMethod, _orderStatus;
 
   @override
@@ -79,19 +83,43 @@ class _OrderListCardState extends State<OrderListCard> {
                       ),
                     ],
                   ),
-                  GestureDetector(
-                    onTap: () => _showModalEditOrder(widget.data),
-                    child: Container(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Icon(
-                        Icons.more_horiz_rounded,
-                        color: Colors.grey,
+                  Row(
+                    children: [
+                      if (AuthHelper.isSuperAdmin())
+                        GestureDetector(
+                          onTap: () => _onSendInvoice(widget.data),
+                          child: Container(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Icon(
+                              Icons.chat_outlined,
+                              color: Colors.grey,
+                              size: 20.0,
+                            ),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.grey.shade200,
+                            ),
+                          ),
+                        ),
+                      Container(
+                        margin: const EdgeInsets.only(left: 8.0),
+                        child: GestureDetector(
+                          onTap: () => _showModalEditOrder(widget.data),
+                          child: Container(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Icon(
+                              Icons.mode_edit_outline_outlined,
+                              size: 20.0,
+                              color: Colors.grey,
+                            ),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.grey.shade200,
+                            ),
+                          ),
+                        ),
                       ),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.grey.shade200,
-                      ),
-                    ),
+                    ],
                   )
                 ],
               ),
@@ -284,6 +312,15 @@ class _OrderListCardState extends State<OrderListCard> {
         ),
       ),
       isScrollControlled: true,
+    );
+  }
+
+  Future<void> _onSendInvoice(OrderListModel data) async {
+    await OrderDetailModel.fetchOrderDetail(data.orderId);
+    await OrderItemListItemsModel.fetchOrderItems(data.orderId);
+    orderUtils.launchWhatsapp(
+      number: data.customerWhatsapp,
+      message: orderUtils.sendInvoice(),
     );
   }
 }

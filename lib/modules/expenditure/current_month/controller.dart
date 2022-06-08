@@ -7,6 +7,7 @@ import 'package:seekil_back_office/utilities/helper/snackbar_helper.dart';
 
 class ExpenditureCurrentMonthController extends GetxController with StateMixin {
   final formKey = GlobalKey<FormState>();
+  RxInt totalExpenditureCurrentMonth = 0.obs;
   RxBool isLoading = false.obs;
 
   @override
@@ -18,6 +19,10 @@ class ExpenditureCurrentMonthController extends GetxController with StateMixin {
   Future<void> fetchCurrentMonth() async {
     try {
       change(null, status: RxStatus.loading());
+
+      Map<String, dynamic> expenditureData = await ExpenditureModel.fetchCashFlowCurrentMonth();
+      totalExpenditureCurrentMonth.value = expenditureData['expenditure']['spending_money'];
+
       Map<String, dynamic> data =
           await ExpenditureModel.fetchPeriodSpendingMoney('current-month');
 

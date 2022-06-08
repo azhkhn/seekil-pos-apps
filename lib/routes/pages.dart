@@ -12,6 +12,7 @@ import 'package:seekil_back_office/modules/expenditure/income_and_expenses/main.
 import 'package:seekil_back_office/modules/order/detail/main.dart';
 import 'package:seekil_back_office/modules/order/invoice/main.dart';
 import 'package:seekil_back_office/modules/order/tracking/main.dart';
+import 'package:seekil_back_office/modules/statistic/main.dart';
 import 'package:seekil_back_office/routes/routes.dart';
 import 'package:seekil_back_office/splash_screen.dart';
 import 'package:seekil_back_office/modules/home/main.dart';
@@ -93,6 +94,11 @@ class AppPages {
     GetPage(
         name: AppRoutes.promotionPage,
         page: () => PromotionPage(),
-        transition: _defaultTransition)
+        transition: _defaultTransition),
+    GetPage(
+      name: AppRoutes.statistic,
+      page: () => StatisticPage(),
+      transition: _defaultTransition,
+    ),
   ];
 }

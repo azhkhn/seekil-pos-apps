@@ -24,7 +24,7 @@ class ExpenditureModel {
     return {
       'name': name,
       'description': description,
-      'price': priceTemp != null ? int.parse(priceTemp!) : 0
+      'price': price != null ? price : 0,
     };
   }
 

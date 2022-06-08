@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:seekil_back_office/models/expenditure.model.dart';
 import 'package:seekil_back_office/modules/expenditure/income_and_expenses/views/card_incoming.dart';
 import 'package:seekil_back_office/modules/expenditure/income_and_expenses/views/card_outcoming.dart';
+import 'package:seekil_back_office/modules/expenditure/income_and_expenses/views/card_outcoming_staff.dart';
 import 'package:seekil_back_office/utilities/helper/auth_helper.dart';
 import 'package:seekil_back_office/utilities/helper/word_transformation.dart';
 import 'package:seekil_back_office/widgets/shimmer.dart';
@@ -80,8 +81,9 @@ class ExpenditureIncomingAndExpensesState
               ),
             SizedBox(height: 24.0),
             CardIncoming(data),
-            if (AuthHelper.isSuperAdmin()) SizedBox(height: 24.0),
-            if (AuthHelper.isSuperAdmin()) CardExpenses(data)
+            SizedBox(height: 24.0),
+            if (AuthHelper.isSuperAdmin()) CardExpenses(data),
+            if (AuthHelper.isStaff()) CardExpensesStaff()
           ],
         ),
       ),

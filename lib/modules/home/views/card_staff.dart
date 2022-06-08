@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:seekil_back_office/routes/routes.dart';
-import 'package:seekil_back_office/utilities/helper/auth_helper.dart';
 import 'package:seekil_back_office/utilities/helper/word_transformation.dart';
 import 'package:seekil_back_office/widgets/shimmer.dart';
 
@@ -102,8 +101,8 @@ class HomeCardStaff extends StatelessWidget {
                           Text('Laci'),
                           Text(
                               wt.currencyFormat(
-                                  data['incoming']['paid']['total_paid']),
-                              style: TextStyle(fontWeight: FontWeight.bold)),
+                                  data['total_current_month']),
+                              style: TextStyle(fontWeight: FontWeight.bold),),
                         ],
                       ),
                       Icon(Icons.chevron_right_outlined),

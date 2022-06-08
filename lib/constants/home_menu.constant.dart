@@ -51,7 +51,7 @@ class HomeMenuConstant {
           ),
           'menu_title': 'Data Statistik',
           'menu_subtitle': 'Lihat grafik transaksi',
-          'menu_action': () => {}
+          'menu_action': () => Get.toNamed(AppRoutes.statistic),
         },
         {
           'menu_leading_icon':

@@ -123,11 +123,7 @@ class ExpenditureCurrentMonth extends StatelessWidget {
   }
 
   void _editForm(ExpenditureModel item) {
-    Map<String, dynamic> formDataJson = {
-      'name': item.name,
-      'description': item.description,
-      'price': item.price
-    };
+    ExpenditureModel model = new ExpenditureModel();
 
     Get.bottomSheet(
       BottomSheet(
@@ -159,25 +155,43 @@ class ExpenditureCurrentMonth extends StatelessWidget {
                     ),
                     MyFormField(
                       label: 'Nama',
-                      initialValue: formDataJson['name'],
-                      onChanged: (value) => formDataJson['name'] = value,
+                      initialValue: item.name,
+                      onChanged: (value) {
+                        if (value != null || value != '') {
+                          model.name = value;
+                        } else {
+                          model.name = item.name;
+                        }
+                      },
                     ),
                     MyFormField(
                       label: 'Deskripsi',
-                      initialValue: formDataJson['description'],
-                      onChanged: (value) => formDataJson['description'] = value,
+                      initialValue: item.description,
+                      onChanged: (value) {
+                        if (value != null || value != '') {
+                          model.description = value;
+                        } else {
+                          model.description = item.description;
+                        }
+                      },
                     ),
                     MyFormField(
                       label: 'Harga',
-                      initialValue: formDataJson['price'].toString(),
+                      initialValue: item.price.toString(),
                       textInputType: TextInputType.number,
-                      onChanged: (value) => formDataJson['priceTemp'] = value,
+                      onChanged: (value) {
+                        if (value != null) {
+                          model.price = int.parse(value);
+                        } else {
+                          model.price = item.price;
+                        }
+                      },
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width,
                       child: ElevatedButton(
                         onPressed: () => controller.onUpdateItem(
-                            item.id.toString(), formDataJson),
+                            item.id.toString(), model.toJson()),
                         child: Text('Simpan'),
                         style: ElevatedButton.styleFrom(
                             primary: ColorConstant.DEF,

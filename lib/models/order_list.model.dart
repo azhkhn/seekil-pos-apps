@@ -31,6 +31,7 @@ class OrderListModel {
   String paymentStatusName;
   String? paymentStatus;
   String customerName;
+  String customerWhatsapp;
   int qty;
   int total;
 
@@ -44,6 +45,7 @@ class OrderListModel {
     required this.paymentStatusName,
     this.paymentStatus,
     required this.customerName,
+    required this.customerWhatsapp,
     required this.qty,
     required this.total,
   });
@@ -62,6 +64,7 @@ class OrderListModel {
                 object['payment_status'].replaceAll('_', ' '))
             : toBeginningOfSentenceCase(object['payment_status']),
         customerName: object['customer']['name'],
+        customerWhatsapp: object['customer']['whatsapp'],
         qty: object['qty'],
         total: object['total']);
   }

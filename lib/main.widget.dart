@@ -1,9 +1,11 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:seekil_back_office/modules/expenditure/current_month/main.dart';
 import 'package:seekil_back_office/modules/home/main.dart';
 import 'package:seekil_back_office/modules/order/list/main.dart';
 import 'package:seekil_back_office/constants/color.constant.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:seekil_back_office/utilities/helper/auth_helper.dart';
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 
@@ -28,7 +30,11 @@ class _MainWidgetState extends State<MainWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final _pages = <Widget>[Home(), Order()];
+    final _pages = <Widget>[
+      Home(),
+      Order(),
+      if (AuthHelper.isStaff()) ExpenditureCurrentMonth()
+    ];
 
     final _bottomNavbarItems = <BottomNavigationBarItem>[
       BottomNavigationBarItem(
@@ -39,6 +45,11 @@ class _MainWidgetState extends State<MainWidget> {
           icon: Icon(Icons.receipt_outlined),
           label: 'Transaksi',
           activeIcon: Icon(Icons.receipt_rounded)),
+      if (AuthHelper.isStaff())
+        BottomNavigationBarItem(
+            icon: Icon(Icons.payment_outlined),
+            label: 'Pengeluaran Bulanan',
+            activeIcon: Icon(Icons.payment_rounded)),
     ];
 
     return Scaffold(

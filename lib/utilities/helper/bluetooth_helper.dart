@@ -21,6 +21,7 @@ class BluetoothHelper {
 
     String currentDate = wt.dateFormatter(
         date: _orderDetail!.orderDate, type: DateFormatType.dateTimeInfo);
+    String? paymentMethod = _orderDetail.paymentMethodName;
     int? ongkosKirim = _orderDetail.ongkir ?? 0;
     int? discount = _orderDetail.promo ?? 0;
     int itemSubtotal = orderUtils.getItemSubtotal(_orderItems['list']);
@@ -33,7 +34,7 @@ class BluetoothHelper {
     bluetooth.printNewLine();
     bluetooth.printNewLine();
     bluetooth.printNewLine();
-    bluetooth.printLeftRight('Nama', _orderDetail.customerName, 1);
+    bluetooth.printCustom(_orderDetail.customerName, 1, 2);
     bluetooth.printLeftRight(
         'Whatsapp', '${_orderDetail.whatsapp!.replaceRange(0, 2, '0')}', 1);
     bluetooth.printLeftRight('Waktu', currentDate, 1);
@@ -46,16 +47,23 @@ class BluetoothHelper {
         for (var service in item['services']) {
           bluetooth.printLeftRight(service['name'] as String,
               wt.currencyFormat(service['price']), 1);
-          bluetooth.printNewLine();
         }
+
+        bluetooth.printNewLine();
       }
     }
 
     bluetooth.printCustom('--------------------------------', 1, 2);
     bluetooth.printLeftRight('Subtotal', wt.currencyFormat(itemSubtotal), 1);
-    bluetooth.printLeftRight('Ongkos Kirim', wt.currencyFormat(ongkosKirim), 1);
-    bluetooth.printLeftRight('Diskon', '-${wt.currencyFormat(discount)}', 1);
+    if (ongkosKirim != 0) {
+      bluetooth.printLeftRight(
+          'Ongkos Kirim', wt.currencyFormat(ongkosKirim), 1);
+    }
+    if (ongkosKirim != 0) {
+      bluetooth.printLeftRight('Diskon', '-${wt.currencyFormat(discount)}', 1);
+    }
     bluetooth.printLeftRight('Total', wt.currencyFormat(total), 1);
+    bluetooth.printLeftRight('Metode Pembayaran', paymentMethod.toString(), 1);
     bluetooth.printCustom('--------------------------------', 1, 2);
     bluetooth.printCustom(
         '### ${_orderDetail.paymentStatus!.toUpperCase()} ###', 1, 1);
