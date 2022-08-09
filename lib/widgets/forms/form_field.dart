@@ -13,7 +13,7 @@ class DropdownItemKeyValue {
 enum FormFieldType { DROPDOWN, MULTI_DROPDOWN, TEXT, SEARCHABLE_TEXT_FIELD }
 
 class MyFormField extends StatelessWidget {
-  final String label;
+  final String? label;
   final bool readOnly;
   final FormFieldType type;
   final String? initialValue;
@@ -38,35 +38,37 @@ class MyFormField extends StatelessWidget {
   final Widget? suffixIcon;
   final FocusNode? focusNode;
   final String? Function(String)? onFieldSubmitted;
+  final String? hintText;
 
-  MyFormField(
-      {Key? key,
-      this.obscureText = false,
-      this.isMandatory = false,
-      this.readOnly = false,
-      this.type = FormFieldType.TEXT,
-      this.textInputType = TextInputType.text,
-      this.textInputAction = TextInputAction.next,
-      this.textCapitalization = TextCapitalization.sentences,
-      this.dropdownItems,
-      this.inputFormatters,
-      required this.label,
-      this.initialValue,
-      this.onTap,
-      this.dropdownCurrentValue,
-      this.onSaved,
-      this.controller,
-      this.dropdownItemKeyValue,
-      this.onChanged,
-      this.dropdownSelectedItem,
-      this.inputDecoration,
-      this.textFieldValidator,
-      this.dropdowndValidator,
-      this.multiDropdownValidator,
-      this.suffixIcon,
-      this.focusNode,
-      this.onFieldSubmitted})
-      : super(key: key);
+  MyFormField({
+    Key? key,
+    this.obscureText = false,
+    this.isMandatory = false,
+    this.readOnly = false,
+    this.type = FormFieldType.TEXT,
+    this.textInputType = TextInputType.text,
+    this.textInputAction = TextInputAction.next,
+    this.textCapitalization = TextCapitalization.sentences,
+    this.dropdownItems,
+    this.inputFormatters,
+    this.label,
+    this.initialValue,
+    this.onTap,
+    this.dropdownCurrentValue,
+    this.onSaved,
+    this.controller,
+    this.dropdownItemKeyValue,
+    this.onChanged,
+    this.dropdownSelectedItem,
+    this.inputDecoration,
+    this.textFieldValidator,
+    this.dropdowndValidator,
+    this.multiDropdownValidator,
+    this.suffixIcon,
+    this.focusNode,
+    this.onFieldSubmitted,
+    this.hintText,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -111,6 +113,8 @@ class MyFormField extends StatelessWidget {
               decoration: inputDecoration != null
                   ? inputDecoration
                   : InputDecoration(
+                      hintText: hintText,
+                      hintStyle: TextStyle(color: Colors.grey),
                       filled: true,
                       fillColor: Colors.grey[200],
                       border: OutlineInputBorder(
@@ -131,22 +135,23 @@ class MyFormField extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Text(label,
-                  style: TextStyle(
-                      color: Colors.grey, fontWeight: FontWeight.bold)),
-              SizedBox(
-                width: 4.0,
-              ),
-              if (isMandatory)
-                Text(
-                  '*',
-                  style: TextStyle(color: Colors.grey),
-                )
-            ],
-          ),
-          SizedBox(height: 8),
+          if (label != null)
+            Row(
+              children: [
+                Text(label!,
+                    style: TextStyle(
+                        color: Colors.grey, fontWeight: FontWeight.bold)),
+                SizedBox(
+                  width: 4.0,
+                ),
+                if (isMandatory)
+                  Text(
+                    '*',
+                    style: TextStyle(color: Colors.grey),
+                  )
+              ],
+            ),
+          if (label != null) SizedBox(height: 8),
           _checkType()
         ],
       ),

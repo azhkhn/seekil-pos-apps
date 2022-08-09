@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:seekil_back_office/models/master_data.model.dart';
 import 'package:seekil_back_office/models/order_add_new.model.dart';
+import 'package:seekil_back_office/models/promo_model.dart';
 import 'package:seekil_back_office/modules/order/add_new/views/customer_section.dart';
 import 'package:seekil_back_office/modules/order/add_new/views/footer_section.dart';
 import 'package:seekil_back_office/modules/order/add_new/views/form_items.dart';
@@ -25,8 +27,20 @@ class _OrderAddNewState extends State<OrderAddNew> {
   bool isUsePoint = false;
   bool _showLoading = false;
 
+  late Future<List<PromoModel>?> promoList;
+
   TextEditingController whatsappController = TextEditingController();
   TextEditingController customerNameController = TextEditingController();
+
+  void initState() {
+    super.initState();
+    fetchMasterData();
+  }
+
+  void fetchMasterData() {
+    promoList = MasterDataModel.fetchMasterPromo(params: 'status=1');
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +63,7 @@ class _OrderAddNewState extends State<OrderAddNew> {
                         _separator,
                         OrderAddNewItemsSection(
                           _orderAddNewModel,
+                          promoList: promoList,
                           onSavedFormItems: () {
                             setState(() {});
                           },
@@ -56,6 +71,7 @@ class _OrderAddNewState extends State<OrderAddNew> {
                         _separator,
                         OrderAddNewPaymentSection(
                           _orderAddNewModel,
+                          promoList: promoList,
                           isUsePoint: isUsePoint,
                           onChangeUsePoint: (bool value) {
                             setState(() {
@@ -72,13 +88,13 @@ class _OrderAddNewState extends State<OrderAddNew> {
                           },
                           onChangePromo: (dynamic item) {
                             List<dynamic>? items = _orderAddNewModel.items;
-                            int discount = item['discount'];
+                            int discount = item.discount;
                             double totalDiscount =
                                 (orderUtils.getItemSubtotal(items) * discount) /
                                     100;
 
                             setState(() {
-                              _orderAddNewModel.promoId = item['id'] as int;
+                              _orderAddNewModel.promoId = item.id as int;
                               _orderAddNewModel.potongan =
                                   totalDiscount.toInt();
                             });

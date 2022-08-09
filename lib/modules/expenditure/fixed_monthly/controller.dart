@@ -1,9 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:seekil_back_office/constants/general.constant.dart';
 import 'package:seekil_back_office/models/expenditure.model.dart';
-import 'package:seekil_back_office/utilities/helper/snackbar_helper.dart';
 
 class ExpenditureFixedMonthlyController extends GetxController with StateMixin {
   final formKey = GlobalKey<FormState>();
@@ -33,24 +32,23 @@ class ExpenditureFixedMonthlyController extends GetxController with StateMixin {
 
   void onSavedForm(ExpenditureModel model) async {
     if (formKey.currentState!.validate()) {
-      Get.back();
-      isLoading.value = true;
-      bool isCreated =
-          await ExpenditureModel().createFixedMonthlyExpenses(model);
+      try {
+        Get.back();
+        isLoading.value = true;
+        bool isCreated =
+            await ExpenditureModel().createFixedMonthlyExpenses(model);
 
-      if (isCreated) {
+        if (isCreated) {
+          isLoading.value = false;
+          fetchFixedMonthlyData();
+          Fluttertoast.showToast(msg: 'Berhasil tambah data');
+        } else {
+          isLoading.value = false;
+          Fluttertoast.showToast(msg: 'Gagal tambah data');
+        }
+      } on DioError catch (e) {
         isLoading.value = false;
-        fetchFixedMonthlyData();
-        SnackbarHelper.show(
-            snackStatus: SnackStatus.SUCCESS,
-            title: 'Berhasil',
-            message: 'Data pengeluaran berhasil dibuat');
-      } else {
-        isLoading.value = false;
-        SnackbarHelper.show(
-            title: GeneralConstant.ERROR_TITLE,
-            snackStatus: SnackStatus.ERROR,
-            message: 'Gagal tambah data pengeluaran');
+        Fluttertoast.showToast(msg: 'Terjadi kesalahan: ${e.message}');
       }
     }
   }
@@ -65,15 +63,29 @@ class ExpenditureFixedMonthlyController extends GetxController with StateMixin {
       if (isCreated) {
         isLoading.value = false;
         fetchFixedMonthlyData();
-        SnackbarHelper.show(
-            snackStatus: SnackStatus.SUCCESS,
-            title: 'Berhasil',
-            message: 'Data pengeluaran berhasil diupdate');
+        Fluttertoast.showToast(msg: 'Berhasil update data');
       }
-    } catch (error) {
+    } on DioError catch (error) {
       isLoading.value = false;
-      SnackbarHelper.show(
-          title: GeneralConstant.ERROR_TITLE, message: error.toString());
+      Fluttertoast.showToast(msg: 'Terjadi kesalahan: ${error.message}');
+    }
+  }
+
+  void onDeleteItem(String id) async {
+    try {
+      Get.back();
+      isLoading.value = true;
+      bool isDeleted =
+          await ExpenditureModel.deleteFixedMonthlyExpensesById(id);
+
+      if (isDeleted) {
+        isLoading.value = false;
+        fetchFixedMonthlyData();
+        Fluttertoast.showToast(msg: 'Berhasil hapus data');
+      }
+    } on DioError catch (e) {
+      isLoading.value = false;
+      Fluttertoast.showToast(msg: 'Terjadi kesalahan: ${e.message}');
     }
   }
 }

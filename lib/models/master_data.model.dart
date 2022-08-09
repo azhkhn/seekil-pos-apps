@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:seekil_back_office/constants/order_status.constant.dart';
+import 'package:seekil_back_office/models/promo_model.dart';
 import 'package:seekil_back_office/utilities/services/seekil_api.dart';
 
 class MasterDataModel {
@@ -25,11 +26,18 @@ class MasterDataModel {
     return data;
   }
 
-  static Future<List<dynamic>> fetchMasterPromo() async {
-    SeekilApi seekilApi = SeekilApi();
-    Response response = await seekilApi.get('master/promo');
-    List<dynamic> data = jsonDecode(response.toString())['list'];
-    return data;
+  static Future<List<PromoModel>?> fetchMasterPromo({String? params}) async {
+    try {
+      SeekilApi seekilApi = SeekilApi();
+      Response response = params != null
+          ? await seekilApi.get('master/promo?$params')
+          : await seekilApi.get('master/promo');
+      List data = response.data['list'];
+
+      return data.map((e) => PromoModel.fromMap(e)).toList();
+    } on DioError {
+      return null;
+    }
   }
 
   static Future<List<dynamic>> fetchMasterPaymentMethod() async {

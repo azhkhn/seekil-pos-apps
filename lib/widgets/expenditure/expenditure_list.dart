@@ -13,10 +13,10 @@ class ExpenditureList extends StatelessWidget {
     return ListView.separated(
       padding: EdgeInsets.all(16.0),
       itemCount: list.length,
-      separatorBuilder: (context, index) => SizedBox(height: 4.0),
+      separatorBuilder: (context, index) => Divider(),
       itemBuilder: (context, index) {
         ExpenditureModel item = list[index];
-        return Card(
+        return Container(
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: ListTile(

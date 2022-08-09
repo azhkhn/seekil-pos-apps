@@ -43,7 +43,7 @@ class ExpenditureIncomingAndExpensesState
       body: RefreshIndicator(
         onRefresh: fetchInitialData,
         child: ListView(
-          physics: AlwaysScrollableScrollPhysics(),
+          physics: BouncingScrollPhysics(),
           padding: EdgeInsets.all(16.0),
           children: [
             if (AuthHelper.isSuperAdmin())

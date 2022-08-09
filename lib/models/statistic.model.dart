@@ -23,14 +23,16 @@ class StatisticModel {
     );
   }
 
-  static Future<List<StatisticModel>> fetchStatistic() async {
+  static Future<List<StatisticModel>> fetchStatistic({String? params}) async {
     try {
       SeekilApi seekilApi = SeekilApi();
-      Response response = await seekilApi.get('/statistic/month-in-year');
+      Response response = params != null
+          ? await seekilApi.get('/statistic/month-in-year?$params')
+          : await seekilApi.get('/statistic/month-in-year');
       List<dynamic> data = response.data['list'];
 
       return data.map((e) => StatisticModel.fromJson(e)).toList();
-    } on DioError catch(e) {
+    } on DioError catch (e) {
       throw Exception(e.message);
     }
   }

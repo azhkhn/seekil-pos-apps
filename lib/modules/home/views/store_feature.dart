@@ -12,8 +12,8 @@ class HomeStoreFeature extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('Menu Toko',
-              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
-          SizedBox(height: 8.0),
+              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
+          SizedBox(height: 16.0),
           GridView.count(
             shrinkWrap: true,
             physics: ScrollPhysics(),
@@ -24,24 +24,27 @@ class HomeStoreFeature extends StatelessWidget {
             children: HomeMenuConstant.menuStoreFeatures.map((e) {
               return GestureDetector(
                 onTap: e['menu_action'],
-                child: Container(
-                  padding: EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(8.0)),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        e['menu_icon'],
-                        Flexible(
-                          child: Text(
-                            e['menu_title'],
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 13.0),
-                          ),
-                        )
-                      ],
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                  ),
+                  elevation: 8.0,
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          e['menu_icon'],
+                          Flexible(
+                            child: Text(
+                              e['menu_title'],
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 13.0),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),

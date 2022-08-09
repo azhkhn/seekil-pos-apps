@@ -63,7 +63,7 @@ class BluetoothHelper {
       bluetooth.printLeftRight('Diskon', '-${wt.currencyFormat(discount)}', 1);
     }
     bluetooth.printLeftRight('Total', wt.currencyFormat(total), 1);
-    bluetooth.printLeftRight('Metode Pembayaran', paymentMethod.toString(), 1);
+    bluetooth.printLeftRight('Pembayaran', paymentMethod.toString(), 1);
     bluetooth.printCustom('--------------------------------', 1, 2);
     bluetooth.printCustom(
         '### ${_orderDetail.paymentStatus!.toUpperCase()} ###', 1, 1);

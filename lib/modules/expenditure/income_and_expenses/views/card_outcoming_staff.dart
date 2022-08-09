@@ -43,7 +43,10 @@ class CardExpensesStaff extends StatelessWidget {
           Divider(),
           CardContainerRowChild(
             children: [
-              Text('Total Pengeluaran', style: TextStyle(fontWeight: FontWeight.bold),),
+              Text(
+                'Total Pengeluaran',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               Obx(
                 () => Text(
                   wt.currencyFormat(
@@ -114,20 +117,9 @@ class CardExpensesStaff extends StatelessWidget {
             title: 'Pengeluaran',
             backgroundColor: ColorConstant.ERROR_BORDER,
             children: [
-              CardContainerRowChild(
-                children: [Text('Rp-'), Text('Rp-')],
-              ),
-              Divider(),
-              CardContainerRowChild(
-                children: [Text('Rp-'), Text('Rp-')],
-              ),
-              CardContainerRowChild(
-                children: [Text('Rp-'), Text('Rp-')],
-              ),
-              Divider(),
-              CardContainerRowChild(
-                children: [Text('Rp-'), Text('Rp-')],
-              ),
+              Center(
+                child: Text('Belum ada pengeluaran bulan ini'),
+              )
             ],
           )
         ],

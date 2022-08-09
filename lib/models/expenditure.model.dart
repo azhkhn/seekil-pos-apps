@@ -8,16 +8,25 @@ class ExpenditureModel {
   String? description;
   int? price;
   String? priceTemp;
+  String? createdAt;
 
-  ExpenditureModel(
-      {this.id, this.name, this.description, this.price, this.priceTemp});
+  ExpenditureModel({
+    this.id,
+    this.name,
+    this.description,
+    this.price,
+    this.priceTemp,
+    this.createdAt,
+  });
 
   factory ExpenditureModel.fromJson(Map<String, dynamic> json) {
     return ExpenditureModel(
-        id: json['id'],
-        name: json['name'],
-        description: json['description'],
-        price: json['price']);
+      id: json['id'],
+      name: json['name'],
+      description: json['description'],
+      price: json['price'],
+      createdAt: json['createdAt'],
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -47,9 +56,12 @@ class ExpenditureModel {
     return jsonDecode(response.toString())['data'];
   }
 
-  static Future<Map<String, dynamic>> fetchAllSpendingMoney() async {
+  static Future<Map<String, dynamic>> fetchAllSpendingMoney(
+      {String? params}) async {
     SeekilApi seekilApi = SeekilApi();
-    Response response = await seekilApi.get('spending-money');
+    Response response = params != null
+        ? await seekilApi.get('spending-money?$params')
+        : await seekilApi.get('spending-money');
     var responseJson = jsonDecode(response.toString());
 
     return {
@@ -136,6 +148,38 @@ class ExpenditureModel {
       } else {
         return false;
       }
+    } on DioError {
+      return false;
+    }
+  }
+
+  static Future<bool> deleteSpendingMoneyById(String id) async {
+    try {
+      SeekilApi seekilApi = SeekilApi();
+      Response response = await seekilApi.delete('spending-money/$id');
+      var responseJson = response.data;
+
+      if (responseJson['meta']['code'] == 200) {
+        return true;
+      }
+
+      return false;
+    } on DioError {
+      return false;
+    }
+  }
+
+  static Future<bool> deleteFixedMonthlyExpensesById(String id) async {
+    try {
+      SeekilApi seekilApi = SeekilApi();
+      Response response = await seekilApi.delete('fixed-monthly-expenses/$id');
+      var responseJson = response.data;
+
+      if (responseJson['meta']['code'] == 200) {
+        return true;
+      }
+
+      return false;
     } on DioError {
       return false;
     }

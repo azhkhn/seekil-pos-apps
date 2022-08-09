@@ -5,15 +5,21 @@ import 'package:seekil_back_office/constants/color.constant.dart';
 import 'package:seekil_back_office/models/master_data.model.dart';
 import 'package:seekil_back_office/models/order_add_new.model.dart';
 import 'package:seekil_back_office/models/order_item.model.dart';
+import 'package:seekil_back_office/models/promo_model.dart';
+import 'package:seekil_back_office/utilities/helper/order_helper.dart';
 import 'package:seekil_back_office/widgets/forms/form_field.dart';
 import 'package:seekil_back_office/utilities/helper/word_transformation.dart';
 
 class OrderAddNewItemsSection extends StatefulWidget {
-  const OrderAddNewItemsSection(this.orderAddNewModel,
-      {Key? key, required this.onSavedFormItems})
-      : super(key: key);
+  const OrderAddNewItemsSection(
+    this.orderAddNewModel, {
+    Key? key,
+    required this.onSavedFormItems,
+    required this.promoList,
+  }) : super(key: key);
   final OrderAddNewModel orderAddNewModel;
   final Function onSavedFormItems;
+  final Future<List<PromoModel>?> promoList;
 
   @override
   _OrderAddNewItemsSectionState createState() =>
@@ -25,6 +31,8 @@ class _OrderAddNewItemsSectionState extends State<OrderAddNewItemsSection> {
   List<Map<String, dynamic>> itemValues = [];
   late Future<List<dynamic>> servicesList;
   dynamic servicesCurrentValue;
+  final WordTransformation wt = WordTransformation();
+  final OrderUtils orderUtils = OrderUtils();
 
   @override
   void initState() {
@@ -54,7 +62,7 @@ class _OrderAddNewItemsSectionState extends State<OrderAddNewItemsSection> {
                             fontSize: 18.0, fontWeight: FontWeight.bold)),
                   ),
                   IconButton(
-                      onPressed: _showFormNewItem,
+                      onPressed: () => _showFormNewItem(context),
                       icon: Icon(Icons.add_rounded))
                 ],
               ),
@@ -79,13 +87,13 @@ class _OrderAddNewItemsSectionState extends State<OrderAddNewItemsSection> {
                                       fontSize: 16.0,
                                       fontWeight: FontWeight.bold)),
                               SizedBox(height: 4.0),
-                              Text(
-                                itemsList?[index]['services_name'].join(', '),
-                              ),
-                              SizedBox(height: 4.0),
                               if (itemsList?[index]['note'] != null)
                                 Text(itemsList?[index]['note'],
                                     style: TextStyle(color: Colors.grey)),
+                              SizedBox(height: 4.0),
+                              Text(
+                                itemsList?[index]['services_name'].join(', '),
+                              ),
                               SizedBox(height: 4.0),
                               Text(
                                   WordTransformation().currencyFormat(
@@ -125,7 +133,7 @@ class _OrderAddNewItemsSectionState extends State<OrderAddNewItemsSection> {
         ));
   }
 
-  _showFormNewItem() {
+  _showFormNewItem(BuildContext context) {
     OrderItemModel orderItemModel = new OrderItemModel();
     final formItemsKey = GlobalKey<FormState>();
 

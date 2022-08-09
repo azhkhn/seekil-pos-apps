@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:seekil_back_office/routes/routes.dart';
+import 'package:seekil_back_office/utilities/helper/auth_helper.dart';
 import 'package:seekil_back_office/utilities/helper/word_transformation.dart';
 import 'package:seekil_back_office/widgets/shimmer.dart';
 
@@ -67,8 +68,8 @@ class HomeCardStaff extends StatelessWidget {
           ]);
 
   Widget _currentMonthHasData(Map<String, dynamic> data) {
-    int totalTarget = 100;
-    num target = data['incoming']['items'] - totalTarget;
+    int? totalTarget = AuthHelper.user().target;
+    num target = data['incoming']['items'] - totalTarget ?? 0;
 
     return Row(
       children: [
@@ -100,9 +101,9 @@ class HomeCardStaff extends StatelessWidget {
                         children: [
                           Text('Laci'),
                           Text(
-                              wt.currencyFormat(
-                                  data['total_current_month']),
-                              style: TextStyle(fontWeight: FontWeight.bold),),
+                            wt.currencyFormat(data['total_current_month']),
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
                         ],
                       ),
                       Icon(Icons.chevron_right_outlined),
@@ -135,7 +136,7 @@ class HomeCardStaff extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Target'),
+                Text('Target bulan ${wt.currentMonth}'),
                 RichText(
                   text: TextSpan(
                       text: '$totalTarget items ',

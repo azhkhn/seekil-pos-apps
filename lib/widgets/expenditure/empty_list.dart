@@ -5,28 +5,35 @@ class ExpenditureEmptyList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      padding: EdgeInsets.all(16.0),
-      itemCount: 3,
-      separatorBuilder: (context, index) => SizedBox(height: 4.0),
-      itemBuilder: (context, index) => Card(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: ListTile(
-            title: Text('-'),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('-'),
-                SizedBox(
-                  height: 4.0,
-                ),
-                Text('Rp-')
-              ],
-            ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'Belum ada data pengeluaran bulan ini',
+          style: TextStyle(
+            fontSize: 16.0,
           ),
         ),
-      ),
+        SizedBox(height: 4.0),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Tap tombol ',
+              style: TextStyle(
+                fontSize: 16.0,
+              ),
+            ),
+            Icon(Icons.add_circle),
+            Text(
+              ' untuk tambah pengeluaran',
+              style: TextStyle(
+                fontSize: 16.0,
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

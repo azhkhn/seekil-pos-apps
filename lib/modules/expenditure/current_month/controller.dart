@@ -1,9 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:seekil_back_office/constants/general.constant.dart';
 import 'package:seekil_back_office/models/expenditure.model.dart';
-import 'package:seekil_back_office/utilities/helper/snackbar_helper.dart';
 
 class ExpenditureCurrentMonthController extends GetxController with StateMixin {
   final formKey = GlobalKey<FormState>();
@@ -20,13 +19,15 @@ class ExpenditureCurrentMonthController extends GetxController with StateMixin {
     try {
       change(null, status: RxStatus.loading());
 
-      Map<String, dynamic> expenditureData = await ExpenditureModel.fetchCashFlowCurrentMonth();
-      totalExpenditureCurrentMonth.value = expenditureData['expenditure']['spending_money'];
+      Map<String, dynamic> expenditureData =
+          await ExpenditureModel.fetchCashFlowCurrentMonth();
+      totalExpenditureCurrentMonth.value =
+          expenditureData['expenditure']['spending_money'];
 
       Map<String, dynamic> data =
           await ExpenditureModel.fetchPeriodSpendingMoney('current-month');
 
-      if (data['list'] != null || data['list'].isNotEmpty) {
+      if (data['list'].length > 0) {
         change(data, status: RxStatus.success());
       } else {
         change(null, status: RxStatus.empty());
@@ -38,23 +39,22 @@ class ExpenditureCurrentMonthController extends GetxController with StateMixin {
 
   void onSavedForm(ExpenditureModel model) async {
     if (formKey.currentState!.validate()) {
-      Get.back();
-      isLoading.value = true;
-      bool isCreated = await ExpenditureModel().createSpendingMoney(model);
+      try {
+        Get.back();
+        isLoading.value = true;
+        bool isCreated = await ExpenditureModel().createSpendingMoney(model);
 
-      if (isCreated) {
+        if (isCreated) {
+          isLoading.value = false;
+          fetchCurrentMonth();
+          Fluttertoast.showToast(msg: 'Berhasil tambah data');
+        } else {
+          isLoading.value = false;
+          Fluttertoast.showToast(msg: 'Gagal tambah data');
+        }
+      } on DioError catch (e) {
         isLoading.value = false;
-        fetchCurrentMonth();
-        SnackbarHelper.show(
-            snackStatus: SnackStatus.SUCCESS,
-            title: 'Berhasil',
-            message: 'Data pengeluaran berhasil dibuat');
-      } else {
-        isLoading.value = false;
-        SnackbarHelper.show(
-            title: GeneralConstant.ERROR_TITLE,
-            snackStatus: SnackStatus.ERROR,
-            message: 'Gagal tambah data pengeluaran');
+        Fluttertoast.showToast(msg: 'Terjadi kesalahan: ${e.message}');
       }
     }
   }
@@ -68,15 +68,28 @@ class ExpenditureCurrentMonthController extends GetxController with StateMixin {
       if (isCreated) {
         isLoading.value = false;
         fetchCurrentMonth();
-        SnackbarHelper.show(
-            snackStatus: SnackStatus.SUCCESS,
-            title: 'Berhasil',
-            message: 'Data pengeluaran berhasil diupdate');
+        Fluttertoast.showToast(msg: 'Berhasil update data');
       }
-    } catch (error) {
+    } on DioError catch (error) {
       isLoading.value = false;
-      SnackbarHelper.show(
-          title: GeneralConstant.ERROR_TITLE, message: error.toString());
+      Fluttertoast.showToast(msg: 'Terjadi kesalahan: ${error.message}');
+    }
+  }
+
+  void onDeleteItem(String id) async {
+    try {
+      Get.back();
+      isLoading.value = true;
+      bool isDeleted = await ExpenditureModel.deleteSpendingMoneyById(id);
+
+      if (isDeleted) {
+        isLoading.value = false;
+        fetchCurrentMonth();
+        Fluttertoast.showToast(msg: 'Berhasil hapus data');
+      }
+    } on DioError catch (e) {
+      isLoading.value = false;
+      Fluttertoast.showToast(msg: 'Terjadi kesalahan: ${e.message}');
     }
   }
 }

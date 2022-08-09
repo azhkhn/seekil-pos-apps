@@ -7,7 +7,6 @@ import 'package:seekil_back_office/models/expenditure.model.dart';
 import 'package:seekil_back_office/modules/home/views/card_current_month.dart';
 import 'package:seekil_back_office/modules/home/views/card_staff.dart';
 import 'package:seekil_back_office/modules/home/views/content_staff.dart';
-import 'package:seekil_back_office/modules/home/views/others.dart';
 import 'package:seekil_back_office/modules/home/views/store_feature.dart';
 import 'package:seekil_back_office/modules/home/views/user_header.dart';
 import 'package:seekil_back_office/routes/routes.dart';
@@ -69,7 +68,6 @@ class _HomeState extends State<Home> {
                       if (AuthHelper.isStaff()) HomeCardStaff(data),
                       if (AuthHelper.isSuperAdmin()) HomeCardCurrentMonth(data),
                       if (AuthHelper.isSuperAdmin()) HomeStoreFeature(),
-                      if (AuthHelper.isSuperAdmin()) HomeOthers(),
                       if (AuthHelper.isStaff()) HomeContentStaff()
                     ],
                   ),

@@ -3,6 +3,9 @@ import 'package:seekil_back_office/constants/routes.constant.dart';
 class AppRoutes {
   static final String login = RoutesConstant.LOGIN;
   static final String home = RoutesConstant.HOME;
+  static final String product = RoutesConstant.PRODUCT;
+  static final String employee = RoutesConstant.EMPLOYEE;
+  static final String store = RoutesConstant.STORE;
   // Order
   static final String orderList = RoutesConstant.ORDER_LIST;
   static final String order = RoutesConstant.ORDER;
@@ -14,8 +17,10 @@ class AppRoutes {
   static final String mainWidget = RoutesConstant.MAIN_WIDGET;
   static final String statistic = RoutesConstant.STATISTIC;
   // Expenditure
-  static final String expenditureCurrentMonth = RoutesConstant.EXPENDITURE_CURRENT_MONTH;
-  static final String expenditureFixedMonthly = RoutesConstant.EXPENDITURE_FIXED_MONTHLY;
+  static final String expenditureCurrentMonth =
+      RoutesConstant.EXPENDITURE_CURRENT_MONTH;
+  static final String expenditureFixedMonthly =
+      RoutesConstant.EXPENDITURE_FIXED_MONTHLY;
   static final String expenditureIncomingAndExpenses =
       RoutesConstant.EXPENDITURE_INCOMING_AND_EXPENSES;
   // Settings

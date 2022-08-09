@@ -43,14 +43,15 @@ class HomeUserHeader extends StatelessWidget {
           color: Colors.white,
           size: 48.0,
         ),
-        title: Text(AuthHelper.isLoggedIn() ? AuthHelper.user().name : '-',
+        title: Text(
+            AuthHelper.isLoggedIn() ? AuthHelper.user().name ?? '-' : '-',
             style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 20.0)),
         subtitle: Text(
             AuthHelper.isLoggedIn()
-                ? AuthHelper.user().level.toUpperCase()
+                ? AuthHelper.user().level!.toUpperCase()
                 : '-',
             style: TextStyle(
                 color: Colors.white,

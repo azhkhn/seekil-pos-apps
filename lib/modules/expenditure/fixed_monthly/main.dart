@@ -98,7 +98,7 @@ class ExpenditureFixedMonthly extends StatelessWidget {
                     return null;
                   },
                   onChanged: (value) {
-                    model.priceTemp = value;
+                    model.price = int.parse(value);
                   },
                 ),
               ],
@@ -174,16 +174,49 @@ class ExpenditureFixedMonthly extends StatelessWidget {
                       onChanged: (value) => formDataJson['price'] = value,
                     ),
                     Container(
-                      width: MediaQuery.of(context).size.width,
+                      width: Get.width,
+                      margin: const EdgeInsets.only(bottom: 8.0),
                       child: ElevatedButton(
                         onPressed: () => controller.onUpdateItem(
                             item.id.toString(), formDataJson),
-                        child: Text('Simpan'),
+                        child: Text(
+                          'Simpan',
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                         style: ElevatedButton.styleFrom(
-                            primary: ColorConstant.DEF,
-                            padding: const EdgeInsets.all(10.0),
-                            textStyle: TextStyle(
-                                fontSize: 16.0, fontWeight: FontWeight.bold)),
+                          primary: ColorConstant.DEF,
+                          padding: const EdgeInsets.all(10.0),
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8.0))),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: Get.width,
+                      margin: const EdgeInsets.only(bottom: 8.0),
+                      child: ElevatedButton(
+                        onPressed: () =>
+                            controller.onDeleteItem(item.id.toString()),
+                        child: Text(
+                          'Hapus',
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          primary: ColorConstant.ERROR_BORDER,
+                          padding: const EdgeInsets.all(10.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8.0)),
+                          ),
+                        ),
                       ),
                     ),
                   ],

@@ -4,17 +4,17 @@ import 'package:dio/dio.dart';
 import 'package:seekil_back_office/utilities/services/seekil_api.dart';
 
 class ServicesListModel {
-  int id, price;
-  String name, description, estimate;
-  bool isExpanded;
+  int? id, price;
+  String? name, description, estimate;
+  bool? isExpanded;
 
   ServicesListModel(
-      {required this.id,
-      required this.name,
-      required this.price,
-      required this.description,
-      required this.estimate,
-      required this.isExpanded});
+      {this.id,
+      this.name,
+      this.price,
+      this.description,
+      this.estimate,
+      this.isExpanded});
 
   factory ServicesListModel.fromJson(Map<String, dynamic> json) {
     return ServicesListModel(
@@ -24,6 +24,15 @@ class ServicesListModel {
         description: json['description'],
         estimate: json['estimate'],
         isExpanded: false);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'price': price,
+      'description': description,
+      'estimate': estimate,
+    };
   }
 
   static Future<List<ServicesListModel>> fetchServicesList() async {
@@ -39,5 +48,54 @@ class ServicesListModel {
     Response response = await seekilApi.get('/order/item/services/s/top');
     List<dynamic> data = jsonDecode(response.toString())['list'];
     return data;
+  }
+
+  static Future<bool> createNewServices(ServicesListModel model) async {
+    try {
+      SeekilApi seekilApi = SeekilApi();
+      Response response =
+          await seekilApi.post('master/service', model.toJson());
+      var responseJson = response.data;
+
+      if (responseJson['meta']['code'] == 200) {
+        return true;
+      }
+      return false;
+    } on DioError {
+      return false;
+    }
+  }
+
+  static Future<bool> updateServicesById(
+      String id, Map<String, dynamic> data) async {
+    try {
+      SeekilApi seekilApi = SeekilApi();
+      Response response = await seekilApi.put('master/service/$id', data);
+      var responseJson = response.data;
+
+      if (responseJson['meta']['code'] == 200) {
+        return true;
+      }
+      return false;
+    } on DioError {
+      return false;
+    }
+  }
+
+  static Future<bool> deleteServicesById(String id) async {
+    try {
+      SeekilApi seekilApi = SeekilApi();
+      Response response = await seekilApi.delete(
+        'master/service/$id',
+      );
+      var responseJson = response.data;
+
+      if (responseJson['meta']['code'] == 200) {
+        return true;
+      }
+      return false;
+    } on DioError {
+      return false;
+    }
   }
 }

@@ -5,6 +5,7 @@ import 'package:seekil_back_office/modules/home/main.dart';
 import 'package:seekil_back_office/modules/order/list/main.dart';
 import 'package:seekil_back_office/constants/color.constant.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:seekil_back_office/modules/other/main.dart';
 import 'package:seekil_back_office/utilities/helper/auth_helper.dart';
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
@@ -33,6 +34,7 @@ class _MainWidgetState extends State<MainWidget> {
     final _pages = <Widget>[
       Home(),
       Order(),
+      if (AuthHelper.isSuperAdmin()) OtherMenuPage(),
       if (AuthHelper.isStaff()) ExpenditureCurrentMonth()
     ];
 
@@ -45,10 +47,15 @@ class _MainWidgetState extends State<MainWidget> {
           icon: Icon(Icons.receipt_outlined),
           label: 'Transaksi',
           activeIcon: Icon(Icons.receipt_rounded)),
+      if (AuthHelper.isSuperAdmin())
+        BottomNavigationBarItem(
+            icon: Icon(Icons.menu),
+            label: 'Lainnya',
+            activeIcon: Icon(Icons.menu_rounded)),
       if (AuthHelper.isStaff())
         BottomNavigationBarItem(
             icon: Icon(Icons.payment_outlined),
-            label: 'Pengeluaran Bulanan',
+            label: 'Pengeluaran',
             activeIcon: Icon(Icons.payment_rounded)),
     ];
 

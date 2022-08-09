@@ -2,24 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:seekil_back_office/constants/color.constant.dart';
 import 'package:seekil_back_office/models/master_data.model.dart';
 import 'package:seekil_back_office/models/order_add_new.model.dart';
+import 'package:seekil_back_office/models/promo_model.dart';
 import 'package:seekil_back_office/widgets/forms/form_field.dart';
 import 'package:seekil_back_office/utilities/helper/order_helper.dart';
 import 'package:seekil_back_office/utilities/helper/word_transformation.dart';
 
 class OrderAddNewPaymentSection extends StatefulWidget {
-  const OrderAddNewPaymentSection(this.orderAddNewModel,
-      {Key? key,
-      required this.isUsePoint,
-      required this.onChangeUsePoint,
-      required this.onChangeOngkosKirim,
-      required this.onChangePromo})
-      : super(key: key);
+  const OrderAddNewPaymentSection(
+    this.orderAddNewModel, {
+    Key? key,
+    required this.isUsePoint,
+    required this.onChangeUsePoint,
+    required this.onChangeOngkosKirim,
+    required this.onChangePromo,
+    required this.promoList,
+  }) : super(key: key);
 
   final OrderAddNewModel orderAddNewModel;
   final bool isUsePoint;
   final ValueChanged<bool> onChangeUsePoint;
   final ValueChanged<dynamic> onChangeOngkosKirim;
   final ValueChanged<dynamic> onChangePromo;
+  final Future<List<PromoModel>?> promoList;
 
   @override
   _OrderAddNewPaymentSectionState createState() =>
@@ -30,13 +34,12 @@ class _OrderAddNewPaymentSectionState extends State<OrderAddNewPaymentSection> {
   OrderUtils orderUtils = OrderUtils();
   WordTransformation wt = WordTransformation();
 
-  late Future<List<dynamic>> promoList, paymentMethod;
+  late Future<List<dynamic>> paymentMethod;
   dynamic promoCurrentValue;
 
   @override
   void initState() {
     super.initState();
-    promoList = MasterDataModel.fetchMasterPromo();
     paymentMethod = MasterDataModel.fetchMasterPaymentMethod();
   }
 
@@ -64,10 +67,10 @@ class _OrderAddNewPaymentSectionState extends State<OrderAddNewPaymentSection> {
                         color: Colors.grey, fontWeight: FontWeight.bold)),
                 SizedBox(height: 8),
                 FutureBuilder(
-                  future: promoList,
+                  future: widget.promoList,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      List<dynamic> data = snapshot.data as List<dynamic>;
+                      List<PromoModel> data = snapshot.data as List<PromoModel>;
                       return DropdownButtonFormField(
                         decoration: InputDecoration(
                           filled: true,
@@ -87,34 +90,27 @@ class _OrderAddNewPaymentSectionState extends State<OrderAddNewPaymentSection> {
                         iconSize: 24,
                         elevation: 16,
                         onChanged: widget.onChangePromo,
-                        items: data.map<DropdownMenuItem>((dynamic item) {
+                        items: data.map<DropdownMenuItem>((PromoModel item) {
                           return DropdownMenuItem(
                             value: item,
-                            child: ListTile(
-                              contentPadding: EdgeInsets.zero,
-                              subtitle: Text(item['description'],
-                                  style: TextStyle(
-                                      fontStyle: FontStyle.italic,
-                                      color: Colors.grey)),
-                              title: Row(
-                                children: [
-                                  Text(item['code']),
-                                  SizedBox(width: 4.0),
-                                  Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 4.0, vertical: 2.0),
-                                    decoration: BoxDecoration(
-                                        color: ColorConstant.SUCCESS,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(4.0))),
-                                    child: Text('${item['discount']}%',
-                                        style: TextStyle(
-                                            fontSize: 12.0,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.green)),
-                                  )
-                                ],
-                              ),
+                            child: Row(
+                              children: [
+                                Text(item.code!),
+                                SizedBox(width: 4.0),
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 4.0, vertical: 2.0),
+                                  decoration: BoxDecoration(
+                                      color: ColorConstant.SUCCESS,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(4.0))),
+                                  child: Text('${item.discount!}%',
+                                      style: TextStyle(
+                                          fontSize: 12.0,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.green)),
+                                )
+                              ],
                             ),
                           );
                         }).toList(),

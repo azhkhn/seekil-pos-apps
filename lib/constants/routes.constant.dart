@@ -1,6 +1,9 @@
 class RoutesConstant {
   static const String LOGIN = '/login';
   static const String HOME = '/homepage';
+  static const String PRODUCT = '/product';
+  static const String EMPLOYEE = '/employee';
+  static const String STORE = '/store';
   // Order
   static const String ORDER_LIST = '/order-list';
   static const String ORDER = '/order';

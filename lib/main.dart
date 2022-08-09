@@ -19,11 +19,13 @@ void main() async {
   Intl.defaultLocale = 'id_ID';
   BluetoothHelper().initSavetoPath();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  WidgetsFlutterBinding.ensureInitialized();
 
   runApp(GetMaterialApp(
     title: 'Seekil Back Office',
     initialRoute: AppRoutes.splashScreen,
     getPages: AppPages.appPages,
+    defaultTransition: Transition.cupertino,
     debugShowCheckedModeBanner: false,
     home: MainWidget(),
     theme: ThemeData(

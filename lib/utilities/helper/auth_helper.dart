@@ -7,7 +7,11 @@ class AuthHelper {
     final box = GetStorage();
     var data = box.read(StorageKeyConstant.USER_LOGGED_IN);
     return AuthModel(
-        username: data['username'], level: data['level'], name: data['name']);
+      username: data['username'],
+      level: data['level'],
+      name: data['name'],
+      target: data['target'],
+    );
   }
 
   static bool isLoggedIn() {
