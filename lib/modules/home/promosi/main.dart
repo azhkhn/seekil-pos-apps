@@ -85,6 +85,15 @@ class PromotionPage extends StatelessWidget {
                               'Valid thru: ${wt.dateFormatter(date: item.endDate!)}',
                               style: TextStyle(color: Colors.grey),
                             ),
+                          SizedBox(height: 4.0),
+                          if (item.selfPrice != null)
+                            Text(
+                              wt.currencyFormat(item.selfPrice),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey,
+                              ),
+                            ),
                         ],
                       ),
                     );
@@ -266,6 +275,16 @@ class PromotionPage extends StatelessWidget {
                           ),
                         )
                       ],
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: MyFormField(
+                      label: 'Nominal Promo',
+                      textInputType: TextInputType.number,
+                      onChanged: (value) {
+                        model.selfPrice = int.parse(value);
+                      },
                     ),
                   ),
                   Container(

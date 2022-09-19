@@ -19,16 +19,17 @@ class OrderUtils {
 
       dynamic iterateItems = items.reduce((value, element) {
         if (value is int) {
-          return value + element['subtotal'];
+          return value + element['subtotal_with_discount'];
         } else {
-          return value['subtotal'] + element['subtotal'];
+          return value['subtotal_with_discount'] +
+              element['subtotal_with_discount'];
         }
       });
 
       if (iterateItems is int) {
         itemSubtotal = iterateItems;
       } else {
-        itemSubtotal = iterateItems['subtotal'];
+        itemSubtotal = iterateItems['subtotal_with_discount'];
       }
 
       return itemSubtotal;
@@ -37,13 +38,20 @@ class OrderUtils {
     return 0;
   }
 
-  int getTotal({int? pickupDeliveryPrice, int? potongan, items, int? points}) {
+  int getTotal({
+    int? pickupDeliveryPrice,
+    int? potongan,
+    items,
+    int? points,
+    int? downPayment,
+  }) {
     int deliveryPrice = pickupDeliveryPrice ?? 0;
     int discount = potongan ?? 0;
     int point = points ?? 0;
+    int dp = downPayment ?? 0;
 
     int totalPayment =
-        (getItemSubtotal(items) + deliveryPrice) - discount - point;
+        (getItemSubtotal(items) + deliveryPrice) - discount - point - dp;
 
     return totalPayment;
   }
@@ -81,13 +89,12 @@ class OrderUtils {
     String generateItem() {
       return _orderItems['list']
           .map((e) {
-            String itemName = e['item_name'].replaceAll('&', 'and');
+            String itemName = e['item_name'].replaceAll('&', 'and').trim();
             String services = e['services']
-                .map((s) {
-                  return '_${s['name'].replaceAll('&', 'and').trim()}: ${wt.currencyFormat(s['price'])}_\n';
-                })
-                .toString()
-                .trim();
+                .map((s) =>
+                    '_${s['name'].replaceAll('&', 'and').trim()}: ${wt.currencyFormat(s['price'])}_\n')
+                .trim()
+                .toString();
             return '\n*$itemName*\n$services';
           })
           .toString()

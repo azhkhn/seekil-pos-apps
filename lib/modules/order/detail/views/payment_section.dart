@@ -121,6 +121,25 @@ class PaymentSection extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text('Uang Muka (DP)',
+                    style: valueStyle.copyWith(
+                      color: Colors.black,
+                      fontSize: 15.0,
+                    )),
+                Text(wt.currencyFormat(data.downPayment),
+                    style: TextStyle(
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black)),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 Text('Total Bayar',
                     style: valueStyle.copyWith(
                       color: Colors.black,

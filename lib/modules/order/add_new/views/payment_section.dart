@@ -14,6 +14,7 @@ class OrderAddNewPaymentSection extends StatefulWidget {
     required this.isUsePoint,
     required this.onChangeUsePoint,
     required this.onChangeOngkosKirim,
+    required this.onChangeDownPayment,
     required this.onChangePromo,
     required this.promoList,
   }) : super(key: key);
@@ -22,6 +23,7 @@ class OrderAddNewPaymentSection extends StatefulWidget {
   final bool isUsePoint;
   final ValueChanged<bool> onChangeUsePoint;
   final ValueChanged<dynamic> onChangeOngkosKirim;
+  final ValueChanged<dynamic> onChangeDownPayment;
   final ValueChanged<dynamic> onChangePromo;
   final Future<List<PromoModel>?> promoList;
 
@@ -184,26 +186,33 @@ class _OrderAddNewPaymentSectionState extends State<OrderAddNewPaymentSection> {
               )),
               SizedBox(width: 16.0),
               Expanded(
-                  child: MyFormField(
-                      label: 'Status Pembayaran',
-                      isMandatory: true,
-                      type: FormFieldType.DROPDOWN,
-                      dropdowndValidator: (value) {
-                        if (value == null || value == '') {
-                          return 'Status Pembayaran harus dipilih';
-                        }
-                        return null;
-                      },
-                      dropdownItems: [
-                        {'id': 'lunas', 'name': 'Lunas'},
-                        {'id': 'belum_lunas', 'name': 'Belum Lunas'},
-                      ],
-                      onChanged: (dynamic value) {
-                        setState(() {
-                          widget.orderAddNewModel.paymentStatus = value;
-                        });
-                      }))
+                child: MyFormField(
+                  label: 'Status Pembayaran',
+                  isMandatory: true,
+                  type: FormFieldType.DROPDOWN,
+                  dropdowndValidator: (value) {
+                    if (value == null || value == '') {
+                      return 'Status Pembayaran harus dipilih';
+                    }
+                    return null;
+                  },
+                  dropdownItems: [
+                    {'id': 'lunas', 'name': 'Lunas'},
+                    {'id': 'belum_lunas', 'name': 'Belum Lunas'},
+                  ],
+                  onChanged: (dynamic value) {
+                    setState(() {
+                      widget.orderAddNewModel.paymentStatus = value;
+                    });
+                  },
+                ),
+              )
             ],
+          ),
+          MyFormField(
+            label: 'Uang Muka (DP)',
+            textInputType: TextInputType.number,
+            onChanged: widget.onChangeDownPayment,
           ),
           // Row(
           //   mainAxisAlignment: MainAxisAlignment.spaceBetween,

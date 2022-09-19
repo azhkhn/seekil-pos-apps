@@ -7,8 +7,10 @@ import 'package:seekil_back_office/models/order_add_new.model.dart';
 import 'package:seekil_back_office/models/order_item.model.dart';
 import 'package:seekil_back_office/models/promo_model.dart';
 import 'package:seekil_back_office/utilities/helper/order_helper.dart';
+import 'package:seekil_back_office/utilities/helper/pretty_print.dart';
 import 'package:seekil_back_office/widgets/forms/form_field.dart';
 import 'package:seekil_back_office/utilities/helper/word_transformation.dart';
+import 'package:seekil_back_office/widgets/widget.helper.dart';
 
 class OrderAddNewItemsSection extends StatefulWidget {
   const OrderAddNewItemsSection(
@@ -33,6 +35,7 @@ class _OrderAddNewItemsSectionState extends State<OrderAddNewItemsSection> {
   dynamic servicesCurrentValue;
   final WordTransformation wt = WordTransformation();
   final OrderUtils orderUtils = OrderUtils();
+  dynamic promoCurrentValue;
 
   @override
   void initState() {
@@ -73,6 +76,7 @@ class _OrderAddNewItemsSectionState extends State<OrderAddNewItemsSection> {
                   physics: ScrollPhysics(),
                   itemCount: itemsList?.length ?? 0,
                   itemBuilder: (context, index) {
+                    var item = itemsList?[index];
                     return Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Row(
@@ -82,25 +86,45 @@ class _OrderAddNewItemsSectionState extends State<OrderAddNewItemsSection> {
                               child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(itemsList?[index]['item_name'],
+                              Text(item['item_name'],
                                   style: TextStyle(
                                       fontSize: 16.0,
                                       fontWeight: FontWeight.bold)),
                               SizedBox(height: 4.0),
-                              if (itemsList?[index]['note'] != null)
-                                Text(itemsList?[index]['note'],
+                              if (item['note'] != null)
+                                Text(item['note'],
                                     style: TextStyle(color: Colors.grey)),
                               SizedBox(height: 4.0),
                               Text(
-                                itemsList?[index]['services_name'].join(', '),
+                                '(X${item['qty']}) ${item['services_name'].join(', ')}',
                               ),
                               SizedBox(height: 4.0),
-                              Text(
-                                  WordTransformation().currencyFormat(
-                                      itemsList?[index]['subtotal']),
-                                  style: TextStyle(
+                              Row(
+                                children: [
+                                  Text(
+                                    WordTransformation()
+                                        .currencyFormat(item['subtotal']),
+                                    style: TextStyle(
                                       color: Colors.grey,
-                                      fontWeight: FontWeight.bold)),
+                                      fontWeight: FontWeight.bold,
+                                      decoration:
+                                          item['subtotal_with_discount'] !=
+                                                  item['subtotal']
+                                              ? TextDecoration.lineThrough
+                                              : TextDecoration.none,
+                                    ),
+                                  ),
+                                  SizedBox(width: 8.0),
+                                  if (item['subtotal_with_discount'] !=
+                                      item['subtotal'])
+                                    Text(
+                                        WordTransformation().currencyFormat(
+                                            item['subtotal_with_discount']),
+                                        style: TextStyle(
+                                            color: Colors.grey,
+                                            fontWeight: FontWeight.bold)),
+                                ],
+                              ),
                             ],
                           )),
                           GestureDetector(
@@ -137,136 +161,231 @@ class _OrderAddNewItemsSectionState extends State<OrderAddNewItemsSection> {
     OrderItemModel orderItemModel = new OrderItemModel();
     final formItemsKey = GlobalKey<FormState>();
 
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Tambah item baru'),
-            scrollable: true,
-            actionsPadding: EdgeInsets.only(bottom: 16.0),
-            content: Form(
-              key: formItemsKey,
+    WidgetHelper.bottomSheet(
+      context,
+      onClosing: () => Get.back(),
+      title: 'Tambah Item',
+      child: Form(
+        key: formItemsKey,
+        child: Column(
+          children: [
+            MyFormField(
+              label: 'Nama Item',
+              isMandatory: true,
+              textFieldValidator: (value) {
+                if (value == null || value == '') {
+                  return 'Nama Item harus diisi';
+                }
+                return null;
+              },
+              onChanged: (dynamic value) {
+                orderItemModel.itemName = value;
+              },
+            ),
+            MyFormField(
+              label: 'Qty',
+              isMandatory: true,
+              textInputType: TextInputType.number,
+              initialValue: orderItemModel.qty.toString(),
+              textFieldValidator: (value) {
+                if (value == null || value == '') {
+                  return 'Qty minimal 1';
+                }
+                return null;
+              },
+              onChanged: (dynamic value) {
+                if (value == null || value == '') {
+                  orderItemModel.qty = 1;
+                } else {
+                  orderItemModel.qty = int.parse(value);
+                }
+              },
+            ),
+            Container(
+              margin: const EdgeInsets.only(bottom: 24.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  MyFormField(
-                    label: 'Nama Item',
-                    isMandatory: true,
-                    textFieldValidator: (value) {
-                      if (value == null || value == '') {
-                        return 'Nama Item harus diisi';
-                      }
-                      return null;
-                    },
-                    onChanged: (dynamic value) {
-                      orderItemModel.itemName = value;
-                    },
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(bottom: 24.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Layanan',
-                            style: TextStyle(
-                                color: Colors.grey,
-                                fontWeight: FontWeight.bold)),
-                        SizedBox(height: 8),
-                        FutureBuilder(
-                            future: servicesList,
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                List<dynamic> data =
-                                    snapshot.data as List<dynamic>;
-                                return MultiSelectDialogField(
-                                  selectedColor: ColorConstant.DEF,
-                                  searchable: true,
-                                  title: Text('Cari Layanan'),
-                                  height: Get.height / 2,
-                                  cancelText: Text(
-                                    'Batal',
-                                    style: TextStyle(
-                                      color: ColorConstant.DEF,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16.0,
-                                    ),
-                                  ),
-                                  confirmText: Text(
-                                    'Simpan',
-                                    style: TextStyle(
-                                      color: ColorConstant.DEF,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16.0,
-                                    ),
-                                  ),
-                                  items: data
-                                      .map((e) => MultiSelectItem(e, e['name']))
-                                      .toList(),
-                                  onConfirm: (List<dynamic> values) {
-                                    orderItemModel.servicesId = values;
-                                  },
-                                  searchHint: 'Cari',
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Layanan harus dipilih';
-                                    }
-                                    return null;
-                                  },
-                                  decoration: BoxDecoration(
-                                      color: Colors.grey[200],
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(8.0))),
-                                  buttonText: Text(
-                                    'Pilih Layanan',
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                  buttonIcon:
-                                      Icon(Icons.keyboard_arrow_down_rounded),
-                                );
+                  Text('Layanan',
+                      style: TextStyle(
+                          color: Colors.grey, fontWeight: FontWeight.bold)),
+                  SizedBox(height: 8),
+                  FutureBuilder(
+                      future: servicesList,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          List<dynamic> data = snapshot.data as List<dynamic>;
+                          return MultiSelectDialogField(
+                            selectedColor: ColorConstant.DEF,
+                            searchable: true,
+                            title: Text('Cari Layanan'),
+                            height: Get.height / 2,
+                            cancelText: Text(
+                              'Batal',
+                              style: TextStyle(
+                                color: ColorConstant.DEF,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.0,
+                              ),
+                            ),
+                            confirmText: Text(
+                              'Simpan',
+                              style: TextStyle(
+                                color: ColorConstant.DEF,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.0,
+                              ),
+                            ),
+                            items: data
+                                .map((e) => MultiSelectItem(e, e['name']))
+                                .toList(),
+                            onConfirm: (List<dynamic> values) {
+                              orderItemModel.servicesId = values;
+                            },
+                            searchHint: 'Cari',
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Layanan harus dipilih';
                               }
-                              return MultiSelectDialogField(
-                                items: [],
-                                onConfirm: (List<dynamic> values) {
-                                  orderItemModel.servicesId = values;
-                                },
-                                searchable: true,
-                                decoration:
-                                    BoxDecoration(color: Colors.black12),
-                                title: Text('Pilih Layanan'),
-                                buttonText: Text('Pilih Layanan'),
-                                buttonIcon:
-                                    Icon(Icons.keyboard_arrow_down_rounded),
-                              );
-                            })
-                      ],
-                    ),
-                  ),
-                  // MyFormField(
-                  //   label: 'Catatan',
-                  //   onChanged: (dynamic value) {
-                  //     orderItemModel.note = value;
-                  //   },
-                  // ),
+                              return null;
+                            },
+                            decoration: BoxDecoration(
+                                color: Colors.grey[200],
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8.0))),
+                            buttonText: Text(
+                              'Pilih Layanan',
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                            buttonIcon: Icon(Icons.keyboard_arrow_down_rounded),
+                          );
+                        }
+                        return MultiSelectDialogField(
+                          items: [],
+                          onConfirm: (List<dynamic> values) {
+                            orderItemModel.servicesId = values;
+                          },
+                          searchable: true,
+                          decoration: BoxDecoration(color: Colors.black12),
+                          title: Text('Pilih Layanan'),
+                          buttonText: Text('Pilih Layanan'),
+                          buttonIcon: Icon(Icons.keyboard_arrow_down_rounded),
+                        );
+                      })
                 ],
               ),
             ),
-            actions: [
-              ElevatedButton(
-                onPressed: () => Get.back(),
-                child: Text('Batal', style: TextStyle(color: Colors.white)),
-                style: ElevatedButton.styleFrom(primary: ColorConstant.DEF),
+            Container(
+              margin: const EdgeInsets.only(bottom: 24.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Promo',
+                      style: TextStyle(
+                          color: Colors.grey, fontWeight: FontWeight.bold)),
+                  SizedBox(height: 8),
+                  FutureBuilder(
+                    future: widget.promoList,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        List<PromoModel> data =
+                            snapshot.data as List<PromoModel>;
+                        return DropdownButtonFormField(
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.grey[200],
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8.0)),
+                            ),
+                            isDense: true,
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 8.0, vertical: 10.0),
+                          ),
+                          value: promoCurrentValue,
+                          icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                          isExpanded: true,
+                          iconSize: 24,
+                          elevation: 16,
+                          onChanged: (dynamic item) {
+                            List<dynamic>? items = orderItemModel.servicesId;
+                            int discount = item.discount;
+                            int subtotalItem = orderItemModel
+                                    .getItemSubtotalFromAddItem(items) *
+                                (orderItemModel.qty ?? 1);
+
+                            double totalDiscount =
+                                (subtotalItem * discount) / 100;
+
+                            orderItemModel.promoId = item.id as int;
+                            orderItemModel.discount = totalDiscount.toInt();
+                          },
+                          items: data.map<DropdownMenuItem>((PromoModel item) {
+                            return DropdownMenuItem(
+                              value: item,
+                              child: Row(
+                                children: [
+                                  Text(item.code!),
+                                  SizedBox(width: 4.0),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 4.0, vertical: 2.0),
+                                    decoration: BoxDecoration(
+                                        color: ColorConstant.SUCCESS,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(4.0))),
+                                    child: Text('${item.discount!}%',
+                                        style: TextStyle(
+                                            fontSize: 12.0,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.green)),
+                                  )
+                                ],
+                              ),
+                            );
+                          }).toList(),
+                        );
+                      }
+                      return DropdownButtonFormField(
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.grey[200],
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8.0)),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 8.0, vertical: 10.0),
+                          ),
+                          value: promoCurrentValue,
+                          icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                          isExpanded: true,
+                          iconSize: 24,
+                          elevation: 16,
+                          onChanged: (dynamic item) {
+                            setState(() {
+                              widget.orderAddNewModel.promoId =
+                                  item['id'] as int;
+                            });
+                          },
+                          items: []);
+                    },
+                  ),
+                ],
               ),
-              TextButton(
-                child: Text('Tambah',
-                    style: TextStyle(
-                        color: ColorConstant.DEF, fontWeight: FontWeight.bold)),
-                onPressed: () => _onSaved(orderItemModel, formItemsKey),
-              ),
-            ],
-          );
-        });
+            ),
+            WidgetHelper.bottomSheetButton(
+              onPressed: () => _onSaved(orderItemModel, formItemsKey),
+              title: 'Simpan',
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   void _onSaved(
@@ -274,6 +393,14 @@ class _OrderAddNewItemsSectionState extends State<OrderAddNewItemsSection> {
     if (formItemsKey.currentState!.validate()) {
       itemsList?.add(orderItemModel.toJson());
       widget.orderAddNewModel.items = itemsList;
+
+      int qty = 0;
+
+      for (var item in itemsList!) {
+        qty += item['qty'] as int;
+      }
+
+      widget.orderAddNewModel.qty = (widget.orderAddNewModel.qty ?? 0) + qty;
       Get.back();
       widget.onSavedFormItems();
     }

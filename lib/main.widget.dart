@@ -26,7 +26,9 @@ class _MainWidgetState extends State<MainWidget> {
   @override
   void initState() {
     super.initState();
-    _firebaseMessagingServices();
+    if (AuthHelper.isLoggedIn()) {
+      _firebaseMessagingServices();
+    }
   }
 
   @override

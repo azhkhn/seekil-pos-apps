@@ -10,16 +10,19 @@ class PromoModel {
   String? startDate;
   String? endDate;
   int? status;
+  int? selfPrice;
 
-  PromoModel(
-      {this.id,
-      this.name,
-      this.code,
-      this.discount,
-      this.description,
-      this.startDate,
-      this.endDate,
-      this.status});
+  PromoModel({
+    this.id,
+    this.name,
+    this.code,
+    this.discount,
+    this.description,
+    this.startDate,
+    this.endDate,
+    this.status,
+    this.selfPrice,
+  });
 
   Map<String, dynamic> toMap() {
     return {
@@ -30,6 +33,7 @@ class PromoModel {
       'startDate': startDate,
       'endDate': endDate,
       'status': status,
+      'self_price': selfPrice,
     };
   }
 
@@ -43,6 +47,7 @@ class PromoModel {
       startDate: map['start_date'],
       endDate: map['end_date'],
       status: map['status'],
+      selfPrice: map['self_price'],
     );
   }
 
@@ -75,3 +80,4 @@ class PromoModel {
     }
   }
 }
+

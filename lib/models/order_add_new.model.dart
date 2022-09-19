@@ -13,7 +13,10 @@ class OrderAddNewModel {
       paymentMethodId,
       promoId,
       pickupDeliveryPrice,
-      potongan;
+      potongan,
+      downPayment,
+      qty,
+      total;
 
   OrderAddNewModel({
     this.items,
@@ -31,6 +34,9 @@ class OrderAddNewModel {
     this.paymentMethodId,
     this.promoId,
     this.potongan,
+    this.downPayment,
+    this.qty,
+    this.total,
   });
 
   Map<String, dynamic> toJson() {
@@ -50,12 +56,15 @@ class OrderAddNewModel {
       "promo_id": promoId,
       "pickup_delivery_price": pickupDeliveryPrice ?? null,
       "potongan": potongan,
-      "qty": items?.length,
-      "total": OrderUtils().getTotal(
-          pickupDeliveryPrice: pickupDeliveryPrice,
-          points: points,
-          potongan: potongan,
-          items: items),
+      "qty": qty,
+      "down_payment": downPayment,
+      "total": total != null
+          ? total
+          : OrderUtils().getTotal(
+              pickupDeliveryPrice: pickupDeliveryPrice,
+              points: points,
+              potongan: potongan,
+              items: items),
       "items": items
     };
   }

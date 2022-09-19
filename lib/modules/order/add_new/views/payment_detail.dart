@@ -19,7 +19,9 @@ class OrderAddNewPaymentDetal extends StatelessWidget {
     List<Map<String, dynamic>> content = [
       {
         'text': 'Item Subtotal',
-        'value': orderUtils.getItemSubtotal(orderAddNewModel.items),
+        'value': orderAddNewModel.total != null
+          ? orderAddNewModel.total
+          : orderUtils.getItemSubtotal(orderAddNewModel.items),
       },
       {
         'text': 'Ongkos Kirim',
@@ -43,12 +45,22 @@ class OrderAddNewPaymentDetal extends StatelessWidget {
       //   'isDecrement': true
       // },
       {
+        'text': 'Uang Muka (DP)',
+        'value': orderAddNewModel.downPayment != null
+            ? orderAddNewModel.downPayment
+            : 0,
+      },
+      {
         'text': 'Total Bayar',
-        'value': orderUtils.getTotal(
-            items: orderAddNewModel.items,
-            potongan: orderAddNewModel.potongan,
-            points: isUsePoint ? orderAddNewModel.points : 0,
-            pickupDeliveryPrice: orderAddNewModel.pickupDeliveryPrice)
+        'value': orderAddNewModel.total != null
+            ? orderAddNewModel.total
+            : orderUtils.getTotal(
+                items: orderAddNewModel.items,
+                potongan: orderAddNewModel.potongan,
+                points: isUsePoint ? orderAddNewModel.points : 0,
+                // downPayment: orderAddNewModel.downPayment,
+                pickupDeliveryPrice: orderAddNewModel.pickupDeliveryPrice,
+              ),
       },
     ];
 

@@ -3,8 +3,19 @@ class OrderItemModel {
   List<dynamic>? servicesId;
   int? subtotal;
   String? note;
+  int? qty;
+  int? discount;
+  int? promoId;
 
-  OrderItemModel({this.servicesId, this.itemName, this.subtotal, this.note});
+  OrderItemModel({
+    this.servicesId,
+    this.itemName,
+    this.subtotal,
+    this.note,
+    this.qty = 1,
+    this.discount,
+    this.promoId,
+  });
 
   Map<String, dynamic> toJson() {
     return {
@@ -15,12 +26,18 @@ class OrderItemModel {
       'services_name': servicesId!.isNotEmpty
           ? servicesId?.map((element) => element['name']).toList()
           : null,
-      'subtotal': getItemSubtotal(servicesId),
-      'note': note
+      'subtotal': getItemSubtotalFromAddItem(servicesId) * qty!,
+      'subtotal_with_discount':
+          (getItemSubtotalFromAddItem(servicesId) * (qty ?? 1)) -
+              (discount ?? 0),
+      'note': note,
+      'qty': qty,
+      'discount': discount,
+      'promo_id': promoId,
     };
   }
 
-  int getItemSubtotal(items) {
+  int getItemSubtotalFromAddItem(items) {
     if (items.isNotEmpty) {
       int itemSubtotal;
 

@@ -73,6 +73,14 @@ class _OrderAddNewState extends State<OrderAddNew> {
                           _orderAddNewModel,
                           promoList: promoList,
                           isUsePoint: isUsePoint,
+                          onChangeDownPayment: (dynamic value) {
+                            if (value != null) {
+                              setState(() {
+                                _orderAddNewModel.downPayment =
+                                    int.parse(value);
+                              });
+                            }
+                          },
                           onChangeUsePoint: (bool value) {
                             setState(() {
                               isUsePoint = value;
@@ -98,6 +106,12 @@ class _OrderAddNewState extends State<OrderAddNew> {
                               _orderAddNewModel.potongan =
                                   totalDiscount.toInt();
                             });
+
+                            if (item.selfPrice != null) {
+                              setState(() {
+                                _orderAddNewModel.total = item.selfPrice;
+                              });
+                            }
                           },
                         ),
                         _separator,
