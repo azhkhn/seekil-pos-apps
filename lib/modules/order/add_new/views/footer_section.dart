@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:seekil_back_office/constants/general.constant.dart';
 import 'package:seekil_back_office/models/order_add_new.model.dart';
 import 'package:seekil_back_office/utilities/helper/order_helper.dart';
-import 'package:seekil_back_office/utilities/helper/pretty_print.dart';
 import 'package:seekil_back_office/utilities/helper/snackbar_helper.dart';
 import 'package:seekil_back_office/utilities/helper/word_transformation.dart';
 import 'package:seekil_back_office/constants/color.constant.dart';
@@ -79,12 +78,11 @@ class OrderAddNewFooterSection extends StatelessWidget {
 
   void _onSaveForm() async {
     try {
-      prettyPrintJson(orderAddNewModel.toJson());
-      // Get.back();
-      // handleShowLoading();
-      // await orderAddNewModel.createOrder(orderAddNewModel.toJson());
-      // handleShowLoading();
-      // Get.back(result: true);
+      Get.back();
+      handleShowLoading();
+      await orderAddNewModel.createOrder(orderAddNewModel.toJson());
+      handleShowLoading();
+      Get.back(result: true);
     } catch (error) {
       handleShowLoading();
       SnackbarHelper.show(
