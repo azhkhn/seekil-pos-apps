@@ -44,7 +44,11 @@ class OrderItemListItemsModel {
               'item_name': json['item_name'],
               'services': json['services'],
               'subtotal': json['subtotal'],
-              'note': json['note']
+              'note': json['note'],
+              'subtotal_with_discount': json['subtotal_with_discount'],
+              'qty': json['qty'],
+              'discount': json['discount'],
+              'promo_id': json['promo_id'],
             })
         .toList();
     var responseJson = {

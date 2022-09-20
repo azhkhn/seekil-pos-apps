@@ -42,13 +42,13 @@ class OrderAddNewModel {
   Map<String, dynamic> toJson() {
     return {
       "id": id,
+      "customer_name": customerName?.trim(),
       "customer_id": customerId,
-      "customer_name": customerName,
       "whatsapp": whatsapp != null ? '62$whatsapp' : null,
       "points": points,
       "order_type_id": orderTypeId,
       "store_id": storeId,
-      "pickup_address": pickupAddress,
+      "pickup_address": pickupAddress?.trim(),
       "partnership_id": partnershipId,
       "payment_method_id": paymentMethodId,
       "payment_status": paymentStatus,
@@ -64,7 +64,8 @@ class OrderAddNewModel {
               pickupDeliveryPrice: pickupDeliveryPrice,
               points: points,
               potongan: potongan,
-              items: items),
+              items: items,
+            ),
       "items": items
     };
   }

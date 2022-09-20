@@ -178,7 +178,7 @@ class _OrderAddNewItemsSectionState extends State<OrderAddNewItemsSection> {
                 return null;
               },
               onChanged: (dynamic value) {
-                orderItemModel.itemName = value;
+                orderItemModel.itemName = value?.trim();
               },
             ),
             MyFormField(

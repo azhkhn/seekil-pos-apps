@@ -81,6 +81,7 @@ class OrderUtils {
             _orderDetail.paymentStatus!.replaceAll('_', ' '))
         : toBeginningOfSentenceCase(_orderDetail.paymentStatus);
     String subtotal = wt.currencyFormat(getItemSubtotal(_orderItems['list']));
+    String? downPayment = wt.currencyFormat(_orderDetail.downPayment);
     String total = wt.currencyFormat(getTotal(
         items: _orderItems['list'] ?? [],
         pickupDeliveryPrice: _orderDetail.ongkir ?? 0,
@@ -93,8 +94,8 @@ class OrderUtils {
             String services = e['services']
                 .map((s) =>
                     '_${s['name'].replaceAll('&', 'and').trim()}: ${wt.currencyFormat(s['price'])}_\n')
-                .trim()
-                .toString();
+                .toString()
+                .trim();
             return '\n*$itemName*\n$services';
           })
           .toString()
@@ -111,7 +112,8 @@ class OrderUtils {
         '${generateItem().replaceAll('(', '').replaceAll(')', '').replaceAll(',', '').trim()}\n';
     String dSubtotal = 'Subtotal: $subtotal\n';
     String dOngkir = 'Ongkos Kirim: $ongkosKirim\n';
-    String dDiskon = 'Diskon: -$discount\n\n';
+    String dDiskon = 'Diskon: -$discount\n';
+    String dDownPayment = 'Uang Muka (DP): $downPayment\n\n';
     String dTotal = '*Total: $total*\n';
     String dStatus = '*_${statusPembayaran!.toUpperCase()}_*\n';
     String dNote = '\nMohon ditunggu untuk cucian nya 😊';
@@ -131,6 +133,7 @@ class OrderUtils {
         '$dSubtotal'
         '$dOngkir'
         '$dDiskon'
+        '$dDownPayment'
         '$dTotal'
         '$separator'
         '$dStatus'
