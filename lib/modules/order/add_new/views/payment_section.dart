@@ -16,6 +16,7 @@ class OrderAddNewPaymentSection extends StatefulWidget {
     required this.onChangeOngkosKirim,
     required this.onChangeDownPayment,
     required this.onChangePromo,
+    required this.onChangeEstimate,
     required this.promoList,
   }) : super(key: key);
 
@@ -25,6 +26,7 @@ class OrderAddNewPaymentSection extends StatefulWidget {
   final ValueChanged<dynamic> onChangeOngkosKirim;
   final ValueChanged<dynamic> onChangeDownPayment;
   final ValueChanged<dynamic> onChangePromo;
+  final ValueChanged<dynamic> onChangeEstimate;
   final Future<List<PromoModel>?> promoList;
 
   @override
@@ -55,10 +57,32 @@ class _OrderAddNewPaymentSectionState extends State<OrderAddNewPaymentSection> {
       padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
       child: Column(
         children: [
-          MyFormField(
-              label: 'Ongkos Kirim',
-              textInputType: TextInputType.number,
-              onChanged: widget.onChangeOngkosKirim),
+          Row(
+            children: [
+              Expanded(
+                child: MyFormField(
+                  label: 'Estimasi Pengerjaan (Hari)',
+                  isMandatory: true,
+                  textInputType: TextInputType.number,
+                  initialValue: widget.orderAddNewModel.estimate.toString(),
+                  onChanged: widget.onChangeEstimate,
+                  textFieldValidator: (value) {
+                    if (value == null || value == '') {
+                      return 'Estimasi Pengerjaan harus diisi';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              SizedBox(width: 16.0),
+              Expanded(
+                child: MyFormField(
+                    label: 'Ongkos Kirim',
+                    textInputType: TextInputType.number,
+                    onChanged: widget.onChangeOngkosKirim),
+              ),
+            ],
+          ),
           Container(
             margin: const EdgeInsets.only(bottom: 24.0),
             child: Column(

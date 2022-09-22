@@ -36,7 +36,8 @@ class OrderDetailModel {
       total,
       qty,
       points,
-      downPayment;
+      downPayment,
+      estimate;
 
   OrderDetailModel({
     required this.orderStatus,
@@ -59,6 +60,7 @@ class OrderDetailModel {
     required this.orderDate,
     required this.points,
     required this.downPayment,
+    required this.estimate,
   });
 
   factory OrderDetailModel.fromJson(Map<String, dynamic> json) {
@@ -91,6 +93,7 @@ class OrderDetailModel {
       qty: json['qty'] != null ? json['qty'] : 0,
       total: json['total'] != null ? json['total'] : 0,
       downPayment: json['down_payment'] != null ? json['down_payment'] : 0,
+      estimate: json['estimate'] != null ? json['estimate'] : 0,
     );
   }
 

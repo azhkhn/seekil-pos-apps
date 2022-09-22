@@ -94,6 +94,14 @@ class _OrderAddNewState extends State<OrderAddNew> {
                               });
                             }
                           },
+                          onChangeEstimate: (dynamic value) {
+                            if (value != null && value != '') {
+                              _orderAddNewModel.estimate = int.parse(value);
+                            } else {
+                              _orderAddNewModel.estimate = 3;
+                            }
+                            setState(() {});
+                          },
                           onChangePromo: (dynamic item) {
                             List<dynamic>? items = _orderAddNewModel.items;
                             int discount = item.discount;

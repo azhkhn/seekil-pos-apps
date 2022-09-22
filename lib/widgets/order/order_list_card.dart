@@ -58,99 +58,103 @@ class _OrderListCardState extends State<OrderListCard> {
       ),
       child: Card(
         elevation: 2.0,
-        child: Container(
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        wt.dateFormatter(date: widget.data.orderDate),
-                        style: _valueStyle(false)
-                            .copyWith(color: Colors.grey, fontSize: 13.0),
-                      ),
-                      Text(
-                        widget.data.orderId,
-                        textAlign: TextAlign.left,
-                        style: _valueStyle(true).copyWith(color: Colors.grey),
-                      ),
-                    ],
-                  ),
-                  GestureDetector(
-                    onTap: () => _showModalEditOrder(widget.data),
-                    child: Container(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Icon(
-                        Icons.mode_edit_outline_outlined,
-                        size: 20.0,
-                        color: Colors.grey,
-                      ),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.grey.shade200,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-              Divider(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Stack(
+          children: [
+            // Positioned(
+            //     child: Container(
+            //   width: 5.0,
+            //   height: 28.0,
+            //   color: OrderUtils()
+            //       .determineColorByOrderStatus(widget.data.orderStatusId),
+            // )),
+            Container(
+              padding: EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        widget.data.customerName,
-                        style: _valueStyle(true),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            wt.dateFormatter(date: widget.data.orderDate),
+                            style: _valueStyle(false)
+                                .copyWith(color: Colors.grey, fontSize: 13.0),
+                          ),
+                          Text(
+                            widget.data.orderId,
+                            textAlign: TextAlign.left,
+                            style:
+                                _valueStyle(true).copyWith(color: Colors.grey),
+                          ),
+                        ],
                       ),
-                      SizedBox(width: 4.0),
-                      Text(
-                        '(${widget.data.qty} Item)',
-                        style: _valueStyle(false).copyWith(color: Colors.grey),
-                      ),
+                      GestureDetector(
+                        onTap: () => _showModalEditOrder(widget.data),
+                        child: Container(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(
+                            Icons.mode_edit_outline_outlined,
+                            size: 20.0,
+                            color: Colors.grey,
+                          ),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.grey.shade200,
+                          ),
+                        ),
+                      )
                     ],
                   ),
-                  WidgetHelper.badgeText(
-                    widget.data.paymentStatus as String,
-                    textColor: Colors.white,
-                    badgeColor: widget.data.paymentStatus as String == 'Lunas'
-                        ? Colors.green
-                        : Colors.red,
-                  ),
-                ],
-              ),
-              SizedBox(height: 4.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    wt.currencyFormat(widget.data.total),
-                    style: _valueStyle(true),
-                  ),
+                  Divider(),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      Row(
+                        children: [
+                          Text(
+                            widget.data.customerName,
+                            style: _valueStyle(true),
+                          ),
+                          SizedBox(width: 4.0),
+                          Text(
+                            '(${widget.data.qty} Item)',
+                            style:
+                                _valueStyle(false).copyWith(color: Colors.grey),
+                          ),
+                        ],
+                      ),
                       WidgetHelper.badgeText(
                         widget.data.orderType,
                         badgeColor: ColorConstant.DEF,
                         textColor: Colors.white,
                       ),
-                      SizedBox(width: 4.0),
-                      WidgetHelper.badgeText(
-                        widget.data.orderStatus,
-                        badgeColor: ColorConstant.DEF,
-                        textColor: Colors.white,
-                      ),
                     ],
                   ),
+                  SizedBox(height: 4.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        wt.currencyFormat(widget.data.total),
+                        style: _valueStyle(true),
+                      ),
+                      WidgetHelper.badgeText(
+                        widget.data.paymentStatus as String,
+                        textColor: Colors.white,
+                        badgeColor:
+                            widget.data.paymentStatus as String == 'Lunas'
+                                ? Colors.green
+                                : Colors.red,
+                      ),
+                    ],
+                  )
                 ],
-              )
-            ],
-          ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -187,10 +191,6 @@ class _OrderListCardState extends State<OrderListCard> {
       paymentStatus: data.paymentStatusName,
     );
 
-    print(formData.orderStatusId is int);
-    print(formData.paymentMethodId is int);
-    print(formData.paymentStatus);
-
     Get.bottomSheet(
       BottomSheet(
         onClosing: () => Get.back(),
@@ -215,7 +215,7 @@ class _OrderListCardState extends State<OrderListCard> {
                     ),
                     SizedBox(width: 8.0),
                     Text(
-                      'Edit Transaksi',
+                      'Edit Transaksi - ${data.customerName}',
                       style: TextStyle(
                         fontSize: 20.0,
                         fontWeight: FontWeight.bold,

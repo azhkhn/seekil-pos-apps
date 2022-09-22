@@ -393,13 +393,8 @@ class _OrderAddNewItemsSectionState extends State<OrderAddNewItemsSection> {
       itemsList?.add(orderItemModel.toJson());
       widget.orderAddNewModel.items = itemsList;
 
-      int qty = 0;
-
-      for (var item in itemsList!) {
-        qty += item['qty'] as int;
-      }
-
-      widget.orderAddNewModel.qty = (widget.orderAddNewModel.qty ?? 0) + qty;
+      widget.orderAddNewModel.qty =
+          (widget.orderAddNewModel.qty ?? 0) + orderItemModel.qty!;
       Get.back();
       widget.onSavedFormItems();
     }

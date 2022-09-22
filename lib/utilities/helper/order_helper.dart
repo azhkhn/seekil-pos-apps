@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:seekil_back_office/constants/general.constant.dart';
+import 'package:seekil_back_office/constants/order_status.constant.dart';
 import 'package:seekil_back_office/constants/storage_key.constant.dart';
 import 'package:seekil_back_office/models/order_detail.model.dart';
 import 'package:seekil_back_office/utilities/helper/snackbar_helper.dart';
@@ -56,6 +58,24 @@ class OrderUtils {
     return totalPayment;
   }
 
+  Color determineColorByOrderStatus(int orderStatusCode) {
+    switch (orderStatusCode) {
+      case OrderStatusConstant.newest:
+      case OrderStatusConstant.waitingList:
+      case OrderStatusConstant.inProgress:
+      case OrderStatusConstant.readyToPickup:
+      case OrderStatusConstant.readyToShipment:
+      case OrderStatusConstant.onProgressShipment:
+        return Colors.orange;
+      case OrderStatusConstant.done:
+        return Colors.green;
+      case OrderStatusConstant.cancel:
+        return Colors.red;
+      default:
+        return Colors.yellow;
+    }
+  }
+
   void launchWhatsapp({String? number, String? message}) async {
     String url = 'https://wa.me/$number/?text=$message';
     await canLaunch(url)
@@ -74,6 +94,13 @@ class OrderUtils {
     String? customerWhatsapp = _orderDetail.whatsapp!.replaceRange(0, 2, '0');
     String dateTime = wt.dateFormatter(
         date: _orderDetail.orderDate, type: DateFormatType.dateTimeInfo);
+    String? estimate = wt.customDateSubstract(
+      dateTime: _orderDetail.orderDate,
+      dateFormatType: DateFormatType.dateTimeInfo,
+      days: _orderDetail.estimate != 0 && _orderDetail.estimate != null
+          ? _orderDetail.estimate!
+          : 3,
+    );
     String? ongkosKirim = wt.currencyFormat(_orderDetail.ongkir);
     String? discount = wt.currencyFormat(_orderDetail.promo);
     String? statusPembayaran = _orderDetail.paymentStatus!.contains('_')
@@ -106,8 +133,9 @@ class OrderUtils {
     String dTitle =
         'Hi *$customerName*.\nTerima kasih sudah drop sepatu/apparel nya di Seekil, berikut invoice nya:\n\n';
     String dInvoice = 'Invoice: $invoice\n';
-    String dWhatsapp = 'Whatsapp: $customerWhatsapp\n';
-    String dWaktu = 'Waktu: $dateTime\n';
+    String dWhatsapp = 'Whatsapp: $customerWhatsapp\n\n';
+    String dWaktu = 'Tgl Transaksi: $dateTime\n';
+    String dEstimate = 'Estimasi Selesai: $estimate\n';
     String dItems =
         '${generateItem().replaceAll('(', '').replaceAll(')', '').replaceAll(',', '').trim()}\n';
     String dSubtotal = 'Subtotal: $subtotal\n';
@@ -127,6 +155,7 @@ class OrderUtils {
         '$dInvoice'
         '$dWhatsapp'
         '$dWaktu'
+        '$dEstimate'
         '$separator'
         '$dItems'
         '$separator'

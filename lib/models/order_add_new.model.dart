@@ -16,7 +16,8 @@ class OrderAddNewModel {
       potongan,
       downPayment,
       qty,
-      total;
+      total,
+      estimate;
 
   OrderAddNewModel({
     this.items,
@@ -37,6 +38,7 @@ class OrderAddNewModel {
     this.downPayment,
     this.qty,
     this.total,
+    this.estimate = 3,
   });
 
   Map<String, dynamic> toJson() {
@@ -58,6 +60,7 @@ class OrderAddNewModel {
       "potongan": potongan,
       "qty": qty,
       "down_payment": downPayment,
+      "estimate": estimate,
       "total": total != null
           ? total
           : OrderUtils().getTotal(

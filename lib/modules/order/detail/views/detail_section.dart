@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:seekil_back_office/models/order_detail.model.dart';
 import 'package:seekil_back_office/routes/routes.dart';
 import 'package:seekil_back_office/utilities/helper/word_transformation.dart';
 
 class DetailSection extends StatelessWidget {
-  final data;
+  final OrderDetailModel data;
   final TextStyle titleStyle, valueStyle;
   final WordTransformation wordTransformation;
 
   const DetailSection(
       {Key? key,
-      this.data,
+      required this.data,
       required this.titleStyle,
       required this.valueStyle,
       required this.wordTransformation})
@@ -70,6 +71,49 @@ class DetailSection extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
+                Text(
+                  'Estimasi Selesai',
+                  style: titleStyle,
+                ),
+                Text(
+                  data.estimate != null
+                      ? WordTransformation().customDateSubstract(
+                          dateTime: data.orderDate,
+                          days: data.estimate != 0 && data.estimate != null
+                              ? data.estimate!
+                              : 3)
+                      : '-',
+                  style: valueStyle.copyWith(fontWeight: FontWeight.normal),
+                )
+              ],
+            ),
+          ),
+          Divider(height: 24.0, color: Colors.grey),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  'Tanggal Transaksi',
+                  style: titleStyle,
+                ),
+                Text(
+                  wordTransformation.dateFormatter(
+                      date: data.orderDate, type: DateFormatType.dateTime),
+                  style: valueStyle.copyWith(fontWeight: FontWeight.normal),
+                )
+              ],
+            ),
+          ),
+          Divider(height: 24.0, color: Colors.grey),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
                 GestureDetector(
                   onTap: () async {
                     await Clipboard.setData(ClipboardData(text: data.orderId));
@@ -104,25 +148,6 @@ class DetailSection extends StatelessWidget {
                     style: TextStyle(
                         fontWeight: FontWeight.bold, color: Colors.green),
                   ),
-                )
-              ],
-            ),
-          ),
-          Divider(height: 24.0, color: Colors.grey),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  'Tanggal Transaksi',
-                  style: titleStyle,
-                ),
-                Text(
-                  wordTransformation.dateFormatter(
-                      date: data.orderDate, type: DateFormatType.dateTime),
-                  style: valueStyle.copyWith(fontWeight: FontWeight.normal),
                 )
               ],
             ),

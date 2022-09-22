@@ -1,10 +1,10 @@
 class OrderStatusConstant {
-  static int get newest => 1;
-  static int get waitingList => 2;
-  static int get inProgress => 3;
-  static int get readyToShipment => 4;
-  static int get readyToPickup => 5;
-  static int get cancel => 6;
-  static int get done => 7;
-  static int get onProgressShipment => 8;
+  static const int newest = 1;
+  static const int waitingList = 2;
+  static const int inProgress = 3;
+  static const int readyToShipment = 4;
+  static const int readyToPickup = 5;
+  static const int cancel = 6;
+  static const int done = 7;
+  static const int onProgressShipment = 8;
 }
